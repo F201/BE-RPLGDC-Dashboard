@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 03, 2019 at 03:39 PM
+-- Generation Time: Nov 13, 2019 at 03:42 PM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.10
 
@@ -34,7 +34,7 @@ CREATE TABLE `achievements` (
   `nama_pemenang` varchar(75) NOT NULL,
   `jurusan` varchar(50) NOT NULL,
   `tahun` int(4) NOT NULL,
-  `peringkat` int(2) NOT NULL,
+  `peringkat` int(3) NOT NULL,
   `foto_achievement` varchar(75) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -93,7 +93,7 @@ INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posis
 
 CREATE TABLE `socials` (
   `id_social` int(11) NOT NULL,
-  `type` varchar(10) NOT NULL,
+  `type` varchar(20) NOT NULL,
   `value` varchar(75) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -141,25 +141,25 @@ ALTER TABLE `socials`
 -- AUTO_INCREMENT for table `achievements`
 --
 ALTER TABLE `achievements`
-  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `org_structures`
 --
 ALTER TABLE `org_structures`
-  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `socials`
 --
 ALTER TABLE `socials`
-  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

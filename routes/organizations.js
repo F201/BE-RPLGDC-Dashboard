@@ -4,13 +4,13 @@ const router  = express.Router()
 const upload  = require('../middleware/uploadOrg')
 const request = require('request')
 
-router.get("/organizations", (req, res) => {
+router.get("/api/v1/organizations", (req, res) => {
     Organizations.findAll().then(organizations => {
         res.json({data: organizations})
     })
 })
 
-router.get("/organizations/:org_id", (req, res) => {
+router.get("/api/v1/organizations/:org_id", (req, res) => {
     Organizations.findOne({
         where: { id_org_structures : req.params.org_id }
     }).then(organizations => {
@@ -21,7 +21,7 @@ router.get("/organizations/:org_id", (req, res) => {
     })
 })
 
-router.post("/organizations", upload.single('foto_org_structures'), (req, res) => {
+router.post("/api/v1/organizations", upload.single('foto_org_structures'), (req, res) => {
     Organizations.create({
         nama_org_structures: req.body.nama_org_structures,
         posisi_org_structures: req.body.posisi_org_structures,
@@ -34,8 +34,8 @@ router.post("/organizations", upload.single('foto_org_structures'), (req, res) =
     })
 })
 
-router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, (err, res2, body) => {
+router.put("/api/v1/organizations/:org_id", upload.single('foto_org_structures'), (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/api/v1/organizations/"+req.params.org_id, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         let fs = require('fs')
         let path = require('path')
@@ -71,8 +71,8 @@ router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req,
     })
 })
 
-router.delete("/organizations/:org_id", (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, (err, res2, body) => {
+router.delete("/api/v1/organizations/:org_id", (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/api/v1/organizations/"+req.params.org_id, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         if (body.data == undefined) {
             res.json({"msg": "data not found"})

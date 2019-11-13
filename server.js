@@ -17,10 +17,12 @@ app.use(express.static('public'));
 const organizations = require('./routes/organizations')
 const achievements = require('./routes/achievements')
 const divisions = require('./routes/divisions')
+const socials = require('./routes/socials')
 
 app.use(organizations)
 app.use(achievements)
 app.use(divisions)
+app.use(socials)
 
 app.get('/', (req, res) => { 
 	res.send('Hello World')

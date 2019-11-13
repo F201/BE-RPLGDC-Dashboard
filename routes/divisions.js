@@ -3,13 +3,13 @@ const Divisions = require('../models/divisions')
 const router = express.Router()
 const request = require('request')
 
-router.get("/divisions", (req, res) => {
+router.get("/api/v1/divisions", (req, res) => {
     Divisions.findAll().then(divisions => {
         res.json({data: divisions})
     })
 })
 
-router.get("/divisions/:id_divisi", (req, res) => {
+router.get("/api/v1/divisions/:id_divisi", (req, res) => {
     Divisions.findOne({
         where: {id_divisi : req.params.id_divisi}
     }).then(division => {
@@ -20,7 +20,7 @@ router.get("/divisions/:id_divisi", (req, res) => {
     })
 })
 
-router.post("/divisions", (req, res) => {
+router.post("/api/v1/divisions", (req, res) => {
     Divisions.create({
         nama_divisi : req.body.nama_divisi,
         deskripsi : req.body.deskripsi
@@ -29,8 +29,8 @@ router.post("/divisions", (req, res) => {
     })
 })
 
-router.put("/divisions/:id_divisi", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/divisions/" + req.params.id_divisi, { json: true }, (err, res2, body) => {
+router.put("/api/v1/divisions/:id_divisi", (req, res) => {
+    request(req.protocol + "://" + req.headers.host + "/api/v1/divisions/" + req.params.id_divisi, { json: true }, (err, res2, body) => {
         if (body.data == undefined) {
             res.json({msg : "data not found"})
         } else {
@@ -54,8 +54,8 @@ router.put("/divisions/:id_divisi", (req, res) => {
     })
 })
 
-router.delete("/divisions/:id_divisi", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/divisions/" + req.params.id_divisi, { json: true }, (err, res2, body) => {
+router.delete("/api/v1/divisions/:id_divisi", (req, res) => {
+    request(req.protocol + "://" + req.headers.host + "/api/v1/divisions/" + req.params.id_divisi, { json: true }, (err, res2, body) => {
         if (body.data == undefined) {
             res.json({msg : "data not found"})
         } else {
