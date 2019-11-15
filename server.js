@@ -18,11 +18,13 @@ const organizations = require('./routes/organizations')
 const achievements = require('./routes/achievements')
 const divisions = require('./routes/divisions')
 const socials = require('./routes/socials')
+const activities = require('./routes/activities')
 
 app.use(organizations)
 app.use(achievements)
 app.use(divisions)
 app.use(socials)
+app.use(activities)
 
 app.get('/', (req, res) => { 
 	res.send('Hello World')
