@@ -21,6 +21,8 @@ router.get("/api/v1/activities/:id_activity", (req, res) => {
     })
 })
 
+// kebawah masih error (belum jadi)
+
 router.post("/api/v1/activities", upload.single('foto_org_structures'), (req, res) => {
     Activities.create({
         nama_org_structures: req.body.nama_org_structures,
