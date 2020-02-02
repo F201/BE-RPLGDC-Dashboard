@@ -17,7 +17,7 @@ app.use(express.static('public'));
 const organizations = require('./routes/organizations')
 const achievements = require('./routes/achievements')
 const divisions = require('./routes/divisions')
-const recruitment = require('./models/recruitment')
+const recruitment = require('./routes/recruitment')
 const tools = require('./routes/tools')
 
 app.use(organizations)

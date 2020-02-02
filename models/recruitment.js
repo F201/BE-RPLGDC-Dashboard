@@ -23,4 +23,4 @@ const recruitment = db.define('recruitment', {
     timestamps: false
 })
 
-module.exports = organizations;
+module.exports = recruitment;
