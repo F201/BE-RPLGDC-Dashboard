@@ -17,14 +17,17 @@ app.use(express.static('public'));
 const organizations = require('./routes/organizations')
 const achievements = require('./routes/achievements')
 const divisions = require('./routes/divisions')
+const recruitment = require('./models/recruitment')
 
 app.use(organizations)
 app.use(achievements)
 app.use(divisions)
+app.use(recruitment)
 
 app.get('/', (req, res) => { 
 	res.send('Hello World')
 }) 
+
 
 app.listen(port, () => {
 	console.log(`server running on port ${port}`)
