@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 03, 2019 at 03:39 PM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.3.10
+-- Host: 127.0.0.1
+-- Generation Time: Feb 02, 2020 at 02:25 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -62,7 +62,8 @@ CREATE TABLE `divisions` (
 --
 
 INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
-(1, 'Back End', 'back-end programming');
+(1, 'Back End', 'back-end programming'),
+(4, 'front end', 'front end developer');
 
 -- --------------------------------------------------------
 
@@ -83,7 +84,33 @@ CREATE TABLE `org_structures` (
 --
 
 INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `foto_org_structures`) VALUES
-(2, '22', '22', 22, '07ab5bd46c5201579a6eca0487105a48.png');
+(3, 'rekim', 'front end ', 2018, 'b77c41c4721116d6d58088cf70cd10c5.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pivot_product_tools`
+--
+
+CREATE TABLE `pivot_product_tools` (
+  `idx` int(11) NOT NULL,
+  `id_tools` int(11) NOT NULL,
+  `id_products` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id_products` int(11) NOT NULL,
+  `nama_products` varchar(40) NOT NULL,
+  `gambar_products` varchar(75) NOT NULL,
+  `kategori_products` enum('web','android','game','UI/UX','sound') NOT NULL,
+  `deskripsi` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -104,6 +131,26 @@ CREATE TABLE `socials` (
 INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
 (1, 'link_ig', 'https://www.instagram.com/rplgdc_'),
 (2, 'id_line', '@ajh8699v');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tools`
+--
+
+CREATE TABLE `tools` (
+  `id_tools` int(11) NOT NULL,
+  `nama_tools` varchar(20) NOT NULL,
+  `gambar_tools` varchar(75) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tools`
+--
+
+INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
+(3, 'angular', 'b5b6bc9d4610277a5919557c52fd3bc7.png'),
+(4, 'react', '2ba9211b3c4a5651860bcb727981a6b0.jpg');
 
 --
 -- Indexes for dumped tables
@@ -128,10 +175,28 @@ ALTER TABLE `org_structures`
   ADD PRIMARY KEY (`id_org_structures`);
 
 --
+-- Indexes for table `pivot_product_tools`
+--
+ALTER TABLE `pivot_product_tools`
+  ADD PRIMARY KEY (`idx`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id_products`);
+
+--
 -- Indexes for table `socials`
 --
 ALTER TABLE `socials`
   ADD PRIMARY KEY (`id_social`);
+
+--
+-- Indexes for table `tools`
+--
+ALTER TABLE `tools`
+  ADD PRIMARY KEY (`id_tools`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -141,25 +206,43 @@ ALTER TABLE `socials`
 -- AUTO_INCREMENT for table `achievements`
 --
 ALTER TABLE `achievements`
-  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `org_structures`
 --
 ALTER TABLE `org_structures`
-  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `pivot_product_tools`
+--
+ALTER TABLE `pivot_product_tools`
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id_products` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `socials`
 --
 ALTER TABLE `socials`
   MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tools`
+--
+ALTER TABLE `tools`
+  MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
