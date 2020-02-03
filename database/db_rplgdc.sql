@@ -1,5 +1,4 @@
 -- phpMyAdmin SQL Dump
-<<<<<<< HEAD
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
@@ -7,15 +6,6 @@
 -- Waktu pembuatan: 02 Feb 2020 pada 12.00
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.3
-=======
--- version 4.8.4
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Feb 02, 2020 at 02:25 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
->>>>>>> 5b25ba39fb1a30086f2a185bbce02c041137b31e
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -44,7 +34,7 @@ CREATE TABLE `achievements` (
   `nama_pemenang` varchar(75) NOT NULL,
   `jurusan` varchar(50) NOT NULL,
   `tahun` int(4) NOT NULL,
-  `peringkat` int(2) NOT NULL,
+  `peringkat` int(3) NOT NULL,
   `foto_achievement` varchar(75) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -150,7 +140,7 @@ CREATE TABLE `recuirement` (
 
 CREATE TABLE `socials` (
   `id_social` int(11) NOT NULL,
-  `type` varchar(10) NOT NULL,
+  `type` varchar(20) NOT NULL,
   `value` varchar(75) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -205,15 +195,12 @@ ALTER TABLE `org_structures`
   ADD PRIMARY KEY (`id_org_structures`);
 
 --
-<<<<<<< HEAD
 -- Indeks untuk tabel `recuirement`
 --
 ALTER TABLE `recuirement`
   ADD PRIMARY KEY (`id_recruitment`);
 
 --
--- Indeks untuk tabel `socials`
-=======
 -- Indexes for table `pivot_product_tools`
 --
 ALTER TABLE `pivot_product_tools`
@@ -227,15 +214,11 @@ ALTER TABLE `products`
 
 --
 -- Indexes for table `socials`
->>>>>>> 5b25ba39fb1a30086f2a185bbce02c041137b31e
 --
 ALTER TABLE `socials`
   ADD PRIMARY KEY (`id_social`);
 
 --
-<<<<<<< HEAD
--- AUTO_INCREMENT untuk tabel yang dibuang
-=======
 -- Indexes for table `tools`
 --
 ALTER TABLE `tools`
@@ -243,7 +226,6 @@ ALTER TABLE `tools`
 
 --
 -- AUTO_INCREMENT for dumped tables
->>>>>>> 5b25ba39fb1a30086f2a185bbce02c041137b31e
 --
 
 --
@@ -293,6 +275,7 @@ ALTER TABLE `socials`
 --
 ALTER TABLE `tools`
   MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
