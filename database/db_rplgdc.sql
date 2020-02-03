@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Nov 13, 2019 at 03:42 PM
--- Server version: 10.4.8-MariaDB
--- PHP Version: 7.3.10
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 02 Feb 2020 pada 12.00
+-- Versi server: 10.1.38-MariaDB
+-- Versi PHP: 7.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `achievements`
+-- Struktur dari tabel `achievements`
 --
 
 CREATE TABLE `achievements` (
@@ -39,7 +39,7 @@ CREATE TABLE `achievements` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `achievements`
+-- Dumping data untuk tabel `achievements`
 --
 
 INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan`, `tahun`, `peringkat`, `foto_achievement`) VALUES
@@ -48,7 +48,7 @@ INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan
 -- --------------------------------------------------------
 
 --
--- Table structure for table `divisions`
+-- Struktur dari tabel `divisions`
 --
 
 CREATE TABLE `divisions` (
@@ -58,16 +58,17 @@ CREATE TABLE `divisions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `divisions`
+-- Dumping data untuk tabel `divisions`
 --
 
 INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
-(1, 'Back End', 'back-end programming');
+(1, 'Back End', 'back-end programming'),
+(4, 'front end', 'front end developer');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `org_structures`
+-- Struktur dari tabel `org_structures`
 --
 
 CREATE TABLE `org_structures` (
@@ -79,16 +80,62 @@ CREATE TABLE `org_structures` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `org_structures`
+-- Dumping data untuk tabel `org_structures`
 --
 
 INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `foto_org_structures`) VALUES
-(2, '22', '22', 22, '07ab5bd46c5201579a6eca0487105a48.png');
+(3, 'rekim', 'front end ', 2018, 'b77c41c4721116d6d58088cf70cd10c5.png');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `socials`
+-- Table structure for table `pivot_product_tools`
+--
+
+CREATE TABLE `pivot_product_tools` (
+  `idx` int(11) NOT NULL,
+  `id_tools` int(11) NOT NULL,
+  `id_products` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id_products` int(11) NOT NULL,
+  `nama_products` varchar(40) NOT NULL,
+  `gambar_products` varchar(75) NOT NULL,
+  `kategori_products` enum('web','android','game','UI/UX','sound') NOT NULL,
+  `deskripsi` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `recuirement`
+--
+
+CREATE TABLE `recuirement` (
+  `id_recruitment` int(10) NOT NULL,
+  `foto_profile` varchar(200) NOT NULL,
+  `nama_lengkap` varchar(50) NOT NULL,
+  `tanggal_lahir` date NOT NULL,
+  `jenis_kelamin` varchar(10) NOT NULL,
+  `jurusan` varchar(50) NOT NULL,
+  `angkatan` varchar(4) NOT NULL,
+  `divisi` varchar(20) NOT NULL,
+  `cv` varchar(100) NOT NULL,
+  `motivation_letter` varchar(100) NOT NULL,
+  `portofolio` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `socials`
 --
 
 CREATE TABLE `socials` (
@@ -98,34 +145,72 @@ CREATE TABLE `socials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `socials`
+-- Dumping data untuk tabel `socials`
 --
 
 INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
 (1, 'link_ig', 'https://www.instagram.com/rplgdc_'),
 (2, 'id_line', '@ajh8699v');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tools`
+--
+
+CREATE TABLE `tools` (
+  `id_tools` int(11) NOT NULL,
+  `nama_tools` varchar(20) NOT NULL,
+  `gambar_tools` varchar(75) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tools`
+--
+
+INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
+(3, 'angular', 'b5b6bc9d4610277a5919557c52fd3bc7.png'),
+(4, 'react', '2ba9211b3c4a5651860bcb727981a6b0.jpg');
+
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `achievements`
+-- Indeks untuk tabel `achievements`
 --
 ALTER TABLE `achievements`
   ADD PRIMARY KEY (`id_achievement`);
 
 --
--- Indexes for table `divisions`
+-- Indeks untuk tabel `divisions`
 --
 ALTER TABLE `divisions`
   ADD PRIMARY KEY (`id_divisi`);
 
 --
--- Indexes for table `org_structures`
+-- Indeks untuk tabel `org_structures`
 --
 ALTER TABLE `org_structures`
   ADD PRIMARY KEY (`id_org_structures`);
+
+--
+-- Indeks untuk tabel `recuirement`
+--
+ALTER TABLE `recuirement`
+  ADD PRIMARY KEY (`id_recruitment`);
+
+--
+-- Indexes for table `pivot_product_tools`
+--
+ALTER TABLE `pivot_product_tools`
+  ADD PRIMARY KEY (`idx`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id_products`);
 
 --
 -- Indexes for table `socials`
@@ -134,32 +219,63 @@ ALTER TABLE `socials`
   ADD PRIMARY KEY (`id_social`);
 
 --
+-- Indexes for table `tools`
+--
+ALTER TABLE `tools`
+  ADD PRIMARY KEY (`id_tools`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `achievements`
+-- AUTO_INCREMENT untuk tabel `achievements`
 --
 ALTER TABLE `achievements`
-  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `divisions`
+-- AUTO_INCREMENT untuk tabel `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `org_structures`
+-- AUTO_INCREMENT untuk tabel `org_structures`
 --
 ALTER TABLE `org_structures`
   MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `socials`
+-- AUTO_INCREMENT for table `pivot_product_tools`
+--
+ALTER TABLE `pivot_product_tools`
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id_products` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `recuirement`
+--
+ALTER TABLE `recuirement`
+  MODIFY `id_recruitment` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `socials`
 --
 ALTER TABLE `socials`
-  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tools`
+--
+ALTER TABLE `tools`
+  MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
