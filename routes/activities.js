@@ -4,13 +4,13 @@ const router  = express.Router()
 const upload  = require('../middleware/uploadOrg')
 const request = require('request')
 
-router.get("/api/v1/activities", (req, res) => {
+router.get("/activities", (req, res) => {
     Activities.findAll().then(activities => {
         res.json({data: activities})
     })
 })
 
-router.get("/api/v1/activities/:id_activity", (req, res) => {
+router.get("/activities/:id_activity", (req, res) => {
     Activities.findOne({
         where: { id_activity : req.params.id_activity }
     }).then(activities => {
@@ -23,7 +23,7 @@ router.get("/api/v1/activities/:id_activity", (req, res) => {
 
 // kebawah masih error (belum jadi)
 
-router.post("/api/v1/activities", upload.single('foto_org_structures'), (req, res) => {
+router.post("/activities", upload.single('foto_org_structures'), (req, res) => {
     Activities.create({
         nama_org_structures: req.body.nama_org_structures,
         posisi_org_structures: req.body.posisi_org_structures,
@@ -36,8 +36,8 @@ router.post("/api/v1/activities", upload.single('foto_org_structures'), (req, re
     })
 })
 
-router.put("/api/v1/activities/:org_id", upload.single('foto_org_structures'), (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/api/v1/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
+router.put("/activities/:org_id", upload.single('foto_org_structures'), (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         let fs = require('fs')
         let path = require('path')
@@ -73,8 +73,8 @@ router.put("/api/v1/activities/:org_id", upload.single('foto_org_structures'), (
     })
 })
 
-router.delete("/api/v1/activities/:org_id", (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/api/v1/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
+router.delete("/activities/:org_id", (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         if (body.data == undefined) {
             res.json({"msg": "data not found"})

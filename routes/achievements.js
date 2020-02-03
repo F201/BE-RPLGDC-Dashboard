@@ -4,13 +4,13 @@ const router  = express.Router()
 const upload  = require('../middleware/uploadAchievements')
 const request = require('request')
 
-router.get("/api/v1/achievements", (req, res) => {
+router.get("/achievements", (req, res) => {
     Achievements.findAll().then(achievements => {
         res.json({data: achievements})
     })
 })
 
-router.get("/api/v1/achievements/:id_achievement", (req, res) => {
+router.get("/achievements/:id_achievement", (req, res) => {
     Achievements.findOne({
         where : {id_achievement : req.params.id_achievement}
     }).then(achievements => {
@@ -21,7 +21,7 @@ router.get("/api/v1/achievements/:id_achievement", (req, res) => {
     })
 })
 
-router.post("/api/v1/achievements", upload.single('foto_achievement'), (req, res) => {
+router.post("/achievements", upload.single('foto_achievement'), (req, res) => {
     Achievements.create({
         judul: req.body.judul,
         nama_pemenang: req.body.nama_pemenang,
@@ -36,8 +36,8 @@ router.post("/api/v1/achievements", upload.single('foto_achievement'), (req, res
     })
 })
 
-router.put("/api/v1/achievements/:id_achievement", upload.single('foto_achievement'), (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/api/v1/achievements/"+req.params.id_achievement, { json: true }, (err, res2, body) => {
+router.put("/achievements/:id_achievement", upload.single('foto_achievement'), (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/achievements/"+req.params.id_achievement, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         let fs = require('fs')
         let path = require('path')
@@ -75,8 +75,8 @@ router.put("/api/v1/achievements/:id_achievement", upload.single('foto_achieveme
     })
 })
 
-router.delete("/api/v1/achievements/:id_achievement", (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/api/v1/achievements/"+req.params.id_achievement, { json: true }, (err, res2, body) => {
+router.delete("/achievements/:id_achievement", (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/achievements/"+req.params.id_achievement, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         if (body.data == undefined) {
             res.json({"msg": "data not found"})
