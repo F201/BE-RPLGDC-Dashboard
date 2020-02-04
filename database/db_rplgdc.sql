@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 04, 2020 at 01:23 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Waktu pembuatan: 04 Feb 2020 pada 14.28
+-- Versi server: 10.1.38-MariaDB
+-- Versi PHP: 7.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `achievements`
+-- Struktur dari tabel `achievements`
 --
 
 CREATE TABLE `achievements` (
@@ -39,7 +39,7 @@ CREATE TABLE `achievements` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `achievements`
+-- Dumping data untuk tabel `achievements`
 --
 
 INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan`, `tahun`, `peringkat`, `foto_achievement`) VALUES
@@ -48,7 +48,7 @@ INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan
 -- --------------------------------------------------------
 
 --
--- Table structure for table `divisions`
+-- Struktur dari tabel `divisions`
 --
 
 CREATE TABLE `divisions` (
@@ -58,7 +58,7 @@ CREATE TABLE `divisions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `divisions`
+-- Dumping data untuk tabel `divisions`
 --
 
 INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
@@ -68,7 +68,7 @@ INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `org_structures`
+-- Struktur dari tabel `org_structures`
 --
 
 CREATE TABLE `org_structures` (
@@ -80,7 +80,7 @@ CREATE TABLE `org_structures` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `org_structures`
+-- Dumping data untuk tabel `org_structures`
 --
 
 INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `foto_org_structures`) VALUES
@@ -89,7 +89,7 @@ INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posis
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pivot_product_tools`
+-- Struktur dari tabel `pivot_product_tools`
 --
 
 CREATE TABLE `pivot_product_tools` (
@@ -99,7 +99,7 @@ CREATE TABLE `pivot_product_tools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `pivot_product_tools`
+-- Dumping data untuk tabel `pivot_product_tools`
 --
 
 INSERT INTO `pivot_product_tools` (`idx`, `id_tools`, `id_products`) VALUES
@@ -109,7 +109,7 @@ INSERT INTO `pivot_product_tools` (`idx`, `id_tools`, `id_products`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Struktur dari tabel `products`
 --
 
 CREATE TABLE `products` (
@@ -121,7 +121,7 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `products`
+-- Dumping data untuk tabel `products`
 --
 
 INSERT INTO `products` (`id_products`, `nama_products`, `gambar_products`, `kategori_products`, `deskripsi`) VALUES
@@ -130,7 +130,7 @@ INSERT INTO `products` (`id_products`, `nama_products`, `gambar_products`, `kate
 -- --------------------------------------------------------
 
 --
--- Table structure for table `recruitment`
+-- Struktur dari tabel `recruitment`
 --
 
 CREATE TABLE `recruitment` (
@@ -141,23 +141,25 @@ CREATE TABLE `recruitment` (
   `jenis_kelamin` varchar(10) NOT NULL,
   `jurusan` varchar(50) NOT NULL,
   `angkatan` varchar(4) NOT NULL,
-  `divisi` varchar(20) NOT NULL,
+  `divisi` enum('frontend','backend','uiux','mobile','gdc') NOT NULL,
   `cv` varchar(100) NOT NULL,
   `motivation_letter` varchar(100) NOT NULL,
-  `portofolio` varchar(500) NOT NULL
+  `portofolio` varchar(500) NOT NULL,
+  `status1` tinyint(1) DEFAULT '0',
+  `status2` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `recruitment`
+-- Dumping data untuk tabel `recruitment`
 --
 
-INSERT INTO `recruitment` (`id_recruitment`, `foto_profile`, `nama_lengkap`, `tanggal_lahir`, `jenis_kelamin`, `jurusan`, `angkatan`, `divisi`, `cv`, `motivation_letter`, `portofolio`) VALUES
-(1, 'profile.png', 'ilham izzul hadyan', '2000-09-25', 'Male', 'Informatika', '18', 'BackEnd', 'cv.png', 'mot.png', 'ini portofolio');
+INSERT INTO `recruitment` (`id_recruitment`, `foto_profile`, `nama_lengkap`, `tanggal_lahir`, `jenis_kelamin`, `jurusan`, `angkatan`, `divisi`, `cv`, `motivation_letter`, `portofolio`, `status1`, `status2`) VALUES
+(1, 'profile.png', 'ilham izzul hadyan', '2000-09-25', 'Male', 'Informatika', '18', 'frontend', 'cv.png', 'mot.png', 'ini portofolio', 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `socials`
+-- Struktur dari tabel `socials`
 --
 
 CREATE TABLE `socials` (
@@ -167,7 +169,7 @@ CREATE TABLE `socials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `socials`
+-- Dumping data untuk tabel `socials`
 --
 
 INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
@@ -177,7 +179,7 @@ INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tools`
+-- Struktur dari tabel `tools`
 --
 
 CREATE TABLE `tools` (
@@ -187,7 +189,7 @@ CREATE TABLE `tools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tools`
+-- Dumping data untuk tabel `tools`
 --
 
 INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
@@ -199,101 +201,101 @@ INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
 --
 
 --
--- Indexes for table `achievements`
+-- Indeks untuk tabel `achievements`
 --
 ALTER TABLE `achievements`
   ADD PRIMARY KEY (`id_achievement`);
 
 --
--- Indexes for table `divisions`
+-- Indeks untuk tabel `divisions`
 --
 ALTER TABLE `divisions`
   ADD PRIMARY KEY (`id_divisi`);
 
 --
--- Indexes for table `org_structures`
+-- Indeks untuk tabel `org_structures`
 --
 ALTER TABLE `org_structures`
   ADD PRIMARY KEY (`id_org_structures`);
 
 --
--- Indexes for table `pivot_product_tools`
+-- Indeks untuk tabel `pivot_product_tools`
 --
 ALTER TABLE `pivot_product_tools`
   ADD PRIMARY KEY (`idx`);
 
 --
--- Indexes for table `products`
+-- Indeks untuk tabel `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id_products`);
 
 --
--- Indexes for table `recruitment`
+-- Indeks untuk tabel `recruitment`
 --
 ALTER TABLE `recruitment`
   ADD PRIMARY KEY (`id_recruitment`);
 
 --
--- Indexes for table `socials`
+-- Indeks untuk tabel `socials`
 --
 ALTER TABLE `socials`
   ADD PRIMARY KEY (`id_social`);
 
 --
--- Indexes for table `tools`
+-- Indeks untuk tabel `tools`
 --
 ALTER TABLE `tools`
   ADD PRIMARY KEY (`id_tools`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `achievements`
+-- AUTO_INCREMENT untuk tabel `achievements`
 --
 ALTER TABLE `achievements`
   MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `divisions`
+-- AUTO_INCREMENT untuk tabel `divisions`
 --
 ALTER TABLE `divisions`
   MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `org_structures`
+-- AUTO_INCREMENT untuk tabel `org_structures`
 --
 ALTER TABLE `org_structures`
   MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `pivot_product_tools`
+-- AUTO_INCREMENT untuk tabel `pivot_product_tools`
 --
 ALTER TABLE `pivot_product_tools`
   MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT untuk tabel `products`
 --
 ALTER TABLE `products`
   MODIFY `id_products` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `recruitment`
+-- AUTO_INCREMENT untuk tabel `recruitment`
 --
 ALTER TABLE `recruitment`
   MODIFY `id_recruitment` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `socials`
+-- AUTO_INCREMENT untuk tabel `socials`
 --
 ALTER TABLE `socials`
   MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `tools`
+-- AUTO_INCREMENT untuk tabel `tools`
 --
 ALTER TABLE `tools`
   MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;

@@ -36,15 +36,35 @@ router.get("/recruitment", (req, res) => {
     })
 })
 
-router.get("/recruitment/:id_recruitment", (req, res) =>{
+router.get("/recruitment/:id_recruitment", (req, res) => {
     Recruitment.findOne({
-        where: { id_recruitment : req.paramss.id_recruitment }
+        where: { id_recruitment : req.params.id_recruitment }
     }).then(recruitment => {
         if (!recruitment) {
             return res.json({"msg": "data not found"})
         }
         res.json({data: recruitment})
     })
+})
+
+// router.get("/reqruitment/:status1/:status2", (req, res) => {
+//     Recruitment.findAll({
+//         where: { status1 : 1 }
+//     })
+// })
+
+router.get('/requitment/:status1/:status2', (req, res) => {
+    connection.query('SELECT * FROM recuitment WHERE status1=1 AND status2=1',[req.params.status1, req.params.status2],function(error,results,fields){
+        if(error) throw error;
+        else {
+        res.json({data: recruitment})
+        // console.log(JSON.stringify(results))
+        }
+    });
+});
+
+router.put('/requitment/:status1', (req, res) => {
+    
 })
 
 

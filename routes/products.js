@@ -50,3 +50,5 @@ router.get("/products", (req, res) => {
         // res.json({resObj})
     })
 })
+
+module.exports = router
