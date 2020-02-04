@@ -36,7 +36,7 @@ router.get("/recruitment", (req, res) => {
     })
 })
 
-router.get("/recuitment/:id_recruitment", (req, res) =>{
+router.get("/recruitment/:id_recruitment", (req, res) =>{
     Recruitment.findOne({
         where: { id_recruitment : req.paramss.id_recruitment }
     }).then(recruitment => {

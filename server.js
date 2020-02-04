@@ -29,6 +29,7 @@ const recruitment = require('./routes/recruitment')
 const tools = require('./routes/tools')
 const socials = require('./routes/socials')
 const activities = require('./routes/activities')
+const products = require('./routes/products')
 
 app.use(organizations)
 app.use(achievements)
@@ -37,6 +38,7 @@ app.use(recruitment)
 app.use(tools)
 app.use(socials)
 app.use(activities)
+app.use(products)
 
 app.get('/', (req, res) => { 
 	res.send('Hello World')
