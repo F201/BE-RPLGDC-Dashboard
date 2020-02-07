@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Feb 2020 pada 14.28
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.3
+-- Generation Time: Feb 07, 2020 at 03:31 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `achievements`
+-- Table structure for table `achievements`
 --
 
 CREATE TABLE `achievements` (
@@ -39,7 +39,7 @@ CREATE TABLE `achievements` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `achievements`
+-- Dumping data for table `achievements`
 --
 
 INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan`, `tahun`, `peringkat`, `foto_achievement`) VALUES
@@ -48,7 +48,7 @@ INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `divisions`
+-- Table structure for table `divisions`
 --
 
 CREATE TABLE `divisions` (
@@ -58,7 +58,7 @@ CREATE TABLE `divisions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `divisions`
+-- Dumping data for table `divisions`
 --
 
 INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
@@ -68,7 +68,7 @@ INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `org_structures`
+-- Table structure for table `org_structures`
 --
 
 CREATE TABLE `org_structures` (
@@ -80,7 +80,7 @@ CREATE TABLE `org_structures` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `org_structures`
+-- Dumping data for table `org_structures`
 --
 
 INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `foto_org_structures`) VALUES
@@ -89,7 +89,7 @@ INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posis
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `pivot_product_tools`
+-- Table structure for table `pivot_product_tools`
 --
 
 CREATE TABLE `pivot_product_tools` (
@@ -99,17 +99,19 @@ CREATE TABLE `pivot_product_tools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `pivot_product_tools`
+-- Dumping data for table `pivot_product_tools`
 --
 
 INSERT INTO `pivot_product_tools` (`idx`, `id_tools`, `id_products`) VALUES
-(1, 1, 3),
-(2, 1, 4);
+(1, 3, 1),
+(2, 4, 1),
+(3, 4, 2),
+(4, 3, 2);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `products`
+-- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
@@ -121,16 +123,17 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `products`
+-- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`id_products`, `nama_products`, `gambar_products`, `kategori_products`, `deskripsi`) VALUES
-(1, 'hello', 'world.png', 'web', 'ini sisfo hello');
+(1, 'hello', 'world.png', 'web', 'ini sisfo hello'),
+(2, 'fhbd', 'fbdesn', 'android', 'ybfedusn');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `recruitment`
+-- Table structure for table `recruitment`
 --
 
 CREATE TABLE `recruitment` (
@@ -150,7 +153,7 @@ CREATE TABLE `recruitment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `recruitment`
+-- Dumping data for table `recruitment`
 --
 
 INSERT INTO `recruitment` (`id_recruitment`, `foto_profile`, `nama_lengkap`, `tanggal_lahir`, `jenis_kelamin`, `jurusan`, `angkatan`, `divisi`, `cv`, `motivation_letter`, `portofolio`, `status1`, `status2`) VALUES
@@ -159,7 +162,7 @@ INSERT INTO `recruitment` (`id_recruitment`, `foto_profile`, `nama_lengkap`, `ta
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `socials`
+-- Table structure for table `socials`
 --
 
 CREATE TABLE `socials` (
@@ -169,7 +172,7 @@ CREATE TABLE `socials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `socials`
+-- Dumping data for table `socials`
 --
 
 INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
@@ -179,7 +182,7 @@ INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `tools`
+-- Table structure for table `tools`
 --
 
 CREATE TABLE `tools` (
@@ -189,7 +192,7 @@ CREATE TABLE `tools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `tools`
+-- Dumping data for table `tools`
 --
 
 INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
@@ -201,101 +204,101 @@ INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
 --
 
 --
--- Indeks untuk tabel `achievements`
+-- Indexes for table `achievements`
 --
 ALTER TABLE `achievements`
   ADD PRIMARY KEY (`id_achievement`);
 
 --
--- Indeks untuk tabel `divisions`
+-- Indexes for table `divisions`
 --
 ALTER TABLE `divisions`
   ADD PRIMARY KEY (`id_divisi`);
 
 --
--- Indeks untuk tabel `org_structures`
+-- Indexes for table `org_structures`
 --
 ALTER TABLE `org_structures`
   ADD PRIMARY KEY (`id_org_structures`);
 
 --
--- Indeks untuk tabel `pivot_product_tools`
+-- Indexes for table `pivot_product_tools`
 --
 ALTER TABLE `pivot_product_tools`
   ADD PRIMARY KEY (`idx`);
 
 --
--- Indeks untuk tabel `products`
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id_products`);
 
 --
--- Indeks untuk tabel `recruitment`
+-- Indexes for table `recruitment`
 --
 ALTER TABLE `recruitment`
   ADD PRIMARY KEY (`id_recruitment`);
 
 --
--- Indeks untuk tabel `socials`
+-- Indexes for table `socials`
 --
 ALTER TABLE `socials`
   ADD PRIMARY KEY (`id_social`);
 
 --
--- Indeks untuk tabel `tools`
+-- Indexes for table `tools`
 --
 ALTER TABLE `tools`
   ADD PRIMARY KEY (`id_tools`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `achievements`
+-- AUTO_INCREMENT for table `achievements`
 --
 ALTER TABLE `achievements`
-  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `divisions`
+-- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
   MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT untuk tabel `org_structures`
+-- AUTO_INCREMENT for table `org_structures`
 --
 ALTER TABLE `org_structures`
   MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT untuk tabel `pivot_product_tools`
+-- AUTO_INCREMENT for table `pivot_product_tools`
 --
 ALTER TABLE `pivot_product_tools`
-  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT untuk tabel `products`
+-- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id_products` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_products` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `recruitment`
+-- AUTO_INCREMENT for table `recruitment`
 --
 ALTER TABLE `recruitment`
   MODIFY `id_recruitment` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `socials`
+-- AUTO_INCREMENT for table `socials`
 --
 ALTER TABLE `socials`
-  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `tools`
+-- AUTO_INCREMENT for table `tools`
 --
 ALTER TABLE `tools`
   MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
