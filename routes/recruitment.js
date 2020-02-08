@@ -59,7 +59,7 @@ router.get("/recruitment/:id_recruitment", (req, res) => {
 // })
 
 // tampilin orang yang lulus seleksi 1 dan 2
-router.get('/recruitment/:status1/:status2', (req, res) => {
+router.get('/recruitment/lulus/:status1/:status2', (req, res) => {
     connection.query("SELECT * FROM recuitment WHERE status1='1' AND status2='1';",[req.params.status1, req.params.status2], function(error, results, fields){
         if(error) throw error;
         else {
@@ -70,7 +70,7 @@ router.get('/recruitment/:status1/:status2', (req, res) => {
 });
 
 // mengubah value status1 (meluluskan seleksi1)
-router.put('/recruitment/:id_recruitment', (req, res) => {
+router.put('/recruitment/grade1/:id_recruitment', (req, res) => {
     connection.query("UPDATE recruitment SET status1='1' WHERE id_recruitment='id_recruitment;'",[req.params.id_recruitment], function(error, results, fields){
         if(error) throw error;
         else {
@@ -80,8 +80,7 @@ router.put('/recruitment/:id_recruitment', (req, res) => {
 })
 
 // mengubah status 2 menjadi lulus (value 1) yang sebelumnya telah lulus di seleksi 1
-router.put('/recruitment/:id_recruitment/:status1', (req, res) => {
-    connection.query("UPDATE recruitment SET status2='1' WHERE id_recruitment='id_recruitment'")
+router.put('/recruitment/grade2/:id_recruitment/:status1', (req, res) => {
     connection.query("UPDATE recruitment SET status2='1' WHERE id_recruitment='id_recruitment;'", [req.params.id_recruitment], function(error, results, fields){
         if(error) throw error;
         else {
@@ -91,7 +90,7 @@ router.put('/recruitment/:id_recruitment/:status1', (req, res) => {
 })
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2
-router.get('/recruitment/', (req, res) => {
+router.get('/recruitment/sumpass', (req, res) => {
     connection.query("SELECT COUNT(*) FROM recruitment;", function(error, results, fields){
         if(error) throw error;
         else {
@@ -101,7 +100,7 @@ router.get('/recruitment/', (req, res) => {
 })
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2 dimana divisi=frontend
-router.get('/recruitment/', (req, res) => {
+router.get('/recruitment/sumpass/frontend', (req, res) => {
     connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi='frontend';", function(error, results, fields){
         if(error) throw error;
         else {
@@ -110,7 +109,7 @@ router.get('/recruitment/', (req, res) => {
     })
 })
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2 dimana divisi=backend
-router.get('/recruitment/', (req, res) => {
+router.get('/recruitment/sumpass/backend', (req, res) => {
     connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi='backend';", function(error, results, fields){
         if(error) throw error;
         else {
@@ -119,7 +118,7 @@ router.get('/recruitment/', (req, res) => {
     })
 })
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2 dimana divisi=uiux
-router.get('/recruitment/', (req, res) => {
+router.get('/recruitment/sumpass/uiux', (req, res) => {
     connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi='uiux';", function(error, results, fields){
         if(error) throw error;
         else {
@@ -128,7 +127,7 @@ router.get('/recruitment/', (req, res) => {
     })
 })
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2 dimana divisi=gdc
-router.get('/recruitment/', (req, res) => {
+router.get('/recruitment/sumpass/gdc', (req, res) => {
     connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi='gdc';", function(error, results, fields){
         if(error) throw error;
         else {
@@ -137,7 +136,7 @@ router.get('/recruitment/', (req, res) => {
     })
 })
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2 dimana divisi=mobile
-router.get('/recruitment/', (req, res) => {
+router.get('/recruitment/sumpass/mobile', (req, res) => {
     connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi='mobile';", function(error, results, fields){
         if(error) throw error;
         else {
@@ -146,6 +145,50 @@ router.get('/recruitment/', (req, res) => {
     })
 })
 
-router.get('/recruitment')
+// mendapatkan data orang orang yang lulus dimana divisi=frontend
+router.get('/recruitment/datapass/frontend', (req, res) => {
+    connection.query("SELECT * FROM recruitment WHERE divisi='frontend';", function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: recruitment})
+        }
+    })
+})
+// mendapatkan data orang orang yang lulus dimana divisi=backend
+router.get('/recruitment/datapass/backend', (req, res) => {
+    connection.query("SELECT * FROM recruitment WHERE divisi='backend';", function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: recruitment})
+        }
+    })
+})
+// mendapatkan data orang orang yang lulus dimana divisi=uiux
+router.get('/recruitment/datapass/uiux', (req, res) => {
+    connection.query("SELECT * FROM recruitment WHERE divisi='uiux';", function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: recruitment})
+        }
+    })
+})
+// mendapatkan data orang orang yang lulus dimana divisi=gdc
+router.get('/recruitment/datapass/gdc', (req, res) => {
+    connection.query("SELECT * FROM recruitment WHERE divisi='gdc';", function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: recruitment})
+        }
+    })
+})
+// mendapatkan data orang orang yang lulus dimana divisi=mobile
+router.get('/recruitment/datapass/mobile', (req, res) => {
+    connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi='mobile';", function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: recruitment})
+        }
+    })
+})
 
 module.exports = router
