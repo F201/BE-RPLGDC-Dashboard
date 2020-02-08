@@ -12,6 +12,7 @@ const connection = require('../conn')
 
 var cpUpload = upload.fields([{ name: 'foto_profile', maxCount: 1 }, { name: 'cv', maxCount: 1 }, { name: 'motivation_letter', maxCount: 1 }])
 
+// post data registrasi
 router.post("/recruitment", cpUpload, (req, res) => {
     console.log(req.files['foto_profile'][0])
     Recruitment.create({
@@ -32,12 +33,14 @@ router.post("/recruitment", cpUpload, (req, res) => {
     })
 })
 
+// tampilin semua data orang yang daftar
 router.get("/recruitment", (req, res) => {
     Recruitment.findAll().then(recruitment => {
         res.json({data: recruitment})
     })
 })
 
+// tampilin data orang yang dicari berdasarkan id
 router.get("/recruitment/:id_recruitment", (req, res) => {
     Recruitment.findOne({
         where: { id_recruitment : req.params.id_recruitment }
@@ -55,6 +58,7 @@ router.get("/recruitment/:id_recruitment", (req, res) => {
 //     })
 // })
 
+// tampilin orang yang lulus seleksi 1 dan 2
 router.get('/requitment/:status1/:status2', (req, res) => {
     connection.query('SELECT * FROM recuitment WHERE status1=1 AND status2=1',[req.params.status1, req.params.status2],function(error,results,fields){
         if(error) throw error;
@@ -65,6 +69,7 @@ router.get('/requitment/:status1/:status2', (req, res) => {
     });
 });
 
+// mengubah value status1 (meluluskan seleksi1)
 router.put('/requitment/:status1', (req, res) => {
     
 })
