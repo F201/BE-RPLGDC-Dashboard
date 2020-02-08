@@ -9,83 +9,36 @@ const connection = require('../conn')
 
 router.get('/products/:id_products', (req, res) => {
     connection.query(
-        'SELECT products.id_products, nama_products, gambar_products, kategori_products, deskripsi, nama_tools, gambar_tools FROM products JOIN pivot_product_tools USING(id_products) JOIN tools USING (id_tools) WHERE products.id_products = id_products FOR JSON AUTO', req.params.id_products, (err, results, fields) => {
+        
+        'SELECT * FROM products where id_products = ?', [req.params.id_products], (err, product_results) => {
             if(err) {
                 throw err
             } else {
-                res.json({
-                    "data": results,
-                    "msg" : "GET success"
-                })
+                let data_product = {product : []}
+
+                product_results.forEach(async (element, index) => {
+                    const tools = await getToolsById(element.id_products).catch(result => {
+                        res.status(500).json(result)
+                    })
+
+                    data_product.product.push({
+                        id_products: element.id_products,
+                        nama_products: element.nama_products,
+                        gambar_products: element.gambar_products,
+                        category_products: element.category_products,
+                        deskripsi: element.deskripsi,
+                        tools: tools
+                    })
+
+                    if (product_results.length === index + 1) {
+                        res.status(200).json(data_product)
+                    }
+                });
+                //res.json(data_product);
             }
         }
     )
 })
-
-// router.get('/detail_products', (req, res) => {
-//     connection.query(
-//         'SELECT products.id_products, nama_products, gambar_products, kategori_products, deskripsi, nama_tools, gambar_tools FROM products JOIN pivot_product_tools USING(id_products) JOIN tools USING (id_tools)'
-//         , (err, results) => {
-//             if(err) {
-//                 throw err
-//             } else {
-//                 const newResult = {}
-//                 results.map(row => {
-//                     newResult[row.id_products] = {
-//                             id_products: row.id_products,
-//                             nama_products: row.nama_products,
-//                             gambar_products: row.gambar_products,
-//                             deskripsi: row.deskripsi,
-//                             tools: row.id_products.forEach(tool => {
-//                                 tool.nama_tools, tool.gambar_tools
-//                             }
-//                             )}   
-//                 });
-//                 // let data = results
-//                 // const newResult = results.map(row => {
-//                 //     return Object.assign(
-//                 //         {},
-//                 //         {
-//                 //             id_products: row.id_products,
-//                 //             nama_products: row.nama_products,
-//                 //             gambar_products: row.gambar_products,
-//                 //             deskripsi: row.deskripsi,
-//                 //             tools: row.map(tool => {
-//                 //                 return Object.assign(
-//                 //                     {},
-//                 //                     {
-//                 //                         nama_tools: tool.nama_tools,
-//                 //                         gambar_tools: tool.gambar_tools
-//                 //                     }
-//                 //                 )
-//                 //             })
-//                 //         }
-//                 //     )
-//                     // if(row.id_products) {
-//                     //     newResult[row.id_products].products.push(row.nama_tools, row.gambar_tools)
-//                     // } else {
-//                         // newResult[row.id_products] = {
-//                         //     id_products: row.id_products,
-//                         //     nama_products: row.nama_products,
-//                         //     gambar_products: row.gambar_products,
-//                         //     deskripsi: row.deskripsi,
-//                         //     tools: {
-//                         //         nama_tools: row.nama_tools,
-//                         //         gambar_tools: row.gambar_tools
-//                         //     }
-//                         // }
-//                     // }
-                    
-//                 // })
-//                 res.json({newResult})
-//                 // res.json({
-//                 //     "data": results,
-//                 //     "msg" : "GET success"
-//                 // })
-//             }
-//         }
-//     )
-// })
 
 router.get('/detail_products', (req, res) => {
     connection.query(
@@ -94,25 +47,42 @@ router.get('/detail_products', (req, res) => {
                 throw err
             } else {
                 // res.json(product_results[0].nama_products);
-                var data_product = {product : product_results}
-                for (var i=0; i < product_results.length; i++) {
-                    data_product.product[i]['tools'] = {}
-                    connection.query('SELECT nama_tools, gambar_tools FROM tools JOIN pivot_product_tools USING (id_tools) WHERE id_products = ?', [product_results[i].id_products], (error, results) => {
-                        if (error) {
-                            throw error
-                        } else {
-                            data_product.product[i].tools = results
-                            console.log(data_product)
-                            console.log(results.RowDataPacket)
-                        }
+                let data_product = {product : []}
+
+                product_results.forEach(async (element, index) => {
+                    const tools = await getToolsById(element.id_products).catch(result => {
+                        res.status(500).json(result)
                     })
-                }
-                
-                res.json(data_product);
+
+                    data_product.product.push({
+                        id_products: element.id_products,
+                        nama_products: element.nama_products,
+                        gambar_products: element.gambar_products,
+                        category_products: element.category_products,
+                        deskripsi: element.deskripsi,
+                        tools: tools
+                    })
+
+                    if (product_results.length === index + 1) {
+                        res.status(200).json(data_product)
+                    }
+                });
+                //res.json(data_product);
             }
         }
     )
 })
+const getToolsById = (id) => {
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT nama_tools, gambar_tools FROM tools JOIN pivot_product_tools USING (id_tools) WHERE id_products = ?', [id], (error, results) => {
+            if (error) {
+                return reject(error)
+            } else {
+                return resolve(results)
+            }
+        })
+    })
+}
 router.get("/products", (req, res) => {
     Products.findAll().then(product => {
         res.json({
