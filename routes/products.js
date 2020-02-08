@@ -108,6 +108,17 @@ router.get("/pivot", (req, res) => {
     })
 })
 
+router.get("/pivot/:idx", (req, res) => {
+    Pivot.findOne({
+        where: { idx : req.params.idx }
+    }).then(pivot => {
+        if (!pivot) {
+            return res.json({"msg": "data not found"})
+        }
+        res.json({data: pivot})
+    })
+})
+
 router.post('/products', upload.single('gambar_products'), (req, res) => {
     Products.create({
         nama_products : req.body.nama_products,
