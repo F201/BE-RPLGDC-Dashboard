@@ -4,7 +4,6 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const port = process.env.PORT
-
 const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204

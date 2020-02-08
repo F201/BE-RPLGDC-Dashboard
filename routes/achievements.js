@@ -22,6 +22,7 @@ router.get("/achievements/:id_achievement", (req, res) => {
 })
 
 router.post("/achievements", upload.single('foto_achievement'), (req, res) => {
+    console.log('FILE',req)
     Achievements.create({
         judul: req.body.judul,
         nama_pemenang: req.body.nama_pemenang,
