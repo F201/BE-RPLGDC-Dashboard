@@ -59,20 +59,27 @@ router.get("/recruitment/:id_recruitment", (req, res) => {
 // })
 
 // tampilin orang yang lulus seleksi 1 dan 2
-router.get('/requitment/:status1/:status2', (req, res) => {
-    connection.query('SELECT * FROM recuitment WHERE status1=1 AND status2=1',[req.params.status1, req.params.status2],function(error,results,fields){
+router.get('/recruitment/:status1/:status2', (req, res) => {
+    connection.query("SELECT * FROM recuitment WHERE status1='1' AND status2='1'",[req.params.status1, req.params.status2], function(error, results, fields){
         if(error) throw error;
         else {
-        res.json({data: recruitment})
+            res.json({data: recruitment})
         // console.log(JSON.stringify(results))
         }
     });
 });
 
 // mengubah value status1 (meluluskan seleksi1)
-router.put('/requitment/:status1', (req, res) => {
-    
+router.put('/recruitment/:id_recruitment', (req, res) => {
+    connection.query("UPDATE recruitment SET status1='1' WHERE id_recruitment='id_recruitment'",[req.params.id_recruitment], function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: recruitment})
+        }
+    })
 })
+
+// mengubah status 2 menjadi lulus (value 1) yang sebelumnya telah lulus di seleksi 1
 
 
 
