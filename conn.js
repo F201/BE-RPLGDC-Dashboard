@@ -13,3 +13,4 @@ con.connect(function (err){
 
 module.exports = con
 // ;rpl
+module.exports = con;
