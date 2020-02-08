@@ -3,13 +3,12 @@ const Products = require('../models/products')
 const Pivot = require('../models/pivot_product_tools')
 const router = express.Router()
 const upload = require('../middleware/uploadProducts')
-const request = require('request')
 const connection = require('../conn')
+const request = require('request')
 
 
-router.get('/products/:id_products', (req, res) => {
+router.get('/detail_products/:id_products', (req, res) => {
     connection.query(
-        
         'SELECT * FROM products where id_products = ?', [req.params.id_products], (err, product_results) => {
             if(err) {
                 throw err
@@ -34,7 +33,6 @@ router.get('/products/:id_products', (req, res) => {
                         res.status(200).json(data_product)
                     }
                 });
-                //res.json(data_product);
             }
         }
     )
@@ -46,7 +44,6 @@ router.get('/detail_products', (req, res) => {
             if(err) {
                 throw err
             } else {
-                // res.json(product_results[0].nama_products);
                 let data_product = {product : []}
 
                 product_results.forEach(async (element, index) => {
@@ -67,7 +64,6 @@ router.get('/detail_products', (req, res) => {
                         res.status(200).json(data_product)
                     }
                 });
-                //res.json(data_product);
             }
         }
     )
@@ -92,6 +88,37 @@ router.get("/products", (req, res) => {
     })
 })
 
+router.get("/products/:products_id", (req, res) => {
+    Products.findOne({
+        where: { id_products : req.params.products_id }
+    }).then(products => {
+        if (!products) {
+            return res.json({"msg": "data not found"})
+        }
+        res.json({data: products})
+    })
+})
+
+router.get("/pivot", (req, res) => {
+    Pivot.findAll().then(product => {
+        res.json({
+            "data": product,
+            "msg" : "GET success"
+        })
+    })
+})
+
+router.get("/pivot/:idx", (req, res) => {
+    Pivot.findOne({
+        where: { idx : req.params.idx }
+    }).then(pivot => {
+        if (!pivot) {
+            return res.json({"msg": "data not found"})
+        }
+        res.json({data: pivot})
+    })
+})
+
 router.post('/products', upload.single('gambar_products'), (req, res) => {
     Products.create({
         nama_products : req.body.nama_products,
@@ -108,12 +135,86 @@ router.post('/products', upload.single('gambar_products'), (req, res) => {
 router.post('/pivot', (req, res) => {
     Pivot.create({
         id_products : req.body.id_products,
-        id_tools : req.params.id_tools
+        id_tools : req.body.id_tools
     }).then(pivot => {
         res.json({
             "data": pivot,
             "msg" : "POST success"
         })
+    })
+})
+
+router.put("/products/:id_products", upload.single('gambar_products'), (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
+        if (err) { return console.log(err) }
+        let fs = require('fs')
+        let path = require('path')
+        let appDir = path.dirname(require.main.filename)
+        if (body.data == undefined) {
+            fs.unlink(appDir + "/public/images/products/" + req.file.filename)
+            res.json({"msg": "data not found"})
+        } else {
+            const x = {
+                nama_products: req.body.nama_products,
+                gambar_products: req.file === undefined ? "" : req.file.filename,
+                kategori_products: req.body.kategori_products,
+                deskripsi: req.body.deskripsi
+            }
+            fs.unlink(appDir + "/public/images/products/" + body.data.gambar_products, function(err) {
+                Products.update(x, {
+                    where : {
+                        id_products: req.params.id_products
+                    },
+                    returning: true,
+                    plain: true
+                }).then(affectedRow => {
+                    return Products.findOne({where: {id_products: req.params.id_products}})      
+                }).then(b => {
+                    res.json({
+                        "status": "success",
+                        "message": "data updated",
+                        "data": b
+                    })
+                })
+            })
+        }
+    })
+})
+
+router.delete("/pivot/:idx", (req, res) => {
+    // TRYING WITH NO REQUEST!!
+    // request.del(req.protocol + "://" + req.headers.host + "/pivot/" + req.params.idx, { json: true }, (err, res2, body) => {
+    //     if (body == undefined) {
+    //         res.json({msg : res2})
+    //     } else {
+            Pivot.destroy({where: {idx: req.params.idx}}).then(division => {
+                res.json({msg : "data deleted"})
+            })
+    //     }
+    // })
+})
+
+router.delete("/products/:id_products", (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
+        if (err) { return console.log(err) }
+        if (body.data == undefined) {
+            res.json({"msg": "data not found"})
+        } else {
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            fs.unlink(appDir + "/public/images/products/" + body.data.gambar_products, function(err) {
+                Products.destroy({
+                    where: {
+                        id_products: req.params.id_products
+                    }
+                }).then(menu => {
+                    res.json({
+                        "msg": "data deleted"
+                    })
+                })
+            })
+        }
     })
 })
 
