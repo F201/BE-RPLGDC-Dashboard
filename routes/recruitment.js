@@ -3,6 +3,8 @@ const Recruitment = require('../models/recruitment')
 const router  = express.Router()
 const upload  = require('../middleware/uploadRecuitment')
 const request = require('request')
+const mysql = require('mysql');
+
 const connection = require('../conn')
 // router.get("/recruitment", (req, res) => {
 //     Recruitment.
