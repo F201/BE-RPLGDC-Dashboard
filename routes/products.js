@@ -144,6 +144,31 @@ router.post('/pivot', (req, res) => {
     })
 })
 
+router.put("/pivot/:idx", (req, res) => {
+    request(req.protocol + "://" + req.headers.host + "/pivot/" + req.params.idx, { json: true }, (err, res2, body) => {
+        if (body.data == undefined) {
+            res.json({msg : "data not found"})
+        } else {
+            Pivot.update({
+                id_tools : req.body.id_tools,
+                id_products : req.body.id_products
+            }, {
+                where : { idx: req.params.idx },
+                returning : true,
+                plain : true
+            }).then(affectedRow => {
+                return Pivot.findOne({where: {idx: req.params.idx}})      
+            }).then(b => {
+                res.json({
+                    "status" : "success",
+                    "message" : "data updated",
+                    "data" : b
+                })
+            })
+        }
+    })
+})
+
 router.put("/products/:id_products", upload.single('gambar_products'), (req, res) => {
     request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
@@ -182,16 +207,15 @@ router.put("/products/:id_products", upload.single('gambar_products'), (req, res
 })
 
 router.delete("/pivot/:idx", (req, res) => {
-    // TRYING WITH NO REQUEST!!
-    // request.del(req.protocol + "://" + req.headers.host + "/pivot/" + req.params.idx, { json: true }, (err, res2, body) => {
-    //     if (body == undefined) {
-    //         res.json({msg : res2})
-    //     } else {
+    request(req.protocol + "://" + req.headers.host + "/pivot/" + req.params.idx, { json: true }, (err, res2, body) => {
+        if (body.data == undefined) {
+            res.json({msg : "data not found"})
+        } else {
             Pivot.destroy({where: {idx: req.params.idx}}).then(division => {
                 res.json({msg : "data deleted"})
             })
-    //     }
-    // })
+        }
+    })
 })
 
 router.delete("/products/:id_products", (req, res) => {
