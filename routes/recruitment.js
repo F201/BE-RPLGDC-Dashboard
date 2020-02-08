@@ -80,6 +80,9 @@ router.put('/recruitment/:id_recruitment', (req, res) => {
 })
 
 // mengubah status 2 menjadi lulus (value 1) yang sebelumnya telah lulus di seleksi 1
+router.put('/recruitment/:id_recruitment/:status1', (req, res) => {
+    connection.query("UPDATE recruitment SET status2='1' WHERE id_recruitment='id_recruitment'")
+})
 
 
 
