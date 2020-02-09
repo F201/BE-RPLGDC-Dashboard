@@ -1,8 +1,9 @@
 const express = require('express')
 const Tools = require('../models/tools')
 const router  = express.Router()
-const upload  = require('../middleware/uploadTools')
+const {fileDir, upload}  = require('../middleware/uploadTools')
 const request = require('request')
+const uploadFile = require('../middleware/uploadFile')
 
 router.get("/tools", (req, res) => {
     Tools.findAll().then(tools => {
@@ -21,10 +22,11 @@ router.get("/tools/:tools_id", (req, res) => {
     })
 })
 
-router.post("/tools", upload.single('gambar_tools'), (req, res) => {
+router.post("/tools", upload.single('gambar_tools'), async (req, res) => {
+    let fileData = await uploadFile.single(fileDir, req.file)
     Tools.create({
         nama_tools: req.body.nama_tools,
-        gambar_tools: req.file === undefined ? "" : req.file.filename
+        gambar_tools: fileData.gambar_tools === undefined ? "" : fileData.gambar_tools
     }).then(tools => {
         res.json({
             "data": tools
@@ -33,18 +35,18 @@ router.post("/tools", upload.single('gambar_tools'), (req, res) => {
 })
 
 router.put("/tools/:tools_id", upload.single('gambar_tools'), (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/tools/"+req.params.tools_id, { json: true }, (err, res2, body) => {
+    request(req.protocol+"://"+req.headers.host+"/tools/"+req.params.tools_id, { json: true }, async (err, res2, body) => {
         if (err) { return console.log(err) }
+        let fileData = await uploadFile.single(fileDir, req.file)
         let fs = require('fs')
         let path = require('path')
         let appDir = path.dirname(require.main.filename)
         if (body.data == undefined) {
-            fs.unlink(appDir + "/public/images/tools/" + req.file.filename)
             res.json({"msg": "data not found"})
         } else {
             const x = {
                 nama_tools: req.body.nama_tools,
-                gambar_tools: req.file === undefined ? "" : req.file.filename
+                gambar_tools: fileData.gambar_tools === undefined ? "" : fileData.gambar_tools
             }
             fs.unlink(appDir + "/public/images/tools/" + body.data.gambar_tools, function(err) {
                 Tools.update(x, {
