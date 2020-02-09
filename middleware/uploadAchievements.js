@@ -35,7 +35,4 @@ var upload = multer({ storage: multer.memoryStorage() })
 //   storage(file, uploadDir)
 // }
 
-module.exports = {
-  upload,
-  fileDir
-};
+module.exports = { upload, fileDir };

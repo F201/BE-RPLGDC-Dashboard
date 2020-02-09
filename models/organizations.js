@@ -9,7 +9,7 @@ const organizations = db.define('org_structures', {
     },
     'nama_org_structures': Sequelize.STRING,
     'posisi_org_structures': Sequelize.STRING,
-    'angkatan_org_structures': Sequelize.INTEGER,
+    'order_org_structures': Sequelize.INTEGER,
     'foto_org_structures': Sequelize.STRING,
 }, {
     //prevent sequelize transform table name into plural

@@ -41,7 +41,7 @@ router.post("/achievements", upload.single('foto_achievement'), async (req, res)
         jurusan: req.body.jurusan,
         tahun: req.body.tahun,
         peringkat: req.body.peringkat,
-        foto_achievement: req.file === undefined ? "" : req.file.filename
+        foto_achievement: fileData.foto_achievement === undefined ? "" : fileData.foto_achievement
     }).then(achievements => {
         res.json({
             "data": achievements
