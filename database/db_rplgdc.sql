@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2020 at 01:13 PM
+-- Generation Time: Feb 09, 2020 at 03:16 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -96,6 +96,14 @@ CREATE TABLE `activities` (
   `deskripsi` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `activities`
+--
+
+INSERT INTO `activities` (`id_activities`, `nama_activities`, `gambar_activities`, `tanggal`, `deskripsi`) VALUES
+(1, 'makrab 2.0 gan', 'https://www.dropbox.com/s/3tpu8v4r20rmc85/78b31e55d4d60ec2ed065bb6675584b5.png?dl=0', '2000-09-25', 'ini makrab cuy'),
+(3, 'makrab gan 3.0', 'https://www.dropbox.com/s/274fzdyoyrviw3n/923e244e4900b7624a808f8d8db80d72.png?dl=0', '2000-09-25', 'ini makrab cuy');
+
 -- --------------------------------------------------------
 
 --
@@ -113,7 +121,8 @@ CREATE TABLE `divisions` (
 --
 
 INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
-(1, 'UI UX', 'UI/UX');
+(1, 'UI UX', 'UI/UX'),
+(5, 'front end', 'front end developer');
 
 -- --------------------------------------------------------
 
@@ -126,7 +135,7 @@ CREATE TABLE `org_structures` (
   `nama_org_structures` varchar(100) NOT NULL,
   `posisi_org_structures` varchar(50) NOT NULL,
   `angkatan_org_structures` int(4) NOT NULL,
-  `order_org_structures` varchar(75) NOT NULL
+  `order_org_structures` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -134,8 +143,8 @@ CREATE TABLE `org_structures` (
 --
 
 INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `order_org_structures`) VALUES
-(3, 'ijul', 'back end', 2019, 'https://www.dropbox.com/s/hy4jxu6je5hu1zu/cf391c02109c0e15284eb24d855811b0.'),
-(4, 'rekim', 'front end ', 2018, 'https://www.dropbox.com/s/i2odmvyfsmzpjle/e8c227ddcf5abc4cf305febdcaf3f5e7.');
+(3, 'ijul', 'back end', 2019, 0),
+(4, 'rekim', 'front end ', 2018, 0);
 
 -- --------------------------------------------------------
 
@@ -148,6 +157,14 @@ CREATE TABLE `pivot_division_activities` (
   `id_activities` int(11) NOT NULL,
   `id_divisi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pivot_division_activities`
+--
+
+INSERT INTO `pivot_division_activities` (`idx`, `id_activities`, `id_divisi`) VALUES
+(1, 1, 1),
+(3, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -365,13 +382,13 @@ ALTER TABLE `achievements`
 -- AUTO_INCREMENT for table `activities`
 --
 ALTER TABLE `activities`
-  MODIFY `id_activities` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_activities` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `org_structures`
@@ -383,7 +400,7 @@ ALTER TABLE `org_structures`
 -- AUTO_INCREMENT for table `pivot_division_activities`
 --
 ALTER TABLE `pivot_division_activities`
-  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pivot_division_tools`

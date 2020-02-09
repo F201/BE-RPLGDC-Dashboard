@@ -1,6 +1,5 @@
 const express = require('express')
 const Products = require('../models/products')
-const Pivot = require('../models/pivot_product_tools')
 const router = express.Router()
 const { fileDir, upload } = require('../middleware/uploadProducts')
 const connection = require('../conn')
@@ -100,26 +99,6 @@ router.get("/products/:products_id", (req, res) => {
     })
 })
 
-router.get("/pivot", (req, res) => {
-    Pivot.findAll().then(product => {
-        res.json({
-            "data": product,
-            "msg" : "GET success"
-        })
-    })
-})
-
-router.get("/pivot/:idx", (req, res) => {
-    Pivot.findOne({
-        where: { idx : req.params.idx }
-    }).then(pivot => {
-        if (!pivot) {
-            return res.json({"msg": "data not found"})
-        }
-        res.json({data: pivot})
-    })
-})
-
 router.post('/products', upload.single('gambar_products'), async (req, res) => {
     let fileData = await uploadFile.single(fileDir, req.file)
     Products.create({
@@ -131,43 +110,6 @@ router.post('/products', upload.single('gambar_products'), async (req, res) => {
             "data" : products,
             "msg" : "POST success"
         })
-    })
-})
-
-router.post('/pivot', (req, res) => {
-    Pivot.create({
-        id_products : req.body.id_products,
-        id_tools : req.body.id_tools
-    }).then(pivot => {
-        res.json({
-            "data": pivot,
-            "msg" : "POST success"
-        })
-    })
-})
-
-router.put("/pivot/:idx", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/pivot/" + req.params.idx, { json: true }, (err, res2, body) => {
-        if (body.data == undefined) {
-            res.json({msg : "data not found"})
-        } else {
-            Pivot.update({
-                id_tools : req.body.id_tools,
-                id_products : req.body.id_products
-            }, {
-                where : { idx: req.params.idx },
-                returning : true,
-                plain : true
-            }).then(affectedRow => {
-                return Pivot.findOne({where: {idx: req.params.idx}})      
-            }).then(b => {
-                res.json({
-                    "status" : "success",
-                    "message" : "data updated",
-                    "data" : b
-                })
-            })
-        }
     })
 })
 
@@ -203,18 +145,6 @@ router.put("/products/:id_products", upload.single('gambar_products'), (req, res
                         "data": b
                     })
                 })
-            })
-        }
-    })
-})
-
-router.delete("/pivot/:idx", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/pivot/" + req.params.idx, { json: true }, (err, res2, body) => {
-        if (body.data == undefined) {
-            res.json({msg : "data not found"})
-        } else {
-            Pivot.destroy({where: {idx: req.params.idx}}).then(division => {
-                res.json({msg : "data deleted"})
             })
         }
     })

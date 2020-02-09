@@ -30,6 +30,9 @@ const socials = require('./routes/socials')
 const activities = require('./routes/activities')
 const products = require('./routes/products')
 
+const pivot_product_tools = require('./routes/pivot_product_tools')
+const pivot_division_activities = require('./routes/pivot_division_activities')
+
 app.use(organizations)
 app.use(achievements)
 app.use(divisions)
@@ -38,6 +41,8 @@ app.use(tools)
 app.use(socials)
 app.use(activities)
 app.use(products)
+app.use(pivot_product_tools)
+app.use(pivot_division_activities)
 
 app.get('/', (req, res) => { 
 	res.send('Hello World')
