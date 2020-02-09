@@ -48,7 +48,7 @@ const postImg = function (filePath, file) {
 const getImgUrl = (path) => {
   return dbx.sharingCreateSharedLinkWithSettings({path: path})
     .then((res) => {
-      return res.url;
+      return res.url.replace('www','dl');
     })
     .catch((err) => {
       console.log('error get link ', err);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2020 at 04:05 PM
+-- Generation Time: Feb 09, 2020 at 05:52 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -35,7 +35,7 @@ CREATE TABLE `achievements` (
   `jurusan` varchar(50) NOT NULL,
   `tahun` int(4) NOT NULL,
   `peringkat` int(3) NOT NULL,
-  `foto_achievement` varchar(75) NOT NULL
+  `foto_achievement` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -91,7 +91,7 @@ INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan
 CREATE TABLE `activities` (
   `id_activities` int(11) NOT NULL,
   `nama_activities` varchar(25) NOT NULL,
-  `gambar_activities` varchar(250) NOT NULL,
+  `gambar_activities` varchar(80) NOT NULL,
   `tanggal` date NOT NULL,
   `deskripsi` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -101,8 +101,8 @@ CREATE TABLE `activities` (
 --
 
 INSERT INTO `activities` (`id_activities`, `nama_activities`, `gambar_activities`, `tanggal`, `deskripsi`) VALUES
-(1, 'makrab 2.0 gan', 'https://www.dropbox.com/s/3tpu8v4r20rmc85/78b31e55d4d60ec2ed065bb6675584b5.png?dl=0', '2000-09-25', 'ini makrab cuy'),
-(3, 'makrab gan 3.0', 'https://www.dropbox.com/s/274fzdyoyrviw3n/923e244e4900b7624a808f8d8db80d72.png?dl=0', '2000-09-25', 'ini makrab cuy');
+(1, 'makrab 2.0 gan', 'https://www.dropbox.com/s/3tpu8v4r20rmc85/78b31e55d4d60ec2ed065bb6675584b5.png?d', '2000-09-25', 'ini makrab cuy'),
+(3, 'makrab gan 3.0', 'https://www.dropbox.com/s/274fzdyoyrviw3n/923e244e4900b7624a808f8d8db80d72.png?d', '2000-09-25', 'ini makrab cuy');
 
 -- --------------------------------------------------------
 
@@ -200,7 +200,7 @@ INSERT INTO `pivot_product_tools` (`idx`, `id_tools`, `id_products`) VALUES
 CREATE TABLE `products` (
   `id_products` int(11) NOT NULL,
   `nama_products` varchar(40) NOT NULL,
-  `gambar_products` varchar(75) NOT NULL,
+  `gambar_products` varchar(80) NOT NULL,
   `kategori_products` enum('web','android','game','UI/UX','sound') NOT NULL,
   `deskripsi` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -222,7 +222,7 @@ INSERT INTO `products` (`id_products`, `nama_products`, `gambar_products`, `kate
 
 CREATE TABLE `recruitment` (
   `id_recruitment` int(10) NOT NULL,
-  `foto_profile` varchar(200) NOT NULL,
+  `foto_profile` varchar(80) NOT NULL,
   `nama_lengkap` varchar(50) NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `jenis_kelamin` varchar(10) NOT NULL,
@@ -272,7 +272,7 @@ INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
 CREATE TABLE `tools` (
   `id_tools` int(11) NOT NULL,
   `nama_tools` varchar(20) NOT NULL,
-  `gambar_tools` varchar(75) NOT NULL
+  `gambar_tools` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
