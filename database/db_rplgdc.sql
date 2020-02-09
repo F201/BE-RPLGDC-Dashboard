@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Feb 2020 pada 16.21
--- Versi server: 10.1.38-MariaDB
--- Versi PHP: 7.3.3
+-- Generation Time: Feb 09, 2020 at 04:05 PM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -48,7 +48,29 @@ INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `divisions`
+-- Table structure for table `activities`
+--
+
+CREATE TABLE `activities` (
+  `id_activities` int(11) NOT NULL,
+  `nama_activities` varchar(25) NOT NULL,
+  `gambar_activities` varchar(250) NOT NULL,
+  `tanggal` date NOT NULL,
+  `deskripsi` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `activities`
+--
+
+INSERT INTO `activities` (`id_activities`, `nama_activities`, `gambar_activities`, `tanggal`, `deskripsi`) VALUES
+(1, 'makrab 2.0 gan', 'https://www.dropbox.com/s/3tpu8v4r20rmc85/78b31e55d4d60ec2ed065bb6675584b5.png?dl=0', '2000-09-25', 'ini makrab cuy'),
+(3, 'makrab gan 3.0', 'https://www.dropbox.com/s/274fzdyoyrviw3n/923e244e4900b7624a808f8d8db80d72.png?dl=0', '2000-09-25', 'ini makrab cuy');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `divisions`
 --
 
 CREATE TABLE `divisions` (
@@ -62,8 +84,8 @@ CREATE TABLE `divisions` (
 --
 
 INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
-(1, 'Back End', 'back-end programming'),
-(4, 'front end', 'front end developer');
+(1, 'UI UX', 'UI/UX'),
+(5, 'front end', 'front end developer');
 
 -- --------------------------------------------------------
 
@@ -75,12 +97,34 @@ CREATE TABLE `org_structures` (
   `id_org_structures` int(11) NOT NULL,
   `nama_org_structures` varchar(100) NOT NULL,
   `posisi_org_structures` varchar(50) NOT NULL,
-  `angkatan_org_structures` int(4) NOT NULL,
-  `foto_org_structures` varchar(75) NOT NULL
+  `foto_org_structures` varchar(75) NOT NULL,
+  `order_org_structures` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data untuk tabel `org_structures`
+-- Table structure for table `pivot_division_activities`
+--
+
+CREATE TABLE `pivot_division_activities` (
+  `idx` int(11) NOT NULL,
+  `id_activities` int(11) NOT NULL,
+  `id_divisi` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pivot_division_activities`
+--
+
+INSERT INTO `pivot_division_activities` (`idx`, `id_activities`, `id_divisi`) VALUES
+(1, 1, 1),
+(3, 1, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pivot_division_tools`
 --
 
 INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `foto_org_structures`) VALUES
@@ -258,19 +302,37 @@ ALTER TABLE `tools`
 -- AUTO_INCREMENT untuk tabel `achievements`
 --
 ALTER TABLE `achievements`
-  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+
+--
+-- AUTO_INCREMENT for table `activities`
+--
+ALTER TABLE `activities`
+  MODIFY `id_activities` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `org_structures`
 --
 ALTER TABLE `org_structures`
-  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `pivot_division_activities`
+--
+ALTER TABLE `pivot_division_activities`
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `pivot_division_tools`
+--
+ALTER TABLE `pivot_division_tools`
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `pivot_product_tools`

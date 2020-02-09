@@ -1,8 +1,9 @@
 const express = require('express')
 const Activities = require('../models/activities')
 const router  = express.Router()
-const upload  = require('../middleware/uploadOrg')
+const {fileDir, upload}  = require('../middleware/uploadActivities')
 const request = require('request')
+const uploadFile = require('../middleware/uploadFile')
 
 router.get("/activities", (req, res) => {
     Activities.findAll().then(activities => {
@@ -10,9 +11,9 @@ router.get("/activities", (req, res) => {
     })
 })
 
-router.get("/activities/:id_activity", (req, res) => {
+router.get("/activities/:id_activities", (req, res) => {
     Activities.findOne({
-        where: { id_activity : req.params.id_activity }
+        where: { id_activities : req.params.id_activities }
     }).then(activities => {
         if (!activities) {
             return res.json({"msg": "data not found"})
@@ -21,60 +22,59 @@ router.get("/activities/:id_activity", (req, res) => {
     })
 })
 
-// kebawah masih error (belum jadi)
+router.post("/activities", upload.single('gambar_activities'), async(req, res) => {
+    let fileData = await uploadFile.single(fileDir, req.file)
+    Activities.create({
+        nama_activities: req.body.nama_activities,
+        tanggal: req.body.tanggal,
+        deskripsi: req.body.deskripsi,
+        gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
+    }).then(activities => {
+        res.json({
+            "data": activities
+        })
+    })
+})
 
-// router.post("/activities", upload.single('foto_org_structures'), (req, res) => {
-//     Activities.create({
-//         nama_org_structures: req.body.nama_org_structures,
-//         posisi_org_structures: req.body.posisi_org_structures,
-//         angkatan_org_structures: req.body.angkatan_org_structures,
-//         foto_org_structures: req.file === undefined ? "" : req.file.filename
-//     }).then(activities => {
-//         res.json({
-//             "data": activities
-//         })
-//     })
-// })
+router.put("/activities/:id_activities", upload.single('gambar_activities'), (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, async(err, res2, body) => {
+        if (err) { return console.log(err) }
+        let fileData = await uploadFile.single(fileDir, req.file)
+        let fs = require('fs')
+        let path = require('path')
+        let appDir = path.dirname(require.main.filename)
+        if (body.data == undefined) {
+            res.json({"msg": "data not found"})
+        } else {
+            const x = {
+                nama_activities: req.body.nama_activities,
+                tanggal: req.body.tanggal,
+                deskripsi: req.body.deskripsi,
+                gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
+            }
+            fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
+                Activities.update(x, {
+                    where : {
+                        id_activities: req.params.id_activities
+                    },
+                    returning: true,
+                    plain: true
+                }).then(affectedRow => {
+                    return Activities.findOne({where: {id_activities: req.params.id_activities}})      
+                }).then(b => {
+                    res.json({
+                        "status": "success",
+                        "message": "data updated",
+                        "data": b
+                    })
+                })
+            })
+        }
+    })
+})
 
-// router.put("/activities/:org_id", upload.single('foto_org_structures'), (req, res) => {
-//     request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
-//         if (err) { return console.log(err) }
-//         let fs = require('fs')
-//         let path = require('path')
-//         let appDir = path.dirname(require.main.filename)
-//         if (body.data == undefined) {
-//             fs.unlink(appDir + "/public/images/activities/" + req.file.filename)
-//             res.json({"msg": "data not found"})
-//         } else {
-//             const x = {
-//                 nama_org_structures: req.body.nama_org_structures,
-//                 posisi_org_structures: req.body.posisi_org_structures,
-//                 angkatan_org_structures: req.body.angkatan_org_structures,
-//                 foto_org_structures: req.file === undefined ? "" : req.file.filename
-//             }
-//             fs.unlink(appDir + "/public/images/activities/" + body.data.foto_org_structures, function(err) {
-//                 Activities.update(x, {
-//                     where : {
-//                         id_org_structures: req.params.org_id
-//                     },
-//                     returning: true,
-//                     plain: true
-//                 }).then(affectedRow => {
-//                     return Activities.findOne({where: {id_org_structures: req.params.org_id}})      
-//                 }).then(b => {
-//                     res.json({
-//                         "status": "success",
-//                         "message": "data updated",
-//                         "data": b
-//                     })
-//                 })
-//             })
-//         }
-//     })
-// })
-
-router.delete("/activities/:org_id", (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
+router.delete("/activities/:id_activities", (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         if (body.data == undefined) {
             res.json({"msg": "data not found"})
@@ -82,10 +82,10 @@ router.delete("/activities/:org_id", (req, res) => {
             let fs = require('fs')
             let path = require('path')
             let appDir = path.dirname(require.main.filename)
-            fs.unlink(appDir + "/public/images/activities/" + body.data.foto_org_structures, function(err) {
+            fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
                 Activities.destroy({
                     where: {
-                        id_org_structures: req.params.org_id
+                        id_activities: req.params.id_activities
                     }
                 }).then(menu => {
                     res.json({

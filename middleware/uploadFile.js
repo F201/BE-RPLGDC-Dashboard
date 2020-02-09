@@ -39,9 +39,9 @@ const postImg = function (filePath, file) {
     .then(function(response) {
       console.log(response);
     })
-    .catch(function(error) {
-      console.log('error upload file', error);
-      postImg(filePath, file);
+    .catch(function(err) {
+      console.log('error upload file', err);
+      if (err.error.error['.tag'] !== 'invalid_access_token') postImg(filePath, file);
     });
 }
 
@@ -52,7 +52,7 @@ const getImgUrl = (path) => {
     })
     .catch((err) => {
       console.log('error get link ', err);
-      if (err.error.error['.tag'] !== 'shared_link_already_exists') getImgUrl(path);
+      if (err.error.error['.tag'] !== 'shared_link_already_exists' && err.error.error['.tag'] !== 'invalid_access_token') getImgUrl(path);
     });
 }
 module.exports = UploadFile;
