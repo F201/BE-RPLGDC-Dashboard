@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2020 at 01:07 PM
+-- Generation Time: Feb 09, 2020 at 01:13 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -91,6 +91,7 @@ INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan
 CREATE TABLE `activities` (
   `id_activities` int(11) NOT NULL,
   `nama_activities` varchar(25) NOT NULL,
+  `gambar_activities` varchar(250) NOT NULL,
   `tanggal` date NOT NULL,
   `deskripsi` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
