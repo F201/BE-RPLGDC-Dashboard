@@ -25,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `achievements`
+-- Struktur dari tabel `achievements`
 --
 
 CREATE TABLE `achievements` (
@@ -39,48 +39,11 @@ CREATE TABLE `achievements` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `achievements`
+-- Dumping data untuk tabel `achievements`
 --
 
 INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan`, `tahun`, `peringkat`, `foto_achievement`) VALUES
-(3, 'jj', 'nn', 'if', 2019, 2, 'a01f133a85bd6e651e8296597d18b6b3.png'),
-(4, '', '', '', 0, 0, ''),
-(5, '', '', '', 0, 0, ''),
-(6, '', '', '', 0, 0, ''),
-(7, '', '', '', 0, 0, ''),
-(8, '', '', '', 0, 0, ''),
-(9, 'hello world', 'john doe', 'IF', 2020, 1, 'f660547877f293b086f33c0b3f9f085d'),
-(10, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164091354'),
-(11, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164138239'),
-(12, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164232772'),
-(13, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164677693'),
-(14, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164974526'),
-(15, 'hello world', 'john doe', 'IF', 2020, 1, '3b4844a2d1a0538fa3a2856b8f811ced'),
-(16, 'hello world', 'john doe', 'IF', 2020, 1, '60cfda5eb762704214bbc1177a7a7c14'),
-(17, 'hello world', 'john doe', 'IF', 2020, 1, 'fe7b26986ca57eaddc1f80d8ca6036b9'),
-(18, 'hello world', 'john doe', 'IF', 2020, 1, '6caa1e445f61335b64e58c1f6884396e'),
-(19, 'hello world', 'john doe', 'IF', 2020, 1, '7608634b7c3f0b521f5dfd634c015b1c'),
-(20, 'hello world', 'john doe', 'IF', 2020, 1, '492bcd16b8bda4cb82cc9fb4af662d7e.jpg'),
-(21, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581165445159.jpg'),
-(22, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581165469839.jpg.jpg'),
-(23, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166348818.jpg'),
-(24, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166593774.jpg'),
-(25, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166675406.jpg'),
-(26, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166725740.jpg'),
-(27, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166736568.jpg'),
-(28, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166769542.jpg'),
-(29, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166794137.jpg'),
-(30, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166823286.jpg'),
-(31, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166857204.jpg'),
-(32, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166888254.jpg'),
-(33, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167200845.jpg'),
-(34, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167216892.jpg'),
-(35, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167428339.jpg'),
-(36, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167443762.jpg'),
-(37, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167557980.jpg'),
-(38, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581169278436.jpg'),
-(39, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581169532848.jpg'),
-(40, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581169585391.jpg');
+(3, 'jj', 'nn', 'if', 2019, 2, 'a01f133a85bd6e651e8296597d18b6b3.png');
 
 -- --------------------------------------------------------
 
@@ -117,7 +80,7 @@ CREATE TABLE `divisions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `divisions`
+-- Dumping data untuk tabel `divisions`
 --
 
 INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
@@ -127,7 +90,7 @@ INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `org_structures`
+-- Struktur dari tabel `org_structures`
 --
 
 CREATE TABLE `org_structures` (
@@ -164,16 +127,13 @@ INSERT INTO `pivot_division_activities` (`idx`, `id_activities`, `id_divisi`) VA
 -- Table structure for table `pivot_division_tools`
 --
 
-CREATE TABLE `pivot_division_tools` (
-  `idx` int(11) NOT NULL,
-  `id_divisi` int(11) NOT NULL,
-  `id_tools` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `foto_org_structures`) VALUES
+(3, 'rekim', 'front end ', 2018, 'b77c41c4721116d6d58088cf70cd10c5.png');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pivot_product_tools`
+-- Struktur dari tabel `pivot_product_tools`
 --
 
 CREATE TABLE `pivot_product_tools` (
@@ -183,18 +143,17 @@ CREATE TABLE `pivot_product_tools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `pivot_product_tools`
+-- Dumping data untuk tabel `pivot_product_tools`
 --
 
 INSERT INTO `pivot_product_tools` (`idx`, `id_tools`, `id_products`) VALUES
-(1, 3, 1),
-(2, 4, 1),
-(3, 3, 2);
+(1, 1, 3),
+(2, 1, 4);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
+-- Struktur dari tabel `products`
 --
 
 CREATE TABLE `products` (
@@ -206,23 +165,22 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `products`
+-- Dumping data untuk tabel `products`
 --
 
 INSERT INTO `products` (`id_products`, `nama_products`, `gambar_products`, `kategori_products`, `deskripsi`) VALUES
-(1, 'ini produk', 'https://www.dropbox.com/s/zo19ahpg45mfwjr/2f4e866ab97a62992754f51ce04f71d7.', '', 'ini dsfiycbnouewafncobu idjksadncv jb'),
-(2, 'fhbd', 'fbdesn', 'android', 'ybfedusn'),
-(4, 'fjldsnaikdvnc', 'https://www.dropbox.com/s/86xarv15o4a0by4/3688ff269cfb124c0ea14cfa1383494d.', 'web', 'yrhdbikfbvib  iuesfcb uijdnvcuiesnfc');
+(1, 'hello', 'world.png', 'web', 'ini sisfo hello');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `recruitment`
+-- Struktur dari tabel `recruitment`
 --
 
 CREATE TABLE `recruitment` (
   `id_recruitment` int(10) NOT NULL,
   `foto_profile` varchar(80) NOT NULL,
+  `nim` varchar(10) NOT NULL,
   `nama_lengkap` varchar(50) NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `jenis_kelamin` varchar(10) NOT NULL,
@@ -232,21 +190,22 @@ CREATE TABLE `recruitment` (
   `cv` varchar(100) NOT NULL,
   `motivation_letter` varchar(100) NOT NULL,
   `portofolio` varchar(500) NOT NULL,
-  `status1` tinyint(1) DEFAULT 0,
-  `status2` tinyint(1) NOT NULL DEFAULT 0
+  `status1` tinyint(1) NOT NULL DEFAULT '0',
+  `status2` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `recruitment`
+-- Dumping data untuk tabel `recruitment`
 --
 
-INSERT INTO `recruitment` (`id_recruitment`, `foto_profile`, `nama_lengkap`, `tanggal_lahir`, `jenis_kelamin`, `jurusan`, `angkatan`, `divisi`, `cv`, `motivation_letter`, `portofolio`, `status1`, `status2`) VALUES
-(1, 'profile.png', 'ilham izzul hadyan', '2000-09-25', 'Male', 'Informatika', '18', 'frontend', 'cv.png', 'mot.png', 'ini portofolio', 0, 0);
+INSERT INTO `recruitment` (`id_recruitment`, `foto_profile`, `nim`, `nama_lengkap`, `tanggal_lahir`, `jenis_kelamin`, `jurusan`, `angkatan`, `divisi`, `cv`, `motivation_letter`, `portofolio`, `status1`, `status2`) VALUES
+(1, 'profile.png', '', 'ilham izzul hadyan', '2000-09-25', 'Male', 'Informatika', '18', 'frontend', 'cv.png', 'mot.png', 'ini portofolio', 0, 0),
+(2, '7b78b480dfbac8d02c474b711da1a4ba.jpg', '1301174660', 'Muhammad Sulthan Angka Kurniawan', '0000-00-00', 'laki-laki', 'S1 Informatika', '2017', 'backend', '5aa439b174532047e4c9f6fa3f45177f.pdf', '6bdbcb8d74c4ab2f8c37c3245e5e4c5d.PNG', 'ini portofolio, ini juga portofolio', 1, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `socials`
+-- Struktur dari tabel `socials`
 --
 
 CREATE TABLE `socials` (
@@ -256,7 +215,7 @@ CREATE TABLE `socials` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `socials`
+-- Dumping data untuk tabel `socials`
 --
 
 INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
@@ -266,7 +225,7 @@ INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tools`
+-- Struktur dari tabel `tools`
 --
 
 CREATE TABLE `tools` (
@@ -276,96 +235,71 @@ CREATE TABLE `tools` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tools`
+-- Dumping data untuk tabel `tools`
 --
 
 INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
 (3, 'angular', 'b5b6bc9d4610277a5919557c52fd3bc7.png'),
-(4, 'angular', 'https://www.dropbox.com/s/3842zbwsdcypv02/7098a49b4fab4e8468ad6e57874ab076.'),
-(5, 'react', 'https://www.dropbox.com/s/hrjwenfsrfc07wz/9f40422bffe4909e5ea4a5e46741a1f3.');
+(4, 'react', '2ba9211b3c4a5651860bcb727981a6b0.jpg');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `achievements`
+-- Indeks untuk tabel `achievements`
 --
 ALTER TABLE `achievements`
   ADD PRIMARY KEY (`id_achievement`);
 
 --
--- Indexes for table `activities`
---
-ALTER TABLE `activities`
-  ADD PRIMARY KEY (`id_activities`);
-
---
--- Indexes for table `divisions`
+-- Indeks untuk tabel `divisions`
 --
 ALTER TABLE `divisions`
   ADD PRIMARY KEY (`id_divisi`);
 
 --
--- Indexes for table `org_structures`
+-- Indeks untuk tabel `org_structures`
 --
 ALTER TABLE `org_structures`
   ADD PRIMARY KEY (`id_org_structures`);
 
 --
--- Indexes for table `pivot_division_activities`
---
-ALTER TABLE `pivot_division_activities`
-  ADD PRIMARY KEY (`idx`),
-  ADD KEY `id_activities` (`id_activities`),
-  ADD KEY `id_divisi` (`id_divisi`);
-
---
--- Indexes for table `pivot_division_tools`
---
-ALTER TABLE `pivot_division_tools`
-  ADD PRIMARY KEY (`idx`),
-  ADD KEY `id_divisi` (`id_divisi`),
-  ADD KEY `id_tools` (`id_tools`);
-
---
--- Indexes for table `pivot_product_tools`
+-- Indeks untuk tabel `pivot_product_tools`
 --
 ALTER TABLE `pivot_product_tools`
-  ADD PRIMARY KEY (`idx`),
-  ADD KEY `id_tools` (`id_tools`),
-  ADD KEY `id_products` (`id_products`);
+  ADD PRIMARY KEY (`idx`);
 
 --
--- Indexes for table `products`
+-- Indeks untuk tabel `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id_products`);
 
 --
--- Indexes for table `recruitment`
+-- Indeks untuk tabel `recruitment`
 --
 ALTER TABLE `recruitment`
   ADD PRIMARY KEY (`id_recruitment`);
 
 --
--- Indexes for table `socials`
+-- Indeks untuk tabel `socials`
 --
 ALTER TABLE `socials`
   ADD PRIMARY KEY (`id_social`);
 
 --
--- Indexes for table `tools`
+-- Indeks untuk tabel `tools`
 --
 ALTER TABLE `tools`
   ADD PRIMARY KEY (`id_tools`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `achievements`
+-- AUTO_INCREMENT untuk tabel `achievements`
 --
 ALTER TABLE `achievements`
   MODIFY `id_achievement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
@@ -377,13 +311,13 @@ ALTER TABLE `activities`
   MODIFY `id_activities` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `divisions`
+-- AUTO_INCREMENT untuk tabel `divisions`
 --
 ALTER TABLE `divisions`
   MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `org_structures`
+-- AUTO_INCREMENT untuk tabel `org_structures`
 --
 ALTER TABLE `org_structures`
   MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
@@ -401,59 +335,34 @@ ALTER TABLE `pivot_division_tools`
   MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `pivot_product_tools`
+-- AUTO_INCREMENT untuk tabel `pivot_product_tools`
 --
 ALTER TABLE `pivot_product_tools`
-  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT untuk tabel `products`
 --
 ALTER TABLE `products`
-  MODIFY `id_products` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_products` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `recruitment`
+-- AUTO_INCREMENT untuk tabel `recruitment`
 --
 ALTER TABLE `recruitment`
-  MODIFY `id_recruitment` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_recruitment` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `socials`
+-- AUTO_INCREMENT untuk tabel `socials`
 --
 ALTER TABLE `socials`
   MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `tools`
+-- AUTO_INCREMENT untuk tabel `tools`
 --
 ALTER TABLE `tools`
-  MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `pivot_division_activities`
---
-ALTER TABLE `pivot_division_activities`
-  ADD CONSTRAINT `pivot_division_activities_ibfk_1` FOREIGN KEY (`id_divisi`) REFERENCES `divisions` (`id_divisi`) ON DELETE CASCADE,
-  ADD CONSTRAINT `pivot_division_activities_ibfk_2` FOREIGN KEY (`id_activities`) REFERENCES `activities` (`id_activities`) ON DELETE CASCADE;
-
---
--- Constraints for table `pivot_division_tools`
---
-ALTER TABLE `pivot_division_tools`
-  ADD CONSTRAINT `pivot_division_tools_ibfk_1` FOREIGN KEY (`id_tools`) REFERENCES `tools` (`id_tools`) ON DELETE CASCADE,
-  ADD CONSTRAINT `pivot_division_tools_ibfk_2` FOREIGN KEY (`id_divisi`) REFERENCES `divisions` (`id_divisi`) ON DELETE CASCADE;
-
---
--- Constraints for table `pivot_product_tools`
---
-ALTER TABLE `pivot_product_tools`
-  ADD CONSTRAINT `pivot_product_tools_ibfk_1` FOREIGN KEY (`id_products`) REFERENCES `products` (`id_products`) ON DELETE CASCADE,
-  ADD CONSTRAINT `pivot_product_tools_ibfk_2` FOREIGN KEY (`id_tools`) REFERENCES `tools` (`id_tools`) ON DELETE CASCADE;
+  MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

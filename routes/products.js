@@ -70,7 +70,7 @@ router.get('/detail_products', (req, res) => {
 })
 const getToolsById = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT nama_tools, gambar_tools FROM tools JOIN pivot_product_tools USING (id_tools) WHERE id_products = ?', [id], (error, results) => {
+        connection.query('SELECT id_tools, nama_tools, gambar_tools FROM tools JOIN pivot_product_tools USING (id_tools) WHERE id_products = ?', [id], (error, results) => {
             if (error) {
                 return reject(error)
             } else {

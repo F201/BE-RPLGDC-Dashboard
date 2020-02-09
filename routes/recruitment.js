@@ -17,6 +17,7 @@ router.post("/recruitment", cpUpload, (req, res) => {
     console.log(req.files['foto_profile'][0])
     Recruitment.create({
         foto_profile: req.files === undefined ? "" : req.files['foto_profile'][0].filename,
+        nim: req.body.nim,
         nama_lengkap: req.body.nama_lengkap,
         tanggal_lahir: req.body.tanggal_lahir,
         jenis_kelamin: req.body.jenis_kelamin,
@@ -36,16 +37,27 @@ router.post("/recruitment", cpUpload, (req, res) => {
 })
 
 // tampilin semua data orang yang daftar
-router.get("/recruitment", (req, res) => {
-    Recruitment.findAll().then(recruitment => {
-        res.json({data: recruitment})
-    })
-})
+// router.get("/recruitment", (req, res) => {
+//     Recruitment.findAll().then(recruitment => {
+//         res.json({data: recruitment})
+//     })
+// })
 
 // tampilin data orang yang dicari berdasarkan id
 router.get("/recruitment/:id_recruitment", (req, res) => {
     Recruitment.findOne({
         where: { id_recruitment : req.params.id_recruitment }
+    }).then(recruitment => {
+        if (!recruitment) {
+            return res.json({"msg": "data not found"})
+        }
+        res.json({data: recruitment})
+    })
+})
+// tampilin data orang yang dicari berdasarkan nim
+router.get("/recruitment/:nim", (req, res) => {
+    Recruitment.findOne({
+        where: { nim : req.params.nim }
     }).then(recruitment => {
         if (!recruitment) {
             return res.json({"msg": "data not found"})
@@ -62,7 +74,9 @@ router.get("/recruitment/:id_recruitment", (req, res) => {
 
 // tampilin orang yang lulus seleksi 1 dan 2
 router.get('/recruitment/lulus/:status1/:status2', (req, res) => {
-    connection.query("SELECT * FROM recuitment WHERE status1='1' AND status2='1';",[req.params.status1, req.params.status2], function(error, results, fields){
+    // var stat1 = req.params.status1
+    // var stat2 = req.params.status2
+    connection.query("SELECT * FROM recuitment WHERE status1='1' AND status2='1';", function(error, results, fields){
         if(error) throw error;
         else {
             res.json({data: recruitment})
@@ -71,13 +85,21 @@ router.get('/recruitment/lulus/:status1/:status2', (req, res) => {
     });
 });
 
+// coba select all dengan connection.query
+router.get('/recruitment', (req, res) => {
+    connection.query("SELECT * FROM recruitment", function(error, results, fields){
+        if (error) throw error;
+    })
+})
+
 // mengubah value status1 (meluluskan seleksi1)
 router.put('/recruitment/grade1/:id_recruitment', (req, res) => {
-    connection.query("UPDATE recruitment SET status1='1' WHERE id_recruitment=?",[req.params.id_recruitment], function(error, results, fields){
+    connection.query(" UPDATE recruitment SET status1 = '1' WHERE id_recruitment = ? ", [req.params.id_recruitment], function(error, results, fields){
         if(error) throw error;
         // else {
         //     res.json({data: recruitment})
         // }
+        // console.log(result.affectedRows + " record(s) updated")
     })
 })
 
