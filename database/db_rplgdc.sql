@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2020 at 03:16 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.2
+-- Generation Time: Feb 09, 2020 at 04:05 PM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -134,17 +134,9 @@ CREATE TABLE `org_structures` (
   `id_org_structures` int(11) NOT NULL,
   `nama_org_structures` varchar(100) NOT NULL,
   `posisi_org_structures` varchar(50) NOT NULL,
-  `order_org_structures` int(4) NOT NULL,
-  `foto_org_structures` varchar(75) NOT NULL
+  `foto_org_structures` varchar(75) NOT NULL,
+  `order_org_structures` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `org_structures`
---
-
-INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `angkatan_org_structures`, `order_org_structures`) VALUES
-(3, 'ijul', 'back end', 2019, 0),
-(4, 'rekim', 'front end ', 2018, 0);
 
 -- --------------------------------------------------------
 
