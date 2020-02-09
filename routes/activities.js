@@ -23,55 +23,55 @@ router.get("/activities/:id_activity", (req, res) => {
 
 // kebawah masih error (belum jadi)
 
-router.post("/activities", upload.single('foto_org_structures'), (req, res) => {
-    Activities.create({
-        nama_org_structures: req.body.nama_org_structures,
-        posisi_org_structures: req.body.posisi_org_structures,
-        angkatan_org_structures: req.body.angkatan_org_structures,
-        foto_org_structures: req.file === undefined ? "" : req.file.filename
-    }).then(activities => {
-        res.json({
-            "data": activities
-        })
-    })
-})
+// router.post("/activities", upload.single('foto_org_structures'), (req, res) => {
+//     Activities.create({
+//         nama_org_structures: req.body.nama_org_structures,
+//         posisi_org_structures: req.body.posisi_org_structures,
+//         angkatan_org_structures: req.body.angkatan_org_structures,
+//         foto_org_structures: req.file === undefined ? "" : req.file.filename
+//     }).then(activities => {
+//         res.json({
+//             "data": activities
+//         })
+//     })
+// })
 
-router.put("/activities/:org_id", upload.single('foto_org_structures'), (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
-        if (err) { return console.log(err) }
-        let fs = require('fs')
-        let path = require('path')
-        let appDir = path.dirname(require.main.filename)
-        if (body.data == undefined) {
-            fs.unlink(appDir + "/public/images/activities/" + req.file.filename)
-            res.json({"msg": "data not found"})
-        } else {
-            const x = {
-                nama_org_structures: req.body.nama_org_structures,
-                posisi_org_structures: req.body.posisi_org_structures,
-                angkatan_org_structures: req.body.angkatan_org_structures,
-                foto_org_structures: req.file === undefined ? "" : req.file.filename
-            }
-            fs.unlink(appDir + "/public/images/activities/" + body.data.foto_org_structures, function(err) {
-                Activities.update(x, {
-                    where : {
-                        id_org_structures: req.params.org_id
-                    },
-                    returning: true,
-                    plain: true
-                }).then(affectedRow => {
-                    return Activities.findOne({where: {id_org_structures: req.params.org_id}})      
-                }).then(b => {
-                    res.json({
-                        "status": "success",
-                        "message": "data updated",
-                        "data": b
-                    })
-                })
-            })
-        }
-    })
-})
+// router.put("/activities/:org_id", upload.single('foto_org_structures'), (req, res) => {
+//     request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
+//         if (err) { return console.log(err) }
+//         let fs = require('fs')
+//         let path = require('path')
+//         let appDir = path.dirname(require.main.filename)
+//         if (body.data == undefined) {
+//             fs.unlink(appDir + "/public/images/activities/" + req.file.filename)
+//             res.json({"msg": "data not found"})
+//         } else {
+//             const x = {
+//                 nama_org_structures: req.body.nama_org_structures,
+//                 posisi_org_structures: req.body.posisi_org_structures,
+//                 angkatan_org_structures: req.body.angkatan_org_structures,
+//                 foto_org_structures: req.file === undefined ? "" : req.file.filename
+//             }
+//             fs.unlink(appDir + "/public/images/activities/" + body.data.foto_org_structures, function(err) {
+//                 Activities.update(x, {
+//                     where : {
+//                         id_org_structures: req.params.org_id
+//                     },
+//                     returning: true,
+//                     plain: true
+//                 }).then(affectedRow => {
+//                     return Activities.findOne({where: {id_org_structures: req.params.org_id}})      
+//                 }).then(b => {
+//                     res.json({
+//                         "status": "success",
+//                         "message": "data updated",
+//                         "data": b
+//                     })
+//                 })
+//             })
+//         }
+//     })
+// })
 
 router.delete("/activities/:org_id", (req, res) => {
     request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {

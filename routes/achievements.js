@@ -1,8 +1,9 @@
 const express = require('express')
 const Achievements = require('../models/achievements')
 const router  = express.Router()
-const upload  = require('../middleware/uploadAchievements')
+const { fileDir, upload }  = require('../middleware/uploadAchievements')
 const request = require('request')
+const uploadFile = require('../middleware/uploadFile');
 
 router.get("/achievements", (req, res) => {
     Achievements.findAll().then(achievements => {
@@ -21,14 +22,26 @@ router.get("/achievements/:id_achievement", (req, res) => {
     })
 })
 
-router.post("/achievements", upload.single('foto_achievement'), (req, res) => {
+router.post("/achievements", upload.single('foto_achievement'), async (req, res) => {
+    // const filename = 'ajites' + '-' + Date.now() + '.' + req.file.originalname.split('.')[1]
+    // const db = new Dropbox({ accessToken: process.env.DROPBOX_APP_KEY, fetch: fetch });
+    // await db.filesUpload({path: '/public/images/achievements/' + filename, contents: req.file.buffer})
+    // await db.sharingCreateSharedLinkWithSettings({path: '/public/images/achievements/' + filename})
+    //     .then(function(response) {
+    //         console.log('link', response);
+    //       })
+    //       .catch(function(error) {
+    //         console.log(error);
+    //       });
+    let fileData = await uploadFile.single(fileDir, req.file)
+    console.log('file',fileData)
     Achievements.create({
         judul: req.body.judul,
         nama_pemenang: req.body.nama_pemenang,
         jurusan: req.body.jurusan,
         tahun: req.body.tahun,
         peringkat: req.body.peringkat,
-        foto_achievement: req.file === undefined ? "" : req.file.filename
+        foto_achievement: fileData.foto_achievement === undefined ? "" : fileData.foto_achievement
     }).then(achievements => {
         res.json({
             "data": achievements

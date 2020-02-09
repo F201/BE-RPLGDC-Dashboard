@@ -1,8 +1,9 @@
 const express = require('express')
 const Organizations = require('../models/organizations')
 const router  = express.Router()
-const upload  = require('../middleware/uploadOrg')
+const { fileDir, upload }  = require('../middleware/uploadOrg')
 const request = require('request')
+const uploadFile = require('../middleware/uploadFile')
 
 router.get("/organizations", (req, res) => {
     Organizations.findAll().then(organizations => {
@@ -21,12 +22,13 @@ router.get("/organizations/:org_id", (req, res) => {
     })
 })
 
-router.post("/organizations", upload.single('foto_org_structures'), (req, res) => {
+router.post("/organizations", upload.single('foto_org_structures'), async (req, res) => {
+    let fileData = await uploadFile.single(fileDir, req.file)
     Organizations.create({
         nama_org_structures: req.body.nama_org_structures,
         posisi_org_structures: req.body.posisi_org_structures,
-        angkatan_org_structures: req.body.angkatan_org_structures,
-        foto_org_structures: req.file === undefined ? "" : req.file.filename
+        order_org_structures: req.body.angkatan_org_structures,
+        foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
     }).then(organizations => {
         res.json({
             "data": organizations
@@ -35,20 +37,20 @@ router.post("/organizations", upload.single('foto_org_structures'), (req, res) =
 })
 
 router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, (err, res2, body) => {
+    request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, async (err, res2, body) => {
         if (err) { return console.log(err) }
+        let fileData = await uploadFile.single(fileDir, req.file)
         let fs = require('fs')
         let path = require('path')
         let appDir = path.dirname(require.main.filename)
         if (body.data == undefined) {
-            fs.unlink(appDir + "/public/images/organizations/" + req.file.filename)
             res.json({"msg": "data not found"})
         } else {
             const x = {
                 nama_org_structures: req.body.nama_org_structures,
                 posisi_org_structures: req.body.posisi_org_structures,
-                angkatan_org_structures: req.body.angkatan_org_structures,
-                foto_org_structures: req.file === undefined ? "" : req.file.filename
+                order_org_structures: req.body.angkatan_org_structures,
+                foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
             }
             fs.unlink(appDir + "/public/images/organizations/" + body.data.foto_org_structures, function(err) {
                 Organizations.update(x, {
