@@ -1,22 +1,17 @@
 const multer  = require('multer');
-// const storage = require('./uploadImage');
-const uploadDir = '/public/images/achievements/'
-const Dropbox = require('dropbox').Dropbox;
-const fetch = require('isomorphic-fetch')
+const fileDir = '/public/images/achievements/';
 
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'C:/xampp/htdocs/BE-RPLGDC-Dashboard/public/images/achievements')
-  },
-  filename: function (req, file, cb) {
-    console.log(file)
-    const db = new Dropbox({ accessToken: process.env.DROPBOX_APP_KEY, fetch: fetch });
-    db.filesUpload({path: uploadDir + file.fieldname + '-' + Date.now(), contents: file}).then(result => {console.log(result)}).catch(err => {console.log(err.error)})
-    cb(null, file.fieldname + '-' + Date.now() + '.jpg')
-  },
-})
+// var storage = multer.diskStorage({
+//   destination: uploadDir,
+//   filename: function (req, file, cb) {
+//     console.log(file)
+//     const db = new Dropbox({ accessToken: process.env.DROPBOX_APP_KEY, fetch: fetch });
+//     db.filesUpload({path: uploadDir + file.fieldname + '-' + Date.now(), contents: file}).then(result => {console.log(result)}).catch(err => {console.log(err.error)})
+//     cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+//   },
+// })
 
-var upload = multer({ storage: storage })
+var upload = multer({ storage: multer.memoryStorage() })
 
 // const store = function (file) {
 //     console.log('ini',file)
@@ -40,4 +35,7 @@ var upload = multer({ storage: storage })
 //   storage(file, uploadDir)
 // }
 
-module.exports = upload;
+module.exports = {
+  upload,
+  fileDir
+};
