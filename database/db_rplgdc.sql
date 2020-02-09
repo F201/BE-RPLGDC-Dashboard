@@ -134,8 +134,8 @@ CREATE TABLE `org_structures` (
   `id_org_structures` int(11) NOT NULL,
   `nama_org_structures` varchar(100) NOT NULL,
   `posisi_org_structures` varchar(50) NOT NULL,
-  `angkatan_org_structures` int(4) NOT NULL,
-  `order_org_structures` int(3) NOT NULL
+  `order_org_structures` int(4) NOT NULL,
+  `foto_org_structures` varchar(75) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
