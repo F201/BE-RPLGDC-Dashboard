@@ -24,7 +24,7 @@ router.get('/detail_products/:id_products', (req, res) => {
                         id_products: element.id_products,
                         nama_products: element.nama_products,
                         gambar_products: element.gambar_products,
-                        category_products: element.category_products,
+                        kategori_products: element.kategori_products,
                         deskripsi: element.deskripsi,
                         tools: tools
                     })
