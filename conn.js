@@ -21,8 +21,26 @@ function handleDisconnect() {
     console.log('db error', err);
     if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
       handleDisconnect();
-    } else {
-      throw err;
+    } else if(err.code === "PROTOCOL_ENQUEUE_AFTER_QUIT"){
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+        handleDisconnect();
+    }
+
+    //- Fatal error : connection variable must be recreated
+    else if(err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR"){
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+        handleDisconnect();
+    }
+
+    //- Error because a connection is already being established
+    else if(err.code === "PROTOCOL_ENQUEUE_HANDSHAKE_TWICE"){
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+    }
+
+    //- Anything else
+    else{
+        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+        handleDisconnect();
     }
   });
 }
