@@ -26,8 +26,9 @@ const UploadFile = {
   multi: async function (dir, file) {
     let imgData = {};
     Object.values(file).forEach(async (val) => {
-      const filepath = dir + generateFileName(val.originalname)
-      await postImg(filepath, val.buffer)
+      const filepath = dir + generateFileName(val[0].originalname)
+      console.log(filepath)
+      await postImg(filepath, val[0].buffer)
       imgData[val.fieldname] = await getImgUrl(filepath)
     })
     return imgData
