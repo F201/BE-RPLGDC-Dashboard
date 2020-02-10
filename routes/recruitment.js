@@ -14,10 +14,10 @@ var cpUpload = upload.fields([{ name: 'foto_profile', maxCount: 1 }, { name: 'cv
 
 // post data registrasi
 router.post("/recruitment/post", cpUpload, async(req, res) => {
-    console.log(req.files['foto_profile'][0])
+    // console.log(req.files['foto_profile'][0].originalname)
     let fileData = await uploadFile.multi(fileDir, req.files)
     Recruitment.create({
-        foto_profile: fileData.foto_profile === undefined ? "" : fileData.foto_profile['foto_profile'][0],
+        foto_profile: fileData.foto_profile === undefined ? "" : fileData.foto_profile,
         nim: req.body.nim,
         nama_lengkap: req.body.nama_lengkap,
         tanggal_lahir: req.body.tanggal_lahir,
@@ -92,33 +92,33 @@ router.get("/recruitment/findbynim/:nim", (req, res) => {
 })
 
 
-// router.get("/reqruitment/:status1/:status2", (req, res) => {
-//     Recruitment.findAll({
-//         where: { status1 : 1 }
-//     })
-// })
+router.get("/reqruitment/:status1/:status2", (req, res) => {
+    Recruitment.findAll({
+        where: { status1 : 1 }
+    })
+})
 
 // mengubah value status1 (meluluskan seleksi1)
-// router.put('/recruitment/grade1/:id_recruitment', (req, res) => {
-//     connection.query(" UPDATE recruitment SET status1 = '1' WHERE id_recruitment = ? ", [req.params.id_recruitment], function(error, results, fields){
-//         if(error) throw error;
-//         else {
-//             res.json({data: results})
-//         }
-//         console.log(results.affectedRows + " record(s) updated")
-//     })
-// })
+router.put('/recruitment/grade1/:id_recruitment', (req, res) => {
+    connection.query(" UPDATE recruitment SET status1 = '1' WHERE id_recruitment = ? ", [req.params.id_recruitment], function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: results})
+        }
+        console.log(results.affectedRows + " record(s) updated")
+    })
+})
 
 // mengubah value status1 (meluluskan seleksi2) yang sebelumnya telah lulus di seleksi 1
-// router.put('/recruitment/grade2/:id_recruitment', (req, res) => {
-//     connection.query("UPDATE recruitment SET status2='1' WHERE id_recruitment= ? AND status1='1'", [req.params.id_recruitment], function(error, results, fields){
-//         if(error) throw error;
-//         else {
-//             res.json({data: results})
-//         }
-//         console.log(results.affectedRows + " record(s) updated")
-//     })
-// })
+router.put('/recruitment/grade2/:id_recruitment', (req, res) => {
+    connection.query("UPDATE recruitment SET status2='1' WHERE id_recruitment= ? AND status1='1'", [req.params.id_recruitment], function(error, results, fields){
+        if(error) throw error;
+        else {
+            res.json({data: results})
+        }
+        console.log(results.affectedRows + " record(s) updated")
+    })
+})
 
 // mendapatkan total yang lulus seleksi 1 
 router.get('/recruitment/sumpass1', (req, res) => {
