@@ -43,7 +43,7 @@ router.get("/detail_activities", (req, res) => {
 
 const getDivisionById = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT id_divisi, nama_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (err, results) => {
+        connection.query('SELECT id_divisi, nama_divisi, gambar_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (err, results) => {
             if (err) {
                 return reject(err)
             } else {

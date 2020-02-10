@@ -1,19 +1,19 @@
 const Sequelize = require('sequelize'); 
 const db = require('../config/config');
 
-const divisions = db.define('divisions', {
-    'id_divisi': {
+const member_achievements = db.define('member_achievement', {
+    'id_member': {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    'nama_divisi': Sequelize.STRING,
-    'gambar_divisi' : Sequelize.STRING,
-    'deskripsi': Sequelize.STRING
+    'nama_member': Sequelize.STRING,
+    'jurusan': Sequelize.STRING,
+    'id_achievement': Sequelize.INTEGER
 }, {
     //prevent sequelize transform table name into plural
     freezeTableName: true,
     timestamps: false
 });
 
-module.exports = divisions;
+module.exports = member_achievements;
