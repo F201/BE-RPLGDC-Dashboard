@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2020 at 07:40 AM
+-- Generation Time: Feb 10, 2020 at 09:38 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -31,8 +31,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `achievements` (
   `id_achievement` int(11) NOT NULL,
   `judul` varchar(150) NOT NULL,
-  `nama_pemenang` varchar(75) NOT NULL,
-  `jurusan` varchar(50) NOT NULL,
   `tahun` int(4) NOT NULL,
   `peringkat` int(3) NOT NULL,
   `foto_achievement` varchar(80) NOT NULL
@@ -42,45 +40,39 @@ CREATE TABLE `achievements` (
 -- Dumping data for table `achievements`
 --
 
-INSERT INTO `achievements` (`id_achievement`, `judul`, `nama_pemenang`, `jurusan`, `tahun`, `peringkat`, `foto_achievement`) VALUES
-(3, 'jj', 'nn', 'if', 2019, 2, 'a01f133a85bd6e651e8296597d18b6b3.png'),
-(4, '', '', '', 0, 0, ''),
-(5, '', '', '', 0, 0, ''),
-(6, '', '', '', 0, 0, ''),
-(7, '', '', '', 0, 0, ''),
-(8, '', '', '', 0, 0, ''),
-(9, 'hello world', 'john doe', 'IF', 2020, 1, 'f660547877f293b086f33c0b3f9f085d'),
-(10, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164091354'),
-(11, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164138239'),
-(12, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164232772'),
-(13, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164677693'),
-(14, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581164974526'),
-(15, 'hello world', 'john doe', 'IF', 2020, 1, '3b4844a2d1a0538fa3a2856b8f811ced'),
-(16, 'hello world', 'john doe', 'IF', 2020, 1, '60cfda5eb762704214bbc1177a7a7c14'),
-(17, 'hello world', 'john doe', 'IF', 2020, 1, 'fe7b26986ca57eaddc1f80d8ca6036b9'),
-(18, 'hello world', 'john doe', 'IF', 2020, 1, '6caa1e445f61335b64e58c1f6884396e'),
-(19, 'hello world', 'john doe', 'IF', 2020, 1, '7608634b7c3f0b521f5dfd634c015b1c'),
-(20, 'hello world', 'john doe', 'IF', 2020, 1, '492bcd16b8bda4cb82cc9fb4af662d7e.jpg'),
-(21, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581165445159.jpg'),
-(22, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581165469839.jpg.jpg'),
-(23, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166348818.jpg'),
-(24, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166593774.jpg'),
-(25, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166675406.jpg'),
-(26, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166725740.jpg'),
-(27, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166736568.jpg'),
-(28, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166769542.jpg'),
-(29, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166794137.jpg'),
-(30, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166823286.jpg'),
-(31, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166857204.jpg'),
-(32, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581166888254.jpg'),
-(33, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167200845.jpg'),
-(34, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167216892.jpg'),
-(35, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167428339.jpg'),
-(36, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167443762.jpg'),
-(37, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581167557980.jpg'),
-(38, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581169278436.jpg'),
-(39, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581169532848.jpg'),
-(40, 'hello world', 'john doe', 'IF', 2020, 1, 'foto_achievement-1581169585391.jpg');
+INSERT INTO `achievements` (`id_achievement`, `judul`, `tahun`, `peringkat`, `foto_achievement`) VALUES
+(9, 'hello world', 2020, 1, 'f660547877f293b086f33c0b3f9f085d'),
+(10, 'hello world', 2020, 1, 'foto_achievement-1581164091354'),
+(11, 'hello world', 2020, 1, 'foto_achievement-1581164138239'),
+(12, 'hello world', 2020, 1, 'foto_achievement-1581164232772'),
+(13, 'hello world', 2020, 1, 'foto_achievement-1581164677693'),
+(14, 'hello world', 2020, 1, 'foto_achievement-1581164974526'),
+(15, 'hello world', 2020, 1, '3b4844a2d1a0538fa3a2856b8f811ced'),
+(16, 'hello world', 2020, 1, '60cfda5eb762704214bbc1177a7a7c14'),
+(17, 'hello world', 2020, 1, 'fe7b26986ca57eaddc1f80d8ca6036b9'),
+(18, 'hello world', 2020, 1, '6caa1e445f61335b64e58c1f6884396e'),
+(19, 'hello world', 2020, 1, '7608634b7c3f0b521f5dfd634c015b1c'),
+(20, 'hello world', 2020, 1, '492bcd16b8bda4cb82cc9fb4af662d7e.jpg'),
+(21, 'hello world', 2020, 1, 'foto_achievement-1581165445159.jpg'),
+(22, 'hello world', 2020, 1, 'foto_achievement-1581165469839.jpg.jpg'),
+(23, 'hello world', 2020, 1, 'foto_achievement-1581166348818.jpg'),
+(24, 'hello world', 2020, 1, 'foto_achievement-1581166593774.jpg'),
+(25, 'hello world', 2020, 1, 'foto_achievement-1581166675406.jpg'),
+(26, 'hello world', 2020, 1, 'foto_achievement-1581166725740.jpg'),
+(27, 'hello world', 2020, 1, 'foto_achievement-1581166736568.jpg'),
+(28, 'hello world', 2020, 1, 'foto_achievement-1581166769542.jpg'),
+(29, 'hello world', 2020, 1, 'foto_achievement-1581166794137.jpg'),
+(30, 'hello world', 2020, 1, 'foto_achievement-1581166823286.jpg'),
+(31, 'hello world', 2020, 1, 'foto_achievement-1581166857204.jpg'),
+(32, 'hello world', 2020, 1, 'foto_achievement-1581166888254.jpg'),
+(33, 'hello world', 2020, 1, 'foto_achievement-1581167200845.jpg'),
+(34, 'hello world', 2020, 1, 'foto_achievement-1581167216892.jpg'),
+(35, 'hello world', 2020, 1, 'foto_achievement-1581167428339.jpg'),
+(36, 'hello world', 2020, 1, 'foto_achievement-1581167443762.jpg'),
+(37, 'hello world', 2020, 1, 'foto_achievement-1581167557980.jpg'),
+(38, 'hello world', 2020, 1, 'foto_achievement-1581169278436.jpg'),
+(39, 'hello world', 2020, 1, 'foto_achievement-1581169532848.jpg'),
+(40, 'hello world', 2020, 1, 'foto_achievement-1581169585391.jpg');
 
 -- --------------------------------------------------------
 
@@ -125,6 +117,29 @@ INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `gambar_divisi`, `deskripsi
 (1, 'UIUX', 'https://dl.dropbox.com/s/kyi6k8g37jjl6d7/6c0d8f5b32566b9f2b11520926688e0d.p', 'UIUX'),
 (5, 'front end', '', 'front end developer'),
 (6, 'backend', 'https://dl.dropbox.com/s/jrrstvu3xf1kszv/b459f6a1c49bc4bc8d4bffb7aa6d637a.p', 'backend');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `member_achievement`
+--
+
+CREATE TABLE `member_achievement` (
+  `id_member` int(11) NOT NULL,
+  `nama_member` varchar(20) NOT NULL,
+  `jurusan` varchar(20) NOT NULL,
+  `id_achievement` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `member_achievement`
+--
+
+INSERT INTO `member_achievement` (`id_member`, `nama_member`, `jurusan`, `id_achievement`) VALUES
+(1, 'jeki', 'IF', 9),
+(3, 'rekim', 'IF', 10),
+(4, 'affan', 'IFIK', 11),
+(5, 'affan', 'IFIK', 10);
 
 -- --------------------------------------------------------
 
@@ -303,6 +318,13 @@ ALTER TABLE `divisions`
   ADD PRIMARY KEY (`id_divisi`);
 
 --
+-- Indexes for table `member_achievement`
+--
+ALTER TABLE `member_achievement`
+  ADD PRIMARY KEY (`id_member`),
+  ADD KEY `id_achievement` (`id_achievement`);
+
+--
 -- Indexes for table `org_structures`
 --
 ALTER TABLE `org_structures`
@@ -379,6 +401,12 @@ ALTER TABLE `divisions`
   MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `member_achievement`
+--
+ALTER TABLE `member_achievement`
+  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `org_structures`
 --
 ALTER TABLE `org_structures`
@@ -429,6 +457,12 @@ ALTER TABLE `tools`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `member_achievement`
+--
+ALTER TABLE `member_achievement`
+  ADD CONSTRAINT `member_achievement_ibfk_1` FOREIGN KEY (`id_achievement`) REFERENCES `achievements` (`id_achievement`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `pivot_division_activities`
