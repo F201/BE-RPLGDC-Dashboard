@@ -4,7 +4,7 @@ const router  = express.Router()
 const {fileDir, upload}  = require('../middleware/uploadActivities')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
-const connection = require('../conn')
+const pool = require('../conn')
 
 router.get("/activities", (req, res) => {
     Activities.findAll().then(activities => {
@@ -13,42 +13,50 @@ router.get("/activities", (req, res) => {
 })
 
 router.get("/detail_activities", (req, res) => {
-    connection.query('SELECT * FROM activities', (err, activity_results) => {
-        if (err) {
-            throw err
-        } else {
-            let data_activities = {activities : []}
-            
-            activity_results.forEach(async (data, index) => {
-                const divisions = await getDivisionById(data.id_activities).catch(result => {
-                    res.status(500).json(result)
-                })
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query('SELECT * FROM activities', (error, activity_results) => {
+            connection.release();
+            if (error) {
+                throw error
+            } else {
+                let data_activities = {activities : []}
+                
+                activity_results.forEach(async (data, index) => {
+                    const divisions = await getDivisionById(data.id_activities).catch(result => {
+                        res.status(500).json(result)
+                    })
 
-                data_activities.activities.push({
-                    id_activities: data.id_activities,
-                    nama_activities: data.nama_activities,
-                    gambar_activities: data.gambar_activities,
-                    tanggal: data.tanggal,
-                    deskripsi: data.deskripsi,
-                    divisions: divisions
-                })
+                    data_activities.activities.push({
+                        id_activities: data.id_activities,
+                        nama_activities: data.nama_activities,
+                        gambar_activities: data.gambar_activities,
+                        tanggal: data.tanggal,
+                        deskripsi: data.deskripsi,
+                        divisions: divisions
+                    })
 
-                if (activity_results.length === index + 1) {
-                    res.status(200).json(data_activities)
-                }
-            });
-        }
+                    if (activity_results.length === index + 1) {
+                        res.status(200).json(data_activities)
+                    }
+                });
+            }
+        })
     })
 })
 
 const getDivisionById = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT id_divisi, nama_divisi, gambar_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (err, results) => {
-            if (err) {
-                return reject(err)
-            } else {
-                return resolve(results)
-            }
+        pool.getConnection(function(err, connection) {
+            if (err) throw err;
+            connection.query('SELECT id_divisi, nama_divisi, gambar_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (error, results) => {
+                connection.release();
+                if (error) {
+                    return reject(error)
+                } else {
+                    return resolve(results)
+                }
+            })
         })
     })
 }

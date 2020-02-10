@@ -8,12 +8,16 @@ const connection = require('../conn')
 
 const getMembersById = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT id_member, nama_member, jurusan FROM member_achievement WHERE id_achievement = ?', [id], (error, results) => {
-            if (error) {
-                return reject(error)
-            } else {
-                return resolve(results)
-            }
+        pool.getConnection(function(err, connection) {
+            if (err) throw err;
+            connection.query('SELECT id_member, nama_member, jurusan FROM member_achievement WHERE id_achievement = ?', [id], (error, results) => {
+                connection.release();
+                if (error) {
+                    return reject(error)
+                } else {
+                    return resolve(results)
+                }
+            })
         })
     })
 }

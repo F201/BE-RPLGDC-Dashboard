@@ -5,53 +5,66 @@ const db_config = {
   password: process.env.DB_PASS,
   database: process.env.DB_NAME
 };
-var con;
 
-function handleDisconnect() {
-  console.log("\n New connection tentative...");
-  con = mysql.createConnection(db_config);
-  //- Destroy the current connection variable
-  //- Try to reconnect
-  con.connect(function (err){
-    if(err) {
-      console.log('error when connecting to db:', err);
-      setTimeout(handleDisconnect(), 2000);
-    }
-    else {
-      console.log("\n\t *** New connection established with the database. ***")
-    }
+var con = mysql.createPool(db_config);
+
+// Attempt to catch disconnects 
+con.on('connection', function (connection) {
+  console.log('DB Connection established');
+
+  connection.on('error', function (err) {
+    console.error(new Date(), 'MySQL error', err.code);
+  });
+  connection.on('close', function (err) {
+    console.error(new Date(), 'MySQL close', err);
   });
 
-  con.on('error', function(err) {
-    console.log('db error', err);
-    if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
-      handleDisconnect(con);
-    } else if(err.code === "PROTOCOL_ENQUEUE_AFTER_QUIT"){
-        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
-        handleDisconnect(con);
-    }
-  
-    //- Fatal error : connection variable must be recreated
-    else if(err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR"){
-        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
-        handleDisconnect();
-    }
-  
-    //- Error because a connection is already being established
-    else if(err.code === "PROTOCOL_ENQUEUE_HANDSHAKE_TWICE"){
-        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
-    }
-  
-    //- Anything else
-    else{
-        console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
-        handleDisconnect();
-    }
-  });
-}
-
-handleDisconnect();
+});
 
 module.exports = con;
-// ;rpl
+// function handleDisconnect() {
+//   console.log("\n New connection tentative...");
+//   con = mysql.createConnection(db_config);
+//   //- Destroy the current connection variable
+//   //- Try to reconnect
+//   con.connect(function (err){
+//     if(err) {
+//       console.log('error when connecting to db:', err);
+//       setTimeout(handleDisconnect(), 2000);
+//     }
+//     else {
+//       console.log("\n\t *** New connection established with the database. ***")
+//     }
+//   });
+
+//   con.on('error', function(err) {
+//     console.log('db error', err);
+//     if(err.code === 'PROTOCOL_CONNECTION_LOST') { 
+//       handleDisconnect(con);
+//     } else if(err.code === "PROTOCOL_ENQUEUE_AFTER_QUIT"){
+//         console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+//         handleDisconnect(con);
+//     }
+  
+//     //- Fatal error : connection variable must be recreated
+//     else if(err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR"){
+//         console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+//         handleDisconnect();
+//     }
+  
+//     //- Error because a connection is already being established
+//     else if(err.code === "PROTOCOL_ENQUEUE_HANDSHAKE_TWICE"){
+//         console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+//     }
+  
+//     //- Anything else
+//     else{
+//         console.log("/!\\ Cannot establish a connection with the database. /!\\ ("+err.code+")");
+//         handleDisconnect();
+//     }
+//   });
+// }
+
+// handleDisconnect();
+
 // module.exports = con;

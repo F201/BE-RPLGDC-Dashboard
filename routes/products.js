@@ -2,40 +2,44 @@ const express = require('express')
 const Products = require('../models/products')
 const router = express.Router()
 const { fileDir, upload } = require('../middleware/uploadProducts')
-const connection = require('../conn')
+const pool = require('../conn')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 
 
 router.get('/detail_products/:id_products', (req, res) => {
-    connection.query(
-        'SELECT * FROM products where id_products = ?', [req.params.id_products], (err, product_results) => {
-            if(err) {
-                throw err
-            } else {
-                let data_product = {product : []}
-                let tools;
-                product_results.forEach(async (element, index) => {
-                    tools = await getToolsById(element.id_products).catch(result => {
-                        res.status(500).json(result)
-                    })
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query(
+            'SELECT * FROM products where id_products = ?', [req.params.id_products], (err, product_results) => {
+                connection.release();
+                if(err) {
+                    throw err
+                } else {
+                    let data_product = {product : []}
+                    let tools;
+                    product_results.forEach(async (element, index) => {
+                        tools = await getToolsById(element.id_products).catch(result => {
+                            res.status(500).json(result)
+                        })
 
-                    data_product.product.push({
-                        id_products: element.id_products,
-                        nama_products: element.nama_products,
-                        gambar_products: element.gambar_products,
-                        kategori_products: element.kategori_products,
-                        deskripsi: element.deskripsi,
-                        tools: tools
-                    })
+                        data_product.product.push({
+                            id_products: element.id_products,
+                            nama_products: element.nama_products,
+                            gambar_products: element.gambar_products,
+                            kategori_products: element.kategori_products,
+                            deskripsi: element.deskripsi,
+                            tools: tools
+                        })
 
-                    if (product_results.length === index + 1) {
-                        res.status(200).json(data_product)
-                    }
-                });
+                        if (product_results.length === index + 1) {
+                            res.status(200).json(data_product)
+                        }
+                    });
+                }
             }
-        }
-    )
+        )
+    })
 })
 
 router.get('/detail_products', (req, res) => {
@@ -70,12 +74,16 @@ router.get('/detail_products', (req, res) => {
 })
 const getToolsById = (id) => {
     return new Promise((resolve, reject) => {
-        connection.query('SELECT idx, id_tools, nama_tools, gambar_tools FROM tools JOIN pivot_product_tools USING (id_tools) WHERE id_products = ?', [id], (error, results) => {
-            if (error) {
-                return reject(error)
-            } else {
-                return resolve(results)
-            }
+        pool.getConnection(function(err, connection) {
+            if (err) throw err;
+            connection.query('SELECT idx, id_tools, nama_tools, gambar_tools FROM tools JOIN pivot_product_tools USING (id_tools) WHERE id_products = ?', [id], (error, results) => {
+                connection.release();
+                if (error) {
+                    return reject(error)
+                } else {
+                    return resolve(results)
+                }
+            })
         })
     })
 }
