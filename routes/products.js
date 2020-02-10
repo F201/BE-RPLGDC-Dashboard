@@ -14,9 +14,9 @@ router.get('/detail_products/:id_products', (req, res) => {
                 throw err
             } else {
                 let data_product = {product : []}
-
+                let tools;
                 product_results.forEach(async (element, index) => {
-                    const tools = await getToolsById(element.id_products).catch(result => {
+                    tools = await getToolsById(element.id_products).catch(result => {
                         res.status(500).json(result)
                     })
 
