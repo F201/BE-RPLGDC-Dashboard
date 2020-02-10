@@ -1,7 +1,9 @@
 const express = require('express')
 const Divisions = require('../models/divisions')
 const router = express.Router()
+const {fileDir, upload}  = require('../middleware/uploadDivision')
 const request = require('request')
+const uploadFile = require('../middleware/uploadFile')
 const connection = require('../conn')
 
 const getToolsById = (id) => {
@@ -47,6 +49,7 @@ router.get("/detail_divisions", (req, res) => {
                 data_divisions.division.push({
                     id_divisi: data.id_activities,
                     nama_divisi: data.nama_divisi,
+                    gambar_divisi: data.gambar_divisi,
                     deskripsi: data.deskripsi,
                     tools: tools,
                     activities: activities
@@ -79,6 +82,7 @@ router.get("/detail_divisions/:id_divisi", (req, res) => {
                 data_divisions.division.push({
                     id_divisi: data.id_activities,
                     nama_divisi: data.nama_divisi,
+                    gambar_divisi: data.gambar_divisi,
                     deskripsi: data.deskripsi,
                     tools: tools,
                     activities: activities
@@ -109,34 +113,47 @@ router.get("/divisions/:id_divisi", (req, res) => {
     })
 })
 
-router.post("/divisions", (req, res) => {
+router.post("/divisions", upload.single('gambar_divisi'), async(req, res) => {
+    let fileData = await uploadFile.single(fileDir, req.file)
     Divisions.create({
         nama_divisi : req.body.nama_divisi,
+        gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
         deskripsi : req.body.deskripsi
     }).then(division => {
         res.json({data : division})
     })
 })
 
-router.put("/divisions/:id_divisi", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/divisions/" + req.params.id_divisi, { json: true }, (err, res2, body) => {
+router.put("/divisions/:id_divisi", upload.single('gambar_divisi'), (req, res) => {
+    request(req.protocol + "://" + req.headers.host + "/divisions/" + req.params.id_divisi, { json: true }, async (err, res2, body) => {
+        if (err) { return console.log(err) }
+        let fileData = await uploadFile.single(fileDir, req.file)
+        let fs = require('fs')
+        let path = require('path')
+        let appDir = path.dirname(require.main.filename)
         if (body.data == undefined) {
-            res.json({msg : "data not found"})
+            res.json({"msg": "data not found"})
         } else {
-            Divisions.update({
+            const x = {
                 nama_divisi : req.body.nama_divisi,
+                gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
                 deskripsi : req.body.deskripsi
-            }, {
-                where : { id_divisi: req.params.id_divisi },
-                returning : true,
-                plain : true
-            }).then(affectedRow => {
-                return Divisions.findOne({where: {id_divisi: req.params.id_divisi}})      
-            }).then(b => {
-                res.json({
-                    "status" : "success",
-                    "message" : "data updated",
-                    "data" : b
+            }
+            fs.unlink(appDir + "/public/images/division/" + body.data.gambar_divisi, function(err) {
+                Divisions.update(x, {
+                    where : {
+                        id_divisi: req.params.id_divisi
+                    },
+                    returning: true,
+                    plain: true
+                }).then(affectedRow => {
+                    return Divisions.findOne({where: {id_divisi: req.params.id_divisi}})      
+                }).then(b => {
+                    res.json({
+                        "status": "success",
+                        "message": "data updated",
+                        "data": b
+                    })
                 })
             })
         }

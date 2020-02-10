@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2020 at 06:28 PM
--- Server version: 10.3.15-MariaDB
--- PHP Version: 7.3.6
+-- Generation Time: Feb 10, 2020 at 07:40 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -113,6 +113,7 @@ INSERT INTO `activities` (`id_activities`, `nama_activities`, `gambar_activities
 CREATE TABLE `divisions` (
   `id_divisi` int(11) NOT NULL,
   `nama_divisi` varchar(75) NOT NULL,
+  `gambar_divisi` varchar(75) NOT NULL,
   `deskripsi` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -120,9 +121,10 @@ CREATE TABLE `divisions` (
 -- Dumping data for table `divisions`
 --
 
-INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `deskripsi`) VALUES
-(1, 'UI UX', 'UI/UX'),
-(5, 'front end', 'front end developer');
+INSERT INTO `divisions` (`id_divisi`, `nama_divisi`, `gambar_divisi`, `deskripsi`) VALUES
+(1, 'UIUX', 'https://dl.dropbox.com/s/kyi6k8g37jjl6d7/6c0d8f5b32566b9f2b11520926688e0d.p', 'UIUX'),
+(5, 'front end', '', 'front end developer'),
+(6, 'backend', 'https://dl.dropbox.com/s/jrrstvu3xf1kszv/b459f6a1c49bc4bc8d4bffb7aa6d637a.p', 'backend');
 
 -- --------------------------------------------------------
 
@@ -374,7 +376,7 @@ ALTER TABLE `activities`
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
-  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `org_structures`
