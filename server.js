@@ -32,6 +32,7 @@ const products = require('./routes/products')
 
 const pivot_product_tools = require('./routes/pivot_product_tools')
 const pivot_division_activities = require('./routes/pivot_division_activities')
+const pivot_division_tools = require('./routes/pivot_division_tools')
 
 app.use(organizations)
 app.use(achievements)
@@ -43,6 +44,7 @@ app.use(activities)
 app.use(products)
 app.use(pivot_product_tools)
 app.use(pivot_division_activities)
+app.use(pivot_division_tools)
 
 app.get('/', (req, res) => { 
 	res.send('Hello World')

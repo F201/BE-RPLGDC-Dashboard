@@ -27,7 +27,7 @@ router.post("/organizations", upload.single('foto_org_structures'), async (req, 
     Organizations.create({
         nama_org_structures: req.body.nama_org_structures,
         posisi_org_structures: req.body.posisi_org_structures,
-        order_org_structures: req.body.angkatan_org_structures,
+        order_org_structures: req.body.order_org_structures,
         foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
     }).then(organizations => {
         res.json({
