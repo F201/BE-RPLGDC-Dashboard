@@ -8,6 +8,7 @@ const recruitment = db.define('recruitment', {
         autoIncrement: true
     },
     'foto_profile': Sequelize.STRING,
+    'nim': Sequelize.STRING,
     'nama_lengkap': Sequelize.STRING,
     'tanggal_lahir': Sequelize.STRING,
     'jenis_kelamin': Sequelize.STRING,
@@ -16,7 +17,9 @@ const recruitment = db.define('recruitment', {
     'divisi': Sequelize.STRING,
     'cv': Sequelize.STRING,
     'motivation_letter': Sequelize.STRING,
-    'portofolio': Sequelize.STRING
+    'portofolio': Sequelize.STRING,
+    'status1': Sequelize.NUMBER,
+    'status2': Sequelize.NUMBER
 }, {
     //prevent sequelize transform table name into plural
     freezeTableName: true,
