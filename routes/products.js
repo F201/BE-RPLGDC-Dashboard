@@ -112,6 +112,7 @@ router.post('/products', upload.single('gambar_products'), async (req, res) => {
     Products.create({
         nama_products : req.body.nama_products,
         gambar_products : fileData.gambar_products === undefined ? "" : fileData.gambar_products,
+        kategori_products: req.body.kategori_products,
         deskripsi : req.body.deskripsi
     }).then(products => {
         res.json({
