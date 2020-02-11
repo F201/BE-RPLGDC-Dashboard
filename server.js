@@ -8,6 +8,7 @@ const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
+const authMid = require('./middleware/auth');
 
 const bodyParser = require('body-parser'); //post body handler
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // static directories
 app.use(express.static('public'));
+// app.use(authMid)
 
 // list of routes
 const organizations = require('./routes/organizations')
