@@ -131,6 +131,34 @@ router.put('/recruitment/grade2/:id_recruitment', (req, res) => {
     })
 })
 
+router.put('/recruitment/ungrade1/:id_recruitment', (req, res) => {
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query("UPDATE recruitment SET status1='0' WHERE id_recruitment= ? AND status1='1' AND status2='0'", [req.params.id_recruitment], function(error, results, fields){
+            connection.release();
+            if(error) throw error;
+            else {
+                res.json({data: results})
+            }
+            console.log(results.affectedRows + " record(s) updated")
+        })
+    })
+})
+
+router.put('/recruitment/ungrade2/:id_recruitment', (req, res) => {
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query("UPDATE recruitment SET status2='0' WHERE id_recruitment= ? AND status1='1' AND status2='1'", [req.params.id_recruitment], function(error, results, fields){
+            connection.release();
+            if(error) throw error;
+            else {
+                res.json({data: results})
+            }
+            console.log(results.affectedRows + " record(s) updated")
+        })
+    })
+})
+
 // mendapatkan total yang lulus seleksi 1 
 router.get('/recruitment/sumpass1', (req, res) => {
     pool.getConnection(function(err, connection) {
