@@ -1,5 +1,5 @@
 const multer  = require('multer');
-const fileDir = '/public/images/recruitment/';
+const fileDir = '/public/recruitment/';
 
 const upload = multer({storage: multer.memoryStorage() });
 

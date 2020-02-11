@@ -14,7 +14,7 @@ var cpUpload = upload.fields([{ name: 'foto_profile', maxCount: 1 }, { name: 'cv
 
 // post data registrasi
 router.post("/recruitment/", cpUpload, async(req, res) => {
-    let fileData = await uploadFile.multi(fileDir, req.files)
+    let fileData = await uploadFile.multi(`${fileDir}${req.body.nim}/`, req.files)
     Recruitment.create({
         foto_profile: fileData.foto_profile === undefined ? "" : fileData.foto_profile,
         nim: req.body.nim,
