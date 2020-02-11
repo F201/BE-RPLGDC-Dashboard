@@ -4,6 +4,7 @@ const router  = express.Router()
 const {fileDir, upload}  = require('../middleware/uploadRecruitment')
 const uploadFile = require('../middleware/uploadFile')
 const request = require('request')
+const jwt = require('jsonwebtoken')
 // const mysql = require('mysql');
 const pool = require('../conn')
 // router.get("/recruitment", (req, res) => {
@@ -72,13 +73,19 @@ router.get("/recruitment/", (req, res) => {
 
 // tampilin data orang yang dicari berdasarkan id
 router.get("/recruitment/detail/:id_recruitment", (req, res) => {
-    Recruitment.findOne({
-        where: { id_recruitment : req.params.id_recruitment }
-    }).then(recruitment => {
-        if (!recruitment) {
-            return res.json({"msg": "data not found"})
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            Recruitment.findOne({
+                where: { id_recruitment : req.params.id_recruitment }
+            }).then(recruitment => {
+                if (!recruitment) {
+                    return res.json({"msg": "data not found"})
+                }
+                res.json({data: recruitment})
+            })
         }
-        res.json({data: recruitment})
     })
 })
 // tampilin data orang yang dicari berdasarkan nim
@@ -103,143 +110,185 @@ router.get("/recruitment/checkstatus/:nim", (req, res) => {
 
 // mengubah value status1 (meluluskan seleksi1)
 router.put('/recruitment/grade1/:id_recruitment', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query(" UPDATE recruitment SET status1 = '1' WHERE id_recruitment = ? ", [req.params.id_recruitment], function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-            console.log(results.affectedRows + " record(s) updated")
-        })
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            pool.getConnection(function(err, connection) {
+                if (err) throw err;
+                connection.query(" UPDATE recruitment SET status1 = '1' WHERE id_recruitment = ? ", [req.params.id_recruitment], function(error, results, fields){
+                    connection.release();
+                    if(error) throw error;
+                    else {
+                        res.json({data: results})
+                    }
+                    console.log(results.affectedRows + " record(s) updated")
+                })
+            })
+        }
     })
 })
 
 // mengubah value status1 (meluluskan seleksi2) yang sebelumnya telah lulus di seleksi 1
 router.put('/recruitment/grade2/:id_recruitment', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("UPDATE recruitment SET status2='1' WHERE id_recruitment= ? AND status1='1'", [req.params.id_recruitment], function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-            console.log(results.affectedRows + " record(s) updated")
-        })
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            pool.getConnection(function(err, connection) {
+                if (err) throw err;
+                connection.query("UPDATE recruitment SET status2='1' WHERE id_recruitment= ? AND status1='1'", [req.params.id_recruitment], function(error, results, fields){
+                    connection.release();
+                    if(error) throw error;
+                    else {
+                        res.json({data: results})
+                    }
+                    console.log(results.affectedRows + " record(s) updated")
+                })
+            })
+        }
     })
 })
 
 router.put('/recruitment/ungrade1/:id_recruitment', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("UPDATE recruitment SET status1='0' WHERE id_recruitment= ? AND status1='1' AND status2='0'", [req.params.id_recruitment], function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-            console.log(results.affectedRows + " record(s) updated")
-        })
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            pool.getConnection(function(err, connection) {
+                if (err) throw err;
+                connection.query("UPDATE recruitment SET status1='0' WHERE id_recruitment= ? AND status1='1' AND status2='0'", [req.params.id_recruitment], function(error, results, fields){
+                    connection.release();
+                    if(error) throw error;
+                    else {
+                        res.json({data: results})
+                    }
+                    console.log(results.affectedRows + " record(s) updated")
+                })
+            })
+        }
     })
 })
 
 router.put('/recruitment/ungrade2/:id_recruitment', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("UPDATE recruitment SET status2='0' WHERE id_recruitment= ? AND status1='1' AND status2='1'", [req.params.id_recruitment], function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-            console.log(results.affectedRows + " record(s) updated")
-        })
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            pool.getConnection(function(err, connection) {
+                if (err) throw err;
+                connection.query("UPDATE recruitment SET status2='0' WHERE id_recruitment= ? AND status1='1' AND status2='1'", [req.params.id_recruitment], function(error, results, fields){
+                    connection.release();
+                    if(error) throw error;
+                    else {
+                        res.json({data: results})
+                    }
+                    console.log(results.affectedRows + " record(s) updated")
+                })
+            })
+        }
     })
 })
 
 // mendapatkan total yang lulus seleksi 1 
 router.get('/recruitment/sumpass1', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("SELECT COUNT(*) FROM recruitment WHERE status1='1'", function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-            console.log('hehe')
-        })
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            pool.getConnection(function(err, connection) {
+                if (err) throw err;
+                connection.query("SELECT COUNT(*) FROM recruitment WHERE status1='1'", function(error, results, fields){
+                    connection.release();
+                    if(error) throw error;
+                    else {
+                        res.json({data: results})
+                    }
+                    console.log('hehe')
+                })
+            })
+        }
     })
 })
 // mendapatkan semua data yang lulus seleksi 1
-router.get('/recruitment/datapass1', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("SELECT * FROM recruitment WHERE status1=1 ", function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-        });
-    })
-});
+// router.get('/recruitment/datapass1', (req, res) => {
+//     jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+//         if (err) {
+//             res.sendStatus(403)
+//         } else {
+//             pool.getConnection(function(err, connection) {
+//                 if (err) throw err;
+//                 connection.query("SELECT * FROM recruitment WHERE status1=1 ", function(error, results, fields){
+//                     connection.release();
+//                     if(error) throw error;
+//                     else {
+//                         res.json({data: results})
+//                     }
+//                 });
+//             })
+//         }
+//     })
+// });
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2
 router.get('/recruitment/sumpass2', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("SELECT COUNT(*) as pass_member FROM recruitment WHERE status1='1' AND status2='1'", function(error, results){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-        })
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            pool.getConnection(function(err, connection) {
+                if (err) throw err;
+                connection.query("SELECT COUNT(*) as pass_member FROM recruitment WHERE status1='1' AND status2='1'", function(error, results){
+                    connection.release();
+                    if(error) throw error;
+                    else {
+                        res.json({data: results})
+                    }
+                })
+            })
+        }
     })
 })
 // mendapatkan semua data yang lulus seleksi 1 dan seleksi 2
-router.get('/recruitment/datapass2', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("SELECT * FROM recruitment WHERE status1=1 AND status2=1", function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-        });
-    })
-});
+// router.get('/recruitment/datapass2', (req, res) => {
+//     pool.getConnection(function(err, connection) {
+//         if (err) throw err;
+//         connection.query("SELECT * FROM recruitment WHERE status1=1 AND status2=1", function(error, results, fields){
+//             connection.release();
+//             if(error) throw error;
+//             else {
+//                 res.json({data: results})
+//             }
+//         });
+//     })
+// });
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2 berdasarkan divisi
-router.get('/recruitment/sumpass2/:divisi', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi=? AND status1='1' AND status2='1'", [req.params.divisi],function(error, results, fields){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-        })
-    })
-})
+// router.get('/recruitment/sumpass2/:divisi', (req, res) => {
+//     pool.getConnection(function(err, connection) {
+//         if (err) throw err;
+//         connection.query("SELECT COUNT(*) FROM recruitment WHERE divisi=? AND status1='1' AND status2='1'", [req.params.divisi],function(error, results, fields){
+//             connection.release();
+//             if(error) throw error;
+//             else {
+//                 res.json({data: results})
+//             }
+//         })
+//     })
+// })
 
 // mendapatkan data orang orang yang lulus berdasarkan divisi
-router.get('/recruitment/datapass2/:divisi', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) throw err;
-        connection.query("SELECT * FROM recruitment WHERE divisi=? AND status1='1' AND status2='1'", [req.params.divisi], function(error, results){
-            connection.release();
-            if(error) throw error;
-            else {
-                res.json({data: results})
-            }
-        })
-    })
-})
+// router.get('/recruitment/datapass2/:divisi', (req, res) => {
+//     pool.getConnection(function(err, connection) {
+//         if (err) throw err;
+//         connection.query("SELECT * FROM recruitment WHERE divisi=? AND status1='1' AND status2='1'", [req.params.divisi], function(error, results){
+//             connection.release();
+//             if(error) throw error;
+//             else {
+//                 res.json({data: results})
+//             }
+//         })
+//     })
+// })
 
 module.exports = router
