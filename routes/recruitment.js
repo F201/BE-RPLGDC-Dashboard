@@ -94,9 +94,15 @@ router.get("/recruitment/checkstatus/:nim", (req, res) => {
         where: { nim : req.params.nim }
     }).then(recruitment => {
         if (!recruitment) {
-            return res.json({"msg": "data not found"})
+            return res.json({
+                "msg": "data not found",
+                "status": "error"
+            })
         }
-        res.json({data: (({nim, nama_lengkap, divisi}) => ({nim, nama_lengkap, divisi}))(recruitment)})
+        res.json({
+            data: (({nim, nama_lengkap, divisi}) => ({nim, nama_lengkap, divisi}))(recruitment),
+            "status": "success"
+        })
         // buat objek
     })
 })
