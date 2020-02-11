@@ -43,34 +43,38 @@ router.get('/detail_products/:id_products', (req, res) => {
 })
 
 router.get('/detail_products', (req, res) => {
-    connection.query(
-        'SELECT * FROM products', (err, product_results) => {
-            if(err) {
-                throw err
-            } else {
-                let data_product = {product : []}
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query(
+            'SELECT * FROM products', (err, product_results) => {
+                connection.release();
+                if(error) {
+                    throw error
+                } else {
+                    let data_product = {product : []}
 
-                product_results.forEach(async (element, index) => {
-                    const tools = await getToolsById(element.id_products).catch(result => {
-                        res.status(500).json(result)
-                    })
+                    product_results.forEach(async (element, index) => {
+                        const tools = await getToolsById(element.id_products).catch(result => {
+                            res.status(500).json(result)
+                        })
 
-                    data_product.product.push({
-                        id_products: element.id_products,
-                        nama_products: element.nama_products,
-                        gambar_products: element.gambar_products,
-                        category_products: element.category_products,
-                        deskripsi: element.deskripsi,
-                        tools: tools
-                    })
+                        data_product.product.push({
+                            id_products: element.id_products,
+                            nama_products: element.nama_products,
+                            gambar_products: element.gambar_products,
+                            category_products: element.category_products,
+                            deskripsi: element.deskripsi,
+                            tools: tools
+                        })
 
-                    if (product_results.length === index + 1) {
-                        res.status(200).json(data_product)
-                    }
-                });
+                        if (product_results.length === index + 1) {
+                            res.status(200).json(data_product)
+                        }
+                    });
+                }
             }
-        }
-    )
+        )
+    })
 })
 const getToolsById = (id) => {
     return new Promise((resolve, reject) => {
