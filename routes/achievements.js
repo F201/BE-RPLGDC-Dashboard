@@ -4,7 +4,7 @@ const router  = express.Router()
 const { fileDir, upload }  = require('../middleware/uploadAchievements')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
-const connection = require('../conn')
+const pool = require('../conn')
 
 const getMembersById = (id) => {
     return new Promise((resolve, reject) => {
@@ -23,60 +23,68 @@ const getMembersById = (id) => {
 }
 
 router.get("/detail_achievement", (req, res) => {
-    connection.query("SELECT * FROM achievements", (err, results) => {
-        if (err) {
-            throw err
-        } else {
-            let data_achievement = {achievement : []}
-            
-            results.forEach(async (data, index) => {
-                const members = await getMembersById(data.id_achievement).catch(result => {
-                    res.status(500).json(result)
-                })
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query("SELECT * FROM achievements", (error, results) => {
+            connection.release();
+            if (error) {
+                throw error
+            } else {
+                let data_achievement = {achievement : []}
+                
+                results.forEach(async (data, index) => {
+                    const members = await getMembersById(data.id_achievement).catch(result => {
+                        res.status(500).json(result)
+                    })
 
-                data_achievement.achievement.push({
-                    id_achievement: data.id_achievement,
-                    judul: data.judul,
-                    tahun: data.tahun,
-                    peringkat: data.peringkat,
-                    foto_achievement: data.foto_achievement,
-                    members: members
-                })
+                    data_achievement.achievement.push({
+                        id_achievement: data.id_achievement,
+                        judul: data.judul,
+                        tahun: data.tahun,
+                        peringkat: data.peringkat,
+                        foto_achievement: data.foto_achievement,
+                        members: members
+                    })
 
-                if (results.length === index + 1) {
-                    res.status(200).json(data_achievement)
-                }
-            });
-        }
+                    if (results.length === index + 1) {
+                        res.status(200).json(data_achievement)
+                    }
+                });
+            }
+        })
     })
 })
 
 router.get("/detail_achievement/:id_achievement", (req, res) => {
-    connection.query("SELECT * FROM achievements WHERE id_achievement = ?", [req.params.id_achievement], (err, results) => {
-        if (err) {
-            throw err
-        } else {
-            let data_achievement = {achievement : []}
-            
-            results.forEach(async (data, index) => {
-                const members = await getMembersById(data.id_achievement).catch(result => {
-                    res.status(500).json(result)
-                })
+    pool.getConnection(function(err, connection) {
+        if (err) throw err;
+        connection.query("SELECT * FROM achievements WHERE id_achievement = ?", [req.params.id_achievement], (error, results) => {
+            connection.release();
+            if (error) {
+                throw error
+            } else {
+                let data_achievement = {achievement : []}
+                
+                results.forEach(async (data, index) => {
+                    const members = await getMembersById(data.id_achievement).catch(result => {
+                        res.status(500).json(result)
+                    })
 
-                data_achievement.achievement.push({
-                    id_achievement: data.id_achievement,
-                    judul: data.judul,
-                    tahun: data.tahun,
-                    peringkat: data.peringkat,
-                    foto_achievement: data.foto_achievement,
-                    members: members
-                })
+                    data_achievement.achievement.push({
+                        id_achievement: data.id_achievement,
+                        judul: data.judul,
+                        tahun: data.tahun,
+                        peringkat: data.peringkat,
+                        foto_achievement: data.foto_achievement,
+                        members: members
+                    })
 
-                if (results.length === index + 1) {
-                    res.status(200).json(data_achievement)
-                }
-            });
-        }
+                    if (results.length === index + 1) {
+                        res.status(200).json(data_achievement)
+                    }
+                });
+            }
+        })
     })
 })
 
