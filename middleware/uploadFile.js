@@ -14,7 +14,13 @@ dbx.usersGetCurrentAccount()
 const generateFileName = (filename) => {
   return crypto.pseudoRandomBytes(16).toString('hex') + path.extname(filename)
 }
-  
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
 const UploadFile = {
   single: async (dir, file) => {
     let imgData = {};
@@ -23,15 +29,25 @@ const UploadFile = {
     imgData[file.fieldname] = await getImgUrl(filePath)
     return imgData
   },
-  multi: async function (dir, file) {
+  multi: async (dir, file) => {
     let imgData = {};
-    Object.values(file).forEach(async (val) => {
-      const filepath = dir + generateFileName(val[0].originalname)
-      console.log(filepath)
-      await postImg(filepath, val[0].buffer)
-      imgData[val.fieldname] = await getImgUrl(filepath)
+    let filepath = ''
+    return new Promise(async(resolve, reject) => {
+      await asyncForEach(Object.values(file), async (val) => {
+        filepath = dir + generateFileName(val[0].originalname)
+        await postImg(filepath, val[0].buffer)
+        imgData[val[0].fieldname] = await getImgUrl(filepath)
+      })
+      return resolve(imgData);
+      // Object.values(file).forEach(async (val, idx) => {
+      //   const filepath = dir + generateFileName(val[0].originalname)
+      //   console.log(filepath)
+      //   await postImg(filepath, val[0].buffer)
+      //   imgData[val.fieldname] = await getImgUrl(filepath)
+      //   console.log(idx)
+      // })
+      // return resolve(imgData);
     })
-    return imgData
   }
 }
 
