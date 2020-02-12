@@ -4,7 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const port = process.env.PORT
-// const authMid = require('./middleware/auth');
+const authMid = require('./middleware/auth');
 const corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // static directories
 app.use(express.static('public'));
 
-// app.use(authMid)
+app.use(authMid)
 // app.use(express.json())
 
 // list of routes

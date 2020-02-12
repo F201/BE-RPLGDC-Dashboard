@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken')
 const getToolsById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
-            if (err) throw err;
+            if (err) res.json({status: err});
             connection.query('SELECT tools.id_tools, nama_tools, gambar_tools FROM tools JOIN pivot_division_tools USING (id_tools) WHERE id_divisi = ?', [id], (error, results) => {
                 connection.release();
                 if (error) {
@@ -26,7 +26,7 @@ const getToolsById = (id) => {
 const getActivitiesById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
-            if (err) throw err;
+            if (err) res.json({status: err});
             connection.query('SELECT activities.id_activities, nama_activities, gambar_activities, tanggal, deskripsi FROM activities JOIN pivot_division_activities USING (id_activities) WHERE id_divisi = ?', [id], (error, results) => {
                 connection.release();
                 if (error) {
@@ -41,11 +41,11 @@ const getActivitiesById = (id) => {
 
 router.get("/detail_divisions", (req, res) => {
     pool.getConnection(function(err, connection) {
-        if (err) throw err;
+        if (err) res.json({status: err});
         connection.query('SELECT * FROM divisions', (error, division_results) => {
             connection.release();
             if (error) {
-                throw error
+                res.json({status: error})
             } else {
                 let data_divisions = {division : []}
 
@@ -78,11 +78,11 @@ router.get("/detail_divisions", (req, res) => {
 
 router.get("/detail_divisions/:id_divisi", (req, res) => {
     pool.getConnection(function(err, connection) {
-        if (err) throw err;
+        if (err) res.json({status: err});
         connection.query('SELECT * FROM divisions WHERE id_divisi = ?', [req.params.id_divisi], (error, division_results) => {
             connection.release();
             if (error) {
-                throw error
+                res.json({status: error})
             } else {
                 let data_divisions = {division : []}
 

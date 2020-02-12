@@ -15,11 +15,11 @@ router.get("/activities", (req, res) => {
 
 router.get("/detail_activities", (req, res) => {
     pool.getConnection(function(err, connection) {
-        if (err) throw err;
+        if (err) res.json({status: err});
         connection.query('SELECT * FROM activities', (error, activity_results) => {
             connection.release();
             if (error) {
-                throw error
+                res.json({status: error})
             } else {
                 let data_activities = {activities : []}
                 
@@ -49,7 +49,7 @@ router.get("/detail_activities", (req, res) => {
 const getDivisionById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
-            if (err) throw err;
+            if (err) res.json({status: err});
             connection.query('SELECT id_divisi, nama_divisi, gambar_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (error, results) => {
                 connection.release();
                 if (error) {

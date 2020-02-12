@@ -28,29 +28,28 @@ router.post("/tools", upload.single('gambar_tools'), async (req, res) => {
     if (!req.file) {
         return res.sendStatus(403)
     }
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             let fileData = await uploadFile.single(fileDir, req.file)
             Tools.create({
                 nama_tools: req.body.nama_tools,
                 gambar_tools: fileData.gambar_tools === undefined ? "" : fileData.gambar_tools
             }).then(tools => {
                 res.json({
-                    "data": tools,
-                    authData
+                    "data": tools
                 })
             })
-        }
-    })
+    //     }
+    // })
 })
 
 router.put("/tools/:tools_id", upload.single('gambar_tools'), (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             if (!req.file) {
                 request(req.protocol+"://"+req.headers.host+"/tools/"+req.params.tools_id, { json: true }, (err, res2, body) => {
                     if (err) { return console.log(err) }
@@ -72,8 +71,7 @@ router.put("/tools/:tools_id", upload.single('gambar_tools'), (req, res) => {
                             res.json({
                                 "status": "success",
                                 "message": "data updated",
-                                "data": b,
-                                authData
+                                "data": b
                             })
                         })
                     }
@@ -105,23 +103,22 @@ router.put("/tools/:tools_id", upload.single('gambar_tools'), (req, res) => {
                                 res.json({
                                     "status": "success",
                                     "message": "data updated",
-                                    "data": b,
-                                    authData
+                                    "data": b
                                 })
                             })
                         })
                     }
                 })
             }
-        }
-    })
+    //     }
+    // })
 })
 
 router.delete("/tools/:tools_id", auth, (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             request(req.protocol+"://"+req.headers.host+"/tools/"+req.params.tools_id, { json: true }, (err, res2, body) => {
                 if (err) { return console.log(err) }
                 if (body.data == undefined) {
@@ -137,15 +134,14 @@ router.delete("/tools/:tools_id", auth, (req, res) => {
                             }
                         }).then(menu => {
                             res.json({
-                                "msg": "data deleted",
-                                authData
+                                "msg": "data deleted"
                             })
                         })
                     })
                 }
             })
-        }
-    })
+    //     }
+    // })
 })
 
 module.exports = router

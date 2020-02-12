@@ -22,25 +22,25 @@ router.get("/socials/:id_social", (req, res) => {
 })
 
 router.post("/socials", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             Socials.create({
                 type : req.body.type,
                 value : req.body.value
             }).then(social => {
-                res.json({data : social, authData})
+                res.json({data : social})
             })
-        }
-    })
+    //     }
+    // })
 })
 
 router.put("/socials/:id_social", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             request(req.protocol + "://" + req.headers.host + "/socials/" + req.params.id_social, { json: true }, (err, res2, body) => {
                 if (body.data == undefined) {
                     res.json({msg : "data not found"})
@@ -58,14 +58,13 @@ router.put("/socials/:id_social", (req, res) => {
                         res.json({
                             "status" : "success",
                             "message" : "data updated",
-                            "data" : b,
-                            authData
+                            "data" : b
                         })
                     })
                 }
             })
-        }
-    })
+    //     }
+    // })
 })
 
 router.delete("/socials/:id_social", (req, res) => {

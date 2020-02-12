@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken')
 const getMembersById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
-            if (err) throw err;
+            if (err) res.json({status: err});
             connection.query('SELECT id_member, nama_member, jurusan FROM member_achievement WHERE id_achievement = ?', [id], (error, results) => {
                 connection.release();
                 if (error) {
@@ -25,11 +25,11 @@ const getMembersById = (id) => {
 
 router.get("/detail_achievement", (req, res) => {
     pool.getConnection(function(err, connection) {
-        if (err) throw err;
+        if (err) res.json({status: err});
         connection.query("SELECT * FROM achievements", (error, results) => {
             connection.release();
             if (error) {
-                throw error
+                res.json({status: error})
             } else {
                 let data_achievement = {achievement : []}
                 
@@ -58,11 +58,11 @@ router.get("/detail_achievement", (req, res) => {
 
 router.get("/detail_achievement/:id_achievement", (req, res) => {
     pool.getConnection(function(err, connection) {
-        if (err) throw err;
+        if (err) res.json({status: err});
         connection.query("SELECT * FROM achievements WHERE id_achievement = ?", [req.params.id_achievement], (error, results) => {
             connection.release();
             if (error) {
-                throw error
+                res.json({status: error})
             } else {
                 let data_achievement = {achievement : []}
                 
@@ -138,7 +138,7 @@ router.put("/achievements/:id_achievement", upload.single('foto_achievement'), (
         } else {
             if (!req.file) {
                 request(req.protocol+"://"+req.headers.host+"/achievements/"+req.params.id_achievement, { json: true }, (err, res2, body) => {
-                    if (err) { return console.log(err) }
+                    if (err) { res.json({status: err}) }
                     if (body.data == undefined) {
                         res.json({"msg": "data not found"})
                     } else {

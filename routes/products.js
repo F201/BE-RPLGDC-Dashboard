@@ -10,12 +10,12 @@ const jwt = require('jsonwebtoken')
 
 router.get('/detail_products/:id_products', (req, res) => {
     pool.getConnection(function(err, connection) {
-        if (err) throw err;
+        if (err) res.json({status: err});
         connection.query(
             'SELECT * FROM products where id_products = ?', [req.params.id_products], (err, product_results) => {
                 connection.release();
                 if(err) {
-                    throw err
+                    res.json({status: err})
                 } else {
                     let data_product = {product : []}
                     let tools;
@@ -45,12 +45,12 @@ router.get('/detail_products/:id_products', (req, res) => {
 
 router.get('/detail_products', (req, res) => {
     pool.getConnection(function(err, connection) {
-        if (err) throw err;
+        if (err) res.json({status: err});
         connection.query(
             'SELECT * FROM products', (err, product_results) => {
                 connection.release();
                 if(error) {
-                    throw error
+                    res.json({status: error})
                 } else {
                     let data_product = {product : []}
 
@@ -80,7 +80,7 @@ router.get('/detail_products', (req, res) => {
 const getToolsById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
-            if (err) throw err;
+            if (err) res.json({status: err});
             connection.query('SELECT idx, id_tools, nama_tools, gambar_tools FROM tools JOIN pivot_product_tools USING (id_tools) WHERE id_products = ?', [id], (error, results) => {
                 connection.release();
                 if (error) {
