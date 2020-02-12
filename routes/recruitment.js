@@ -41,15 +41,21 @@ router.post("/recruitment/", cpUpload, async(req, res) => {
 
 // tampilin semua data orang yang daftar
 router.get("/recruitment/", (req, res) => {
-    let whereCon= {};
-    if (req.query) {
-        whereCon['where'] = req.query
-    }
-    Recruitment.findAll(whereCon).then(recruitment => {
-        if (!recruitment) {
-            return res.json({"msg": "data not found"})
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            let whereCon= {};
+            if (req.query) {
+                whereCon['where'] = req.query
+            }
+            Recruitment.findAll(whereCon).then(recruitment => {
+                if (!recruitment) {
+                    return res.json({"msg": "data not found"})
+                }
+                res.json({data: recruitment})
+            })
         }
-        res.json({data: recruitment})
     })
 })
 // coba select all dengan connection.query
