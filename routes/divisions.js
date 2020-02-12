@@ -5,7 +5,6 @@ const {fileDir, upload}  = require('../middleware/uploadDivision')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 const pool = require('../conn')
-const jwt = require('jsonwebtoken')
 
 const getToolsById = (id) => {
     return new Promise((resolve, reject) => {

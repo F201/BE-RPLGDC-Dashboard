@@ -24,54 +24,40 @@ router.get("/pivot_product_tools/:idx", (req, res) => {
 })
 
 router.post('/pivot_product_tools', (req, res) => {
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            Pivot.create({
-                id_products : req.body.id_products,
-                id_tools : req.body.id_tools
-            }).then(pivot => {
-                res.json({
-                    "data": pivot,
-                    "msg" : "POST success",
-                    authData
-                })
-            })
-    //     }
-    // })
+    Pivot.create({
+        id_products : req.body.id_products,
+        id_tools : req.body.id_tools
+    }).then(pivot => {
+        res.json({
+            "data": pivot,
+            "msg" : "POST success"
+        })
+    })
 })
 
 router.put("/pivot_product_tools/:idx", (req, res) => {
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            request(req.protocol + "://" + req.headers.host + "/pivot_product_tools/" + req.params.idx, { json: true }, (err, res2, body) => {
-                if (body.data == undefined) {
-                    res.json({msg : "data not found"})
-                } else {
-                    Pivot.update({
-                        id_tools : req.body.id_tools,
-                        id_products : req.body.id_products
-                    }, {
-                        where : { idx: req.params.idx },
-                        returning : true,
-                        plain : true
-                    }).then(affectedRow => {
-                        return Pivot.findOne({where: {idx: req.params.idx}})      
-                    }).then(b => {
-                        res.json({
-                            "status" : "success",
-                            "message" : "data updated",
-                            "data" : b,
-                            authData
-                        })
-                    })
-                }
+    request(req.protocol + "://" + req.headers.host + "/pivot_product_tools/" + req.params.idx, { json: true }, (err, res2, body) => {
+        if (body.data == undefined) {
+            res.json({msg : "data not found"})
+        } else {
+            Pivot.update({
+                id_tools : req.body.id_tools,
+                id_products : req.body.id_products
+            }, {
+                where : { idx: req.params.idx },
+                returning : true,
+                plain : true
+            }).then(affectedRow => {
+                return Pivot.findOne({where: {idx: req.params.idx}})      
+            }).then(b => {
+                res.json({
+                    "status" : "success",
+                    "message" : "data updated",
+                    "data" : b
+                })
             })
-    //     }
-    // })
+        }
+    })
 })
 
 router.delete("/pivot_product_tools/:idx", (req, res) => {

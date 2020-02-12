@@ -4,7 +4,6 @@ const router  = express.Router()
 const { fileDir, upload }  = require('../middleware/uploadOrg')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
-const jwt = require('jsonwebtoken')
 
 router.get("/organizations", (req, res) => {
     Organizations.findAll().then(organizations => {
@@ -35,8 +34,7 @@ router.post("/organizations", upload.single('foto_org_structures'), async (req, 
         foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
     }).then(organizations => {
         res.json({
-            "data": organizations,
-            authData
+            "data": organizations
         })
     })
 })
@@ -65,8 +63,7 @@ router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req,
                     res.json({
                         "status": "success",
                         "message": "data updated",
-                        "data": b,
-                        authData
+                        "data": b
                     })
                 })
                 
@@ -101,8 +98,7 @@ router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req,
                         res.json({
                             "status": "success",
                             "message": "data updated",
-                            "data": b,
-                            authData
+                            "data": b
                         })
                     })
                 })
@@ -127,8 +123,7 @@ router.delete("/organizations/:org_id", (req, res) => {
                     }
                 }).then(menu => {
                     res.json({
-                        "msg": "data deleted",
-                        authData
+                        "msg": "data deleted"
                     })
                 })
             })

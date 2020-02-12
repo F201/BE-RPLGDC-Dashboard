@@ -1,12 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const Auth = require('../middleware/auth')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const pool = require('../conn')
 const Admin = require('../models/auth')
-
-const saltRounds = 15
 
 // router.post('/registerAdmin', (req, res) => {
 //   const username = req.body.username

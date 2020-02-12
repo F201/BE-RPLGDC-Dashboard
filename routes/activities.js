@@ -5,7 +5,6 @@ const {fileDir, upload}  = require('../middleware/uploadActivities')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 const pool = require('../conn')
-const jwt = require('jsonwebtoken')
 
 router.get("/activities", (req, res) => {
     Activities.findAll().then(activities => {

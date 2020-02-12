@@ -9,7 +9,7 @@ const achievements = db.define('achievements', {
     },
     'judul': Sequelize.STRING,
     'tahun': Sequelize.INTEGER,
-    'peringkat': Sequelize.INTEGER,
+    'peringkat': Sequelize.STRING,
     'foto_achievement': Sequelize.STRING,
 }, {
     //prevent sequelize transform table name into plural

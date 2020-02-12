@@ -2,7 +2,6 @@ const express = require('express')
 const Member = require('../models/member_achievement')
 const router = express.Router()
 const request = require('request')
-const jwt = require('jsonwebtoken')
 
 router.get("/member_achievement", (req, res) => {
     Member.findAll().then(socials => {
@@ -28,7 +27,7 @@ router.post("/member_achievement", (req, res) => {
         id_achievement : req.body.id_achievement
     }).then(member => {
         res.json({
-            data : member, authData
+            data : member
         })
     })
 })
@@ -52,8 +51,7 @@ router.put("/member_achievement/:id_member", (req, res) => {
                 res.json({
                     "status" : "success",
                     "message" : "data updated",
-                    "data" : b,
-                    authData
+                    "data" : b
                 })
             })
         }
@@ -66,7 +64,7 @@ router.delete("/member_achievement/:id_member", (req, res) => {
             res.json({msg : "data not found"})
         } else {
             Member.destroy({where: {id_member: req.params.id_member}}).then(member => {
-                res.json({msg : "data deleted", authData})
+                res.json({msg : "data deleted"})
             })
         }
     })

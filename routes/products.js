@@ -5,7 +5,6 @@ const { fileDir, upload } = require('../middleware/uploadProducts')
 const pool = require('../conn')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
-const jwt = require('jsonwebtoken')
 
 
 router.get('/detail_products/:id_products', (req, res) => {
@@ -116,131 +115,109 @@ router.post('/products', upload.single('gambar_products'), async (req, res) => {
     if (!req.file) {
         return res.sendStatus(403)
     }
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, async (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            let fileData = await uploadFile.single(fileDir, req.file)
-            Products.create({
-                nama_products : req.body.nama_products,
-                gambar_products : fileData.gambar_products === undefined ? "" : fileData.gambar_products,
-                kategori_products: req.body.kategori_products,
-                deskripsi : req.body.deskripsi
-            }).then(products => {
-                res.json({
-                    "data" : products,
-                    "msg" : "POST success",
-                    authData
-                })
-            })
-    //     }
-    // })
+    let fileData = await uploadFile.single(fileDir, req.file)
+    Products.create({
+        nama_products : req.body.nama_products,
+        gambar_products : fileData.gambar_products === undefined ? "" : fileData.gambar_products,
+        kategori_products: req.body.kategori_products,
+        deskripsi : req.body.deskripsi
+    }).then(products => {
+        res.json({
+            "data" : products,
+            "msg" : "POST success"
+        })
+    })
 })
 
 router.put("/products/:id_products", upload.single('gambar_products'), (req, res) => {
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            if (!req.file) {
-                request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
-                    if (err) { return console.log(err) }
-                    if (body.data == undefined) {
-                        res.json({"msg": "data not found"})
-                    } else {
-                        const x = {
-                            nama_products: req.body.nama_products,
-                            kategori_products: req.body.kategori_products,
-                            deskripsi: req.body.deskripsi
-                        }
-                        Products.update(x, {
-                            where : {
-                                id_products: req.params.id_products
-                            },
-                            returning: true,
-                            plain: true
-                        }).then(affectedRow => {
-                            return Products.findOne({where: {id_products: req.params.id_products}})      
-                        }).then(b => {
-                            res.json({
-                                "status": "success",
-                                "message": "data updated",
-                                "data": b,
-                                authData
-                            })
-                        })
-                    }
-                })
+    if (!req.file) {
+        request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
+            if (err) { return console.log(err) }
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
             } else {
-                request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, async (err, res2, body) => {
-                    if (err) { return console.log(err) }
-                    let fileData = await uploadFile.single(fileDir, req.file)
-                    let fs = require('fs')
-                    let path = require('path')
-                    let appDir = path.dirname(require.main.filename)
-                    if (body.data == undefined) {
-                        res.json({"msg": "data not found"})
-                    } else {
-                        const x = {
-                            nama_products: req.body.nama_products,
-                            gambar_products: fileData.gambar_products === undefined ? "" : fileData.gambar_products,
-                            kategori_products: req.body.kategori_products,
-                            deskripsi: req.body.deskripsi
-                        }
-                        fs.unlink(appDir + "/public/images/products/" + body.data.gambar_products, function(err) {
-                            Products.update(x, {
-                                where : {
-                                    id_products: req.params.id_products
-                                },
-                                returning: true,
-                                plain: true
-                            }).then(affectedRow => {
-                                return Products.findOne({where: {id_products: req.params.id_products}})      
-                            }).then(b => {
-                                res.json({
-                                    "status": "success",
-                                    "message": "data updated",
-                                    "data": b,
-                                    authData
-                                })
-                            })
-                        })
-                    }
+                const x = {
+                    nama_products: req.body.nama_products,
+                    kategori_products: req.body.kategori_products,
+                    deskripsi: req.body.deskripsi
+                }
+                Products.update(x, {
+                    where : {
+                        id_products: req.params.id_products
+                    },
+                    returning: true,
+                    plain: true
+                }).then(affectedRow => {
+                    return Products.findOne({where: {id_products: req.params.id_products}})      
+                }).then(b => {
+                    res.json({
+                        "status": "success",
+                        "message": "data updated",
+                        "data": b
+                    })
                 })
             }
-    //     }
-    // })
+        })
+    } else {
+        request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, async (err, res2, body) => {
+            if (err) { return console.log(err) }
+            let fileData = await uploadFile.single(fileDir, req.file)
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
+            } else {
+                const x = {
+                    nama_products: req.body.nama_products,
+                    gambar_products: fileData.gambar_products === undefined ? "" : fileData.gambar_products,
+                    kategori_products: req.body.kategori_products,
+                    deskripsi: req.body.deskripsi
+                }
+                fs.unlink(appDir + "/public/images/products/" + body.data.gambar_products, function(err) {
+                    Products.update(x, {
+                        where : {
+                            id_products: req.params.id_products
+                        },
+                        returning: true,
+                        plain: true
+                    }).then(affectedRow => {
+                        return Products.findOne({where: {id_products: req.params.id_products}})      
+                    }).then(b => {
+                        res.json({
+                            "status": "success",
+                            "message": "data updated",
+                            "data": b
+                        })
+                    })
+                })
+            }
+        })
+    }
 })
 
 router.delete("/products/:id_products", (req, res) => {
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
-                if (err) { return console.log(err) }
-                if (body.data == undefined) {
-                    res.json({"msg": "data not found"})
-                } else {
-                    let fs = require('fs')
-                    let path = require('path')
-                    let appDir = path.dirname(require.main.filename)
-                    fs.unlink(appDir + "/public/images/products/" + body.data.gambar_products, function(err) {
-                        Products.destroy({
-                            where: {
-                                id_products: req.params.id_products
-                            }
-                        }).then(menu => {
-                            res.json({
-                                "msg": "data deleted",
-                                authData
-                            })
-                        })
+    request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
+        if (err) { return console.log(err) }
+        if (body.data == undefined) {
+            res.json({"msg": "data not found"})
+        } else {
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            fs.unlink(appDir + "/public/images/products/" + body.data.gambar_products, function(err) {
+                Products.destroy({
+                    where: {
+                        id_products: req.params.id_products
+                    }
+                }).then(menu => {
+                    res.json({
+                        "msg": "data deleted"
                     })
-                }
+                })
             })
-    //     }
-    // })
+        }
+    })
 })
 
 module.exports = router
