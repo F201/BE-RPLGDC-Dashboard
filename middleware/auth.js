@@ -24,7 +24,6 @@ const auth = (req, res, next) =>  {
         {route: '/tools', method: "GET", withId: true},
         {route: '/socials', method: "GET", withId: true},
         {route: '/auth', method: "POST"},
-        {route: '/auth/details', method: "GET"},
         {route: '/activities', method: "GET", withId: true},
         {route: '/detail_activities', method: "GET"},
         {route: '/detail_products', method: "GET", withId: true},
@@ -47,7 +46,10 @@ const auth = (req, res, next) =>  {
             // console.log(bearToken.replace('Bearer ', ''))
             jwt.verify(bearToken.replace('Bearer ', ''), process.env.JWT_AUTH_CODE, (err, decoded) => {
                 if(err) {
-                    return res.json(err)
+                    return res.json({
+                        msg: "jwt expired",
+                        status: "error"
+                    })
                 } else {
                     // token is valid
                     // next() means that the request will be passed to route
