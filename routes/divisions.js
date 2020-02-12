@@ -5,6 +5,7 @@ const {fileDir, upload}  = require('../middleware/uploadDivision')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 const pool = require('../conn')
+const jwt = require('jsonwebtoken')
 
 const getToolsById = (id) => {
     return new Promise((resolve, reject) => {
@@ -130,13 +131,22 @@ router.get("/divisions/:id_divisi", (req, res) => {
 })
 
 router.post("/divisions", upload.single('gambar_divisi'), async(req, res) => {
-    let fileData = await uploadFile.single(fileDir, req.file)
-    Divisions.create({
-        nama_divisi : req.body.nama_divisi,
-        gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
-        deskripsi : req.body.deskripsi
-    }).then(division => {
-        res.json({data : division})
+    if (!req.file) {
+        return res.sendStatus(403)
+    }
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            let fileData = await uploadFile.single(fileDir, req.file)
+            Divisions.create({
+                nama_divisi : req.body.nama_divisi,
+                gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
+                deskripsi : req.body.deskripsi
+            }).then(division => {
+                res.json({data : division})
+            })
+        }
     })
 })
 

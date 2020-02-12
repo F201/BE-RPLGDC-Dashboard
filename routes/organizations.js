@@ -39,7 +39,8 @@ router.post("/organizations", upload.single('foto_org_structures'), async (req, 
                 foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
             }).then(organizations => {
                 res.json({
-                    "data": organizations
+                    "data": organizations,
+                    authData
                 })
             })
         }
@@ -47,7 +48,7 @@ router.post("/organizations", upload.single('foto_org_structures'), async (req, 
 })
 
 router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
         if (err) {
             res.sendStatus(403)
         } else {
@@ -74,7 +75,8 @@ router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req,
                             res.json({
                                 "status": "success",
                                 "message": "data updated",
-                                "data": b
+                                "data": b,
+                                authData
                             })
                         })
                         
@@ -109,7 +111,8 @@ router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req,
                                 res.json({
                                     "status": "success",
                                     "message": "data updated",
-                                    "data": b
+                                    "data": b,
+                                    authData
                                 })
                             })
                         })
@@ -140,7 +143,8 @@ router.delete("/organizations/:org_id", (req, res) => {
                             }
                         }).then(menu => {
                             res.json({
-                                "msg": "data deleted"
+                                "msg": "data deleted",
+                                authData
                             })
                         })
                     })

@@ -151,7 +151,7 @@ router.put('/recruitment/grade2/:id_recruitment', (req, res) => {
                     connection.release();
                     if(error) throw error;
                     else {
-                        res.json({data: results})
+                        res.json({data: results, authData})
                     }
                     console.log(results.affectedRows + " record(s) updated")
                 })
@@ -171,7 +171,7 @@ router.put('/recruitment/ungrade1/:id_recruitment', (req, res) => {
                     connection.release();
                     if(error) throw error;
                     else {
-                        res.json({data: results})
+                        res.json({data: results, authData})
                     }
                     console.log(results.affectedRows + " record(s) updated")
                 })
@@ -191,7 +191,7 @@ router.put('/recruitment/ungrade2/:id_recruitment', (req, res) => {
                     connection.release();
                     if(error) throw error;
                     else {
-                        res.json({data: results})
+                        res.json({data: results, authData})
                     }
                     console.log(results.affectedRows + " record(s) updated")
                 })
@@ -212,7 +212,7 @@ router.get('/recruitment/sumpass1', (req, res) => {
                     connection.release();
                     if(error) throw error;
                     else {
-                        res.json({data: results})
+                        res.json({data: results, authData})
                     }
                     console.log('hehe')
                 })
@@ -252,7 +252,7 @@ router.get('/recruitment/sumpass2', (req, res) => {
                     connection.release();
                     if(error) throw error;
                     else {
-                        res.json({data: results})
+                        res.json({data: results, authData})
                     }
                 })
             })

@@ -30,7 +30,7 @@ router.post("/socials", (req, res) => {
                 type : req.body.type,
                 value : req.body.value
             }).then(social => {
-                res.json({data : social})
+                res.json({data : social, authData})
             })
         }
     })
@@ -58,7 +58,8 @@ router.put("/socials/:id_social", (req, res) => {
                         res.json({
                             "status" : "success",
                             "message" : "data updated",
-                            "data" : b
+                            "data" : b,
+                            authData
                         })
                     })
                 }
@@ -77,7 +78,7 @@ router.delete("/socials/:id_social", (req, res) => {
                     res.json({msg : "data not found"})
                 } else {
                     Socials.destroy({where: {id_social: req.params.id_social}}).then(division => {
-                        res.json({msg : "data deleted"})
+                        res.json({msg : "data deleted", authData})
                     })
                 }
             })

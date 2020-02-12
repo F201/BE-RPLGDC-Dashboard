@@ -129,7 +129,8 @@ router.post('/products', upload.single('gambar_products'), async (req, res) => {
             }).then(products => {
                 res.json({
                     "data" : products,
-                    "msg" : "POST success"
+                    "msg" : "POST success",
+                    authData
                 })
             })
         }
@@ -164,7 +165,8 @@ router.put("/products/:id_products", upload.single('gambar_products'), (req, res
                             res.json({
                                 "status": "success",
                                 "message": "data updated",
-                                "data": b
+                                "data": b,
+                                authData
                             })
                         })
                     }
@@ -198,7 +200,8 @@ router.put("/products/:id_products", upload.single('gambar_products'), (req, res
                                 res.json({
                                     "status": "success",
                                     "message": "data updated",
-                                    "data": b
+                                    "data": b,
+                                    authData
                                 })
                             })
                         })
@@ -229,7 +232,8 @@ router.delete("/products/:id_products", (req, res) => {
                             }
                         }).then(menu => {
                             res.json({
-                                "msg": "data deleted"
+                                "msg": "data deleted",
+                                authData
                             })
                         })
                     })

@@ -8,16 +8,9 @@ const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 
 router.get("/tools", (req, res) => {
-    // console.log(req.headers.authorization)
-    // jwt.verify(req.token, process.env.JWT_AUTH_CODE, (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            Tools.findAll().then(tools => {
-                res.json({data:tools})
-            })
-    //     }
-    // })
+    Tools.findAll().then(tools => {
+        res.json({data:tools})
+    })
 })
 
 router.get("/tools/:tools_id", (req, res) => {
