@@ -15,7 +15,8 @@ var cpUpload = upload.fields([{ name: 'foto_profile', maxCount: 1 }, { name: 'cv
 
 // post data registrasi
 router.post("/recruitment/", cpUpload, async(req, res) => {
-    if (!Object.keys(req.files)['foto_profile'] || !Object.keys(req.files)['cv'] || !Object.keys(req.files)['motivation_letter']) {
+    console.log(Object.keys(req.files))
+    if (!Object.keys(req.files).includes('foto_profile') || !Object.keys(req.files).includes('cv') || !Object.keys(req.files).includes('motivation_letter')) {
         return res.sendStatus(403)
     }
     let fileData = await uploadFile.multi(`${fileDir}${req.body.nim}/`, req.files)
