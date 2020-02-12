@@ -77,10 +77,10 @@ router.post("/activities", upload.single('gambar_activities'), async(req, res) =
     if (!req.file) {
         return res.sendStatus(403)
     }
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             let fileData = await uploadFile.single(fileDir, req.file)
             Activities.create({
                 nama_activities: req.body.nama_activities,
@@ -93,15 +93,15 @@ router.post("/activities", upload.single('gambar_activities'), async(req, res) =
                     authData
                 })
             })
-        }
-    })
+    //     }
+    // })
 })
 
 router.put("/activities/:id_activities", upload.single('gambar_activities'), (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             if (!req.file) {
                 request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
                     if (err) { return console.log(err) }
@@ -168,15 +168,15 @@ router.put("/activities/:id_activities", upload.single('gambar_activities'), (re
                     }
                 })
             }
-        }
-    })
+    //     }
+    // })
 })
 
 router.delete("/activities/:id_activities", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
                 if (err) { return console.log(err) }
                 if (body.data == undefined) {
@@ -198,8 +198,8 @@ router.delete("/activities/:id_activities", (req, res) => {
                     })
                 }
             })
-        }
-    })
+    //     }
+    // })
 })
 
 module.exports = router
