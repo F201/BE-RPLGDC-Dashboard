@@ -20,6 +20,8 @@ router.post("/recruitment/", cpUpload, async(req, res) => {
         return res.sendStatus(403)
     }
     let fileData = await uploadFile.multi(`${fileDir}${req.body.nim}/`, req.files)
+    console.log(fileData)
+    if (Object.keys(fileData).length === 0) return res.json({status: 'error', msg: 'cannot upoload file'})
     Recruitment.create({
         foto_profile: fileData.foto_profile === undefined ? "" : fileData.foto_profile,
         nim: req.body.nim,

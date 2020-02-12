@@ -25,28 +25,23 @@ const UploadFile = {
   single: async (dir, file) => {
     let imgData = {};
     const filePath = dir + generateFileName(file.originalname)
-    await postImg(filePath, file.buffer)
+    let resImg = await postImg(filePath, file.buffer)
+    if (!resImg) return {}
     imgData[file.fieldname] = await getImgUrl(filePath)
     return imgData
   },
   multi: async (dir, file) => {
     let imgData = {};
-    let filepath = ''
+    let filepath = '';
+    let resImg;
     return new Promise(async(resolve, reject) => {
       await asyncForEach(Object.values(file), async (val) => {
         filepath = dir + generateFileName(val[0].originalname)
-        await postImg(filepath, val[0].buffer)
+        resImg = await postImg(filepath, val[0].buffer);
+        if (!resImg) return resolve({})
         imgData[val[0].fieldname] = await getImgUrl(filepath)
       })
       return resolve(imgData);
-      // Object.values(file).forEach(async (val, idx) => {
-      //   const filepath = dir + generateFileName(val[0].originalname)
-      //   console.log(filepath)
-      //   await postImg(filepath, val[0].buffer)
-      //   imgData[val.fieldname] = await getImgUrl(filepath)
-      //   console.log(idx)
-      // })
-      // return resolve(imgData);
     })
   }
 }
@@ -55,10 +50,12 @@ const postImg = function (filePath, file) {
   return dbx.filesUpload({path: filePath, contents: file})
     .then(function(response) {
       console.log(response);
+      return true;
     })
     .catch(function(err) {
       console.log('error upload file', err);
       if (err.error.error['.tag'] !== 'invalid_access_token') postImg(filePath, file);
+      else return false
     });
 }
 
