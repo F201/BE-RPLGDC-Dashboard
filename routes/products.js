@@ -47,7 +47,7 @@ router.get('/detail_products', (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) throw err;
         connection.query(
-            'SELECT * FROM products', (err, product_results) => {
+            'SELECT * FROM products', (error, product_results) => {
                 connection.release();
                 if(error) {
                     throw error
