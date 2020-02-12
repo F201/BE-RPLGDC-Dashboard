@@ -32,7 +32,10 @@ router.get("/tools/:tools_id", (req, res) => {
 })
 
 router.post("/tools", upload.single('gambar_tools'), async (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, async (err, authData) => {
+    if (!req.file) {
+        return res.sendStatus(403)
+    }
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
         if (err) {
             res.sendStatus(403)
         } else {
@@ -55,20 +58,15 @@ router.put("/tools/:tools_id", upload.single('gambar_tools'), (req, res) => {
         if (err) {
             res.sendStatus(403)
         } else {
-            request(req.protocol+"://"+req.headers.host+"/tools/"+req.params.tools_id, { json: true }, async (err, res2, body) => {
-                if (err) { return console.log(err) }
-                let fileData = await uploadFile.single(fileDir, req.file)
-                let fs = require('fs')
-                let path = require('path')
-                let appDir = path.dirname(require.main.filename)
-                if (body.data == undefined) {
-                    res.json({"msg": "data not found"})
-                } else {
-                    const x = {
-                        nama_tools: req.body.nama_tools,
-                        gambar_tools: fileData.gambar_tools === undefined ? "" : fileData.gambar_tools
-                    }
-                    fs.unlink(appDir + "/public/images/tools/" + body.data.gambar_tools, function(err) {
+            if (!req.file) {
+                request(req.protocol+"://"+req.headers.host+"/tools/"+req.params.tools_id, { json: true }, (err, res2, body) => {
+                    if (err) { return console.log(err) }
+                    if (body.data == undefined) {
+                        res.json({"msg": "data not found"})
+                    } else {
+                        const x = {
+                            nama_tools: req.body.nama_tools,
+                        }
                         Tools.update(x, {
                             where : {
                                 id_tools: req.params.tools_id
@@ -81,12 +79,47 @@ router.put("/tools/:tools_id", upload.single('gambar_tools'), (req, res) => {
                             res.json({
                                 "status": "success",
                                 "message": "data updated",
-                                "data": b
+                                "data": b,
+                                authData
                             })
                         })
-                    })
-                }
-            })
+                    }
+                })
+            } else {
+                request(req.protocol+"://"+req.headers.host+"/tools/"+req.params.tools_id, { json: true }, async (err, res2, body) => {
+                    if (err) { return console.log(err) }
+                    let fileData = await uploadFile.single(fileDir, req.file)
+                    let fs = require('fs')
+                    let path = require('path')
+                    let appDir = path.dirname(require.main.filename)
+                    if (body.data == undefined) {
+                        res.json({"msg": "data not found"})
+                    } else {
+                        const x = {
+                            nama_tools: req.body.nama_tools,
+                            gambar_tools: fileData.gambar_tools === undefined ? "" : fileData.gambar_tools
+                        }
+                        fs.unlink(appDir + "/public/images/tools/" + body.data.gambar_tools, function(err) {
+                            Tools.update(x, {
+                                where : {
+                                    id_tools: req.params.tools_id
+                                },
+                                returning: true,
+                                plain: true
+                            }).then(affectedRow => {
+                                return Tools.findOne({where: {id_tools: req.params.tools_id}})      
+                            }).then(b => {
+                                res.json({
+                                    "status": "success",
+                                    "message": "data updated",
+                                    "data": b,
+                                    authData
+                                })
+                            })
+                        })
+                    }
+                })
+            }
         }
     })
 })
@@ -111,7 +144,8 @@ router.delete("/tools/:tools_id", auth, (req, res) => {
                             }
                         }).then(menu => {
                             res.json({
-                                "msg": "data deleted"
+                                "msg": "data deleted",
+                                authData
                             })
                         })
                     })

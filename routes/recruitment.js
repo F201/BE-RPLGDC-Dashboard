@@ -15,6 +15,9 @@ var cpUpload = upload.fields([{ name: 'foto_profile', maxCount: 1 }, { name: 'cv
 
 // post data registrasi
 router.post("/recruitment/", cpUpload, async(req, res) => {
+    if (!Object.keys(req.files)['foto_profile'] || !Object.keys(req.files)['cv'] || !Object.keys(req.files)['motivation_letter']) {
+        return res.sendStatus(403)
+    }
     let fileData = await uploadFile.multi(`${fileDir}${req.body.nim}/`, req.files)
     Recruitment.create({
         foto_profile: fileData.foto_profile === undefined ? "" : fileData.foto_profile,
@@ -101,7 +104,8 @@ router.get("/recruitment/checkstatus/:nim", (req, res) => {
         }
         res.json({
             data: (({nim, nama_lengkap, divisi}) => ({nim, nama_lengkap, divisi}))(recruitment),
-            "status": "success"
+            "status": "success",
+            "msg": "success get data"
         })
         // buat objek
     })
@@ -126,7 +130,7 @@ router.put('/recruitment/grade1/:id_recruitment', (req, res) => {
                     connection.release();
                     if(error) throw error;
                     else {
-                        res.json({data: results})
+                        res.json({data: results, authData})
                     }
                     console.log(results.affectedRows + " record(s) updated")
                 })

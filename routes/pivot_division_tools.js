@@ -24,49 +24,67 @@ router.get("/pivot_division_tools/:idx", (req, res) => {
 })
 
 router.post('/pivot_division_tools', (req, res) => {
-    Pivot.create({
-        id_divisi : req.body.id_divisi,
-        id_tools : req.body.id_tools
-    }).then(pivot => {
-        res.json({
-            "data": pivot,
-            "msg" : "POST success"
-        })
-    })
-})
-
-router.put("/pivot_division_tools/:idx", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/pivot_division_tools/" + req.params.idx, { json: true }, (err, res2, body) => {
-        if (body.data == undefined) {
-            res.json({msg : "data not found"})
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
         } else {
-            Pivot.update({
+            Pivot.create({
                 id_divisi : req.body.id_divisi,
                 id_tools : req.body.id_tools
-            }, {
-                where : { idx: req.params.idx },
-                returning : true,
-                plain : true
-            }).then(affectedRow => {
-                return Pivot.findOne({where: {idx: req.params.idx}})      
-            }).then(b => {
+            }).then(pivot => {
                 res.json({
-                    "status" : "success",
-                    "message" : "data updated",
-                    "data" : b
+                    "data": pivot,
+                    "msg" : "POST success"
                 })
             })
         }
     })
 })
 
-router.delete("/pivot_division_tools/:idx", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/pivot_division_tools/" + req.params.idx, { json: true }, (err, res2, body) => {
-        if (body.data == undefined) {
-            res.json({msg : "data not found"})
+router.put("/pivot_division_tools/:idx", (req, res) => {
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
         } else {
-            Pivot.destroy({where: {idx: req.params.idx}}).then(division => {
-                res.json({msg : "data deleted"})
+            request(req.protocol + "://" + req.headers.host + "/pivot_division_tools/" + req.params.idx, { json: true }, (err, res2, body) => {
+                if (body.data == undefined) {
+                    res.json({msg : "data not found"})
+                } else {
+                    Pivot.update({
+                        id_divisi : req.body.id_divisi,
+                        id_tools : req.body.id_tools
+                    }, {
+                        where : { idx: req.params.idx },
+                        returning : true,
+                        plain : true
+                    }).then(affectedRow => {
+                        return Pivot.findOne({where: {idx: req.params.idx}})      
+                    }).then(b => {
+                        res.json({
+                            "status" : "success",
+                            "message" : "data updated",
+                            "data" : b
+                        })
+                    })
+                }
+            })
+        }
+    })
+})
+
+router.delete("/pivot_division_tools/:idx", (req, res) => {
+    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+        if (err) {
+            res.sendStatus(403)
+        } else {
+            request(req.protocol + "://" + req.headers.host + "/pivot_division_tools/" + req.params.idx, { json: true }, (err, res2, body) => {
+                if (body.data == undefined) {
+                    res.json({msg : "data not found"})
+                } else {
+                    Pivot.destroy({where: {idx: req.params.idx}}).then(division => {
+                        res.json({msg : "data deleted"})
+                    })
+                }
             })
         }
     })
