@@ -8,27 +8,27 @@ const Admin = require('../models/auth')
 
 const saltRounds = 15
 
-router.post('/registerAdmin', (req, res) => {
-  const username = req.body.username
-  const password = req.body.password
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    bcrypt.hash(password, salt, function(err, hash) {
-      if (err) {
-        throw(err)
-      } else {
-        Admin.create({
-          username: username,
-          password: hash
-        }).then(auth => {
-          res.json({
-            "data" : auth,
-            "msg" : "SUCCESSFULLY REGISTER"
-          })
-        })
-      }
-    })
-  })
-})
+// router.post('/registerAdmin', (req, res) => {
+//   const username = req.body.username
+//   const password = req.body.password
+//   bcrypt.genSalt(saltRounds, function(err, salt) {
+//     bcrypt.hash(password, salt, function(err, hash) {
+//       if (err) {
+//         throw(err)
+//       } else {
+//         Admin.create({
+//           username: username,
+//           password: hash
+//         }).then(auth => {
+//           res.json({
+//             "data" : auth,
+//             "msg" : "SUCCESSFULLY REGISTER"
+//           })
+//         })
+//       }
+//     })
+//   })
+// })
 
 /* GET users listing. */
 router.post('/auth', (req, res, next) => {
@@ -66,5 +66,22 @@ router.post('/auth', (req, res, next) => {
     }
   })
 });
+
+router.get('/auth/details', (req, res) => {
+  jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
+    if (err) {
+        res.json({
+          msg : "auth failed"
+        })
+    } else {
+        res.json({
+          data: {
+            username: authData.username
+          },
+          status : "auth success"
+        })
+    }
+  })
+})
 
 module.exports = router;
