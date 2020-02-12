@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2020 at 09:38 AM
+-- Generation Time: Feb 12, 2020 at 08:09 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -93,8 +93,29 @@ CREATE TABLE `activities` (
 --
 
 INSERT INTO `activities` (`id_activities`, `nama_activities`, `gambar_activities`, `tanggal`, `deskripsi`) VALUES
-(1, 'makrab 2.0 gan', 'https://www.dropbox.com/s/3tpu8v4r20rmc85/78b31e55d4d60ec2ed065bb6675584b5.png?d', '2000-09-25', 'ini makrab cuy'),
-(3, 'makrab gan 3.0', 'https://www.dropbox.com/s/274fzdyoyrviw3n/923e244e4900b7624a808f8d8db80d72.png?d', '2000-09-25', 'ini makrab cuy');
+(1, 'makrab 2.0 gan', 'https://www.dropbox.com/s/3tpu8v4r20rmc85/78b31e55d4d60ec2ed065bb6675584b5.png?d', '2000-09-25', 'ini makrab cuy');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `idx` int(11) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`idx`, `username`, `password`) VALUES
+(1, '', '$2b$15$vWH4hUpwJE0aRS/5L9pydeMM5W9Dy5r1/nUCAPzNAfL'),
+(3, 'ilhamizzul2', '$2b$15$fX5bZfv7Xk2ZTDuqUndKU.myuwTMaiWRgQ7QuU0Zewn'),
+(4, 'ilhamizzul3', '$2b$15$8MojogWXp2aSX0.tr09XUuZp9ZRMp6p0jnMlZvIUh09'),
+(5, 'ilhamizzul4', '$2b$15$a4MBNkwurqnkk0d7tzCFVeDx61hlPYaApJg.IMtb3.UeAgeHCDJ.W');
 
 -- --------------------------------------------------------
 
@@ -155,6 +176,13 @@ CREATE TABLE `org_structures` (
   `order_org_structures` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `org_structures`
+--
+
+INSERT INTO `org_structures` (`id_org_structures`, `nama_org_structures`, `posisi_org_structures`, `foto_org_structures`, `order_org_structures`) VALUES
+(5, 'ijul', 'back end', '', 2018);
+
 -- --------------------------------------------------------
 
 --
@@ -198,15 +226,6 @@ CREATE TABLE `pivot_product_tools` (
   `id_tools` int(11) NOT NULL,
   `id_products` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `pivot_product_tools`
---
-
-INSERT INTO `pivot_product_tools` (`idx`, `id_tools`, `id_products`) VALUES
-(1, 3, 1),
-(2, 4, 1),
-(3, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -254,6 +273,16 @@ CREATE TABLE `recruitment` (
   `status2` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `recruitment`
+--
+
+INSERT INTO `recruitment` (`id_recruitment`, `foto_profile`, `nim`, `nama_lengkap`, `tanggal_lahir`, `jenis_kelamin`, `jurusan`, `angkatan`, `divisi`, `cv`, `motivation_letter`, `portofolio`, `status1`, `status2`) VALUES
+(2, '', '314325346', 'rgdfgsbrtdnfb', '0000-00-00', 'male', 'IF', '2018', 'backend', '', '', 'rgdj vch bckkns chw wihbxijncs', 1, 1),
+(3, '', '314325346', 'rgdfgsbrtdnfb', '0000-00-00', 'male', 'IF', '2018', 'backend', '', '', 'rgdj vch bckkns chw wihbxijncs', 1, 0),
+(4, '', '314325346', 'rgdfgsbrtdnfb', '0000-00-00', 'male', 'IF', '2018', 'backend', '', '', 'rgdj vch bckkns chw wihbxijncs', 0, 0),
+(5, '', '314325346', 'rgdfgsbrtdnfb', '0000-00-00', 'male', 'IF', '2018', 'backend', '', '', 'rgdj vch bckkns chw wihbxijncs', 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -272,7 +301,8 @@ CREATE TABLE `socials` (
 
 INSERT INTO `socials` (`id_social`, `type`, `value`) VALUES
 (1, 'link_ig', 'https://www.instagram.com/rplgdc_'),
-(2, 'id_line', '@ajh8699v');
+(2, 'id_line', '@ajh8699v'),
+(3, 'whatsapp', '085335831672');
 
 -- --------------------------------------------------------
 
@@ -291,9 +321,11 @@ CREATE TABLE `tools` (
 --
 
 INSERT INTO `tools` (`id_tools`, `nama_tools`, `gambar_tools`) VALUES
-(3, 'angular', 'b5b6bc9d4610277a5919557c52fd3bc7.png'),
-(4, 'angular', 'https://www.dropbox.com/s/3842zbwsdcypv02/7098a49b4fab4e8468ad6e57874ab076.'),
-(5, 'react', 'https://www.dropbox.com/s/hrjwenfsrfc07wz/9f40422bffe4909e5ea4a5e46741a1f3.');
+(5, 'react', 'https://www.dropbox.com/s/hrjwenfsrfc07wz/9f40422bffe4909e5ea4a5e46741a1f3.'),
+(7, 'angular', ''),
+(9, 'odejsn', ''),
+(10, 'react', ''),
+(11, 'reactfr4', '');
 
 --
 -- Indexes for dumped tables
@@ -310,6 +342,13 @@ ALTER TABLE `achievements`
 --
 ALTER TABLE `activities`
   ADD PRIMARY KEY (`id_activities`);
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`idx`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `divisions`
@@ -395,6 +434,12 @@ ALTER TABLE `activities`
   MODIFY `id_activities` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `divisions`
 --
 ALTER TABLE `divisions`
@@ -410,7 +455,7 @@ ALTER TABLE `member_achievement`
 -- AUTO_INCREMENT for table `org_structures`
 --
 ALTER TABLE `org_structures`
-  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_org_structures` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `pivot_division_activities`
@@ -440,19 +485,19 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `recruitment`
 --
 ALTER TABLE `recruitment`
-  MODIFY `id_recruitment` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_recruitment` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `socials`
 --
 ALTER TABLE `socials`
-  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_social` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tools`
 --
 ALTER TABLE `tools`
-  MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_tools` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
