@@ -116,10 +116,10 @@ router.post('/products', upload.single('gambar_products'), async (req, res) => {
     if (!req.file) {
         return res.sendStatus(403)
     }
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, async (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             let fileData = await uploadFile.single(fileDir, req.file)
             Products.create({
                 nama_products : req.body.nama_products,
@@ -133,15 +133,15 @@ router.post('/products', upload.single('gambar_products'), async (req, res) => {
                     authData
                 })
             })
-        }
-    })
+    //     }
+    // })
 })
 
 router.put("/products/:id_products", upload.single('gambar_products'), (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             if (!req.file) {
                 request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
                     if (err) { return console.log(err) }
@@ -208,15 +208,15 @@ router.put("/products/:id_products", upload.single('gambar_products'), (req, res
                     }
                 })
             }
-        }
-    })
+    //     }
+    // })
 })
 
 router.delete("/products/:id_products", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
                 if (err) { return console.log(err) }
                 if (body.data == undefined) {
@@ -239,8 +239,8 @@ router.delete("/products/:id_products", (req, res) => {
                     })
                 }
             })
-        }
-    })
+    //     }
+    // })
 })
 
 module.exports = router

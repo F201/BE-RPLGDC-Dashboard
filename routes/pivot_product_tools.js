@@ -24,10 +24,10 @@ router.get("/pivot_product_tools/:idx", (req, res) => {
 })
 
 router.post('/pivot_product_tools', (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             Pivot.create({
                 id_products : req.body.id_products,
                 id_tools : req.body.id_tools
@@ -38,15 +38,15 @@ router.post('/pivot_product_tools', (req, res) => {
                     authData
                 })
             })
-        }
-    })
+    //     }
+    // })
 })
 
 router.put("/pivot_product_tools/:idx", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
+    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
+    //     if (err) {
+    //         res.sendStatus(403)
+    //     } else {
             request(req.protocol + "://" + req.headers.host + "/pivot_product_tools/" + req.params.idx, { json: true }, (err, res2, body) => {
                 if (body.data == undefined) {
                     res.json({msg : "data not found"})
@@ -70,8 +70,8 @@ router.put("/pivot_product_tools/:idx", (req, res) => {
                     })
                 }
             })
-        }
-    })
+    //     }
+    // })
 })
 
 router.delete("/pivot_product_tools/:idx", (req, res) => {

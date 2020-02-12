@@ -134,38 +134,27 @@ router.post("/divisions", upload.single('gambar_divisi'), async(req, res) => {
     if (!req.file) {
         return res.sendStatus(403)
     }
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
-            let fileData = await uploadFile.single(fileDir, req.file)
-            Divisions.create({
-                nama_divisi : req.body.nama_divisi,
-                gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
-                deskripsi : req.body.deskripsi
-            }).then(division => {
-                res.json({data : division})
-            })
-        }
+    let fileData = await uploadFile.single(fileDir, req.file)
+    Divisions.create({
+        nama_divisi : req.body.nama_divisi,
+        gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
+        deskripsi : req.body.deskripsi
+    }).then(division => {
+        res.json({data : division})
     })
 })
 
 router.put("/divisions/:id_divisi", upload.single('gambar_divisi'), (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/divisions/" + req.params.id_divisi, { json: true }, async (err, res2, body) => {
-        if (err) { return console.log(err) }
-        let fileData = await uploadFile.single(fileDir, req.file)
-        let fs = require('fs')
-        let path = require('path')
-        let appDir = path.dirname(require.main.filename)
-        if (body.data == undefined) {
-            res.json({"msg": "data not found"})
-        } else {
-            const x = {
-                nama_divisi : req.body.nama_divisi,
-                gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
-                deskripsi : req.body.deskripsi
-            }
-            fs.unlink(appDir + "/public/images/division/" + body.data.gambar_divisi, function(err) {
+    if (!req.file) {
+        request(req.protocol + "://" + req.headers.host + "/divisions/" + req.params.id_divisi, { json: true }, (err, res2, body) => {
+            if (err) { res.json({status:err}) }
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
+            } else {
+                const x = {
+                    nama_divisi : req.body.nama_divisi,
+                    deskripsi : req.body.deskripsi
+                }
                 Divisions.update(x, {
                     where : {
                         id_divisi: req.params.id_divisi
@@ -181,9 +170,43 @@ router.put("/divisions/:id_divisi", upload.single('gambar_divisi'), (req, res) =
                         "data": b
                     })
                 })
-            })
-        }
-    })
+            }
+        })
+    } else {
+        request(req.protocol + "://" + req.headers.host + "/divisions/" + req.params.id_divisi, { json: true }, async (err, res2, body) => {
+            if (err) { return console.log(err) }
+            let fileData = await uploadFile.single(fileDir, req.file)
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
+            } else {
+                const x = {
+                    nama_divisi : req.body.nama_divisi,
+                    gambar_divisi: fileData.gambar_divisi === undefined ? "" : fileData.gambar_divisi,
+                    deskripsi : req.body.deskripsi
+                }
+                fs.unlink(appDir + "/public/images/division/" + body.data.gambar_divisi, function(err) {
+                    Divisions.update(x, {
+                        where : {
+                            id_divisi: req.params.id_divisi
+                        },
+                        returning: true,
+                        plain: true
+                    }).then(affectedRow => {
+                        return Divisions.findOne({where: {id_divisi: req.params.id_divisi}})      
+                    }).then(b => {
+                        res.json({
+                            "status": "success",
+                            "message": "data updated",
+                            "data": b
+                        })
+                    })
+                })
+            }
+        })
+    }
 })
 
 router.delete("/divisions/:id_divisi", (req, res) => {

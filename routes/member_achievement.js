@@ -22,69 +22,51 @@ router.get("/member_achievement/:id_member", (req, res) => {
 })
 
 router.post("/member_achievement", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
+    Member.create({
+        nama_member : req.body.nama_member,
+        jurusan : req.body.jurusan,
+        id_achievement : req.body.id_achievement
+    }).then(member => {
+        res.json({
+            data : member, authData
+        })
+    })
+})
+
+router.put("/member_achievement/:id_member", (req, res) => {
+    request(req.protocol + "://" + req.headers.host + "/member_achievement/" + req.params.id_member, { json: true }, (err, res2, body) => {
+        if (body.data == undefined) {
+            res.json({msg : "data not found"})
         } else {
-            Member.create({
+            Member.update({
                 nama_member : req.body.nama_member,
                 jurusan : req.body.jurusan,
                 id_achievement : req.body.id_achievement
-            }).then(member => {
+            }, {
+                where : { id_member: req.params.id_member },
+                returning : true,
+                plain : true
+            }).then(affectedRow => {
+                return Member.findOne({where: {id_member: req.params.id_member}})      
+            }).then(b => {
                 res.json({
-                    data : member, authData
+                    "status" : "success",
+                    "message" : "data updated",
+                    "data" : b,
+                    authData
                 })
             })
         }
     })
 })
 
-router.put("/member_achievement/:id_member", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
-            request(req.protocol + "://" + req.headers.host + "/member_achievement/" + req.params.id_member, { json: true }, (err, res2, body) => {
-                if (body.data == undefined) {
-                    res.json({msg : "data not found"})
-                } else {
-                    Member.update({
-                        nama_member : req.body.nama_member,
-                        jurusan : req.body.jurusan,
-                        id_achievement : req.body.id_achievement
-                    }, {
-                        where : { id_member: req.params.id_member },
-                        returning : true,
-                        plain : true
-                    }).then(affectedRow => {
-                        return Member.findOne({where: {id_member: req.params.id_member}})      
-                    }).then(b => {
-                        res.json({
-                            "status" : "success",
-                            "message" : "data updated",
-                            "data" : b,
-                            authData
-                        })
-                    })
-                }
-            })
-        }
-    })
-})
-
 router.delete("/member_achievement/:id_member", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
+    request(req.protocol + "://" + req.headers.host + "/member_achievement/" + req.params.id_member, { json: true }, (err, res2, body) => {
+        if (body.data == undefined) {
+            res.json({msg : "data not found"})
         } else {
-            request(req.protocol + "://" + req.headers.host + "/member_achievement/" + req.params.id_member, { json: true }, (err, res2, body) => {
-                if (body.data == undefined) {
-                    res.json({msg : "data not found"})
-                } else {
-                    Member.destroy({where: {id_member: req.params.id_member}}).then(member => {
-                        res.json({msg : "data deleted", authData})
-                    })
-                }
+            Member.destroy({where: {id_member: req.params.id_member}}).then(member => {
+                res.json({msg : "data deleted", authData})
             })
         }
     })

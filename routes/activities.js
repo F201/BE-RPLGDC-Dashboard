@@ -77,129 +77,108 @@ router.post("/activities", upload.single('gambar_activities'), async(req, res) =
     if (!req.file) {
         return res.sendStatus(403)
     }
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            let fileData = await uploadFile.single(fileDir, req.file)
-            Activities.create({
-                nama_activities: req.body.nama_activities,
-                tanggal: req.body.tanggal,
-                deskripsi: req.body.deskripsi,
-                gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
-            }).then(activities => {
-                res.json({
-                    "data": activities,
-                    authData
-                })
-            })
-    //     }
-    // })
+    let fileData = await uploadFile.single(fileDir, req.file)
+    Activities.create({
+        nama_activities: req.body.nama_activities,
+        tanggal: req.body.tanggal,
+        deskripsi: req.body.deskripsi,
+        gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
+    }).then(activities => {
+        res.json({
+            "data": activities
+        })
+    })
 })
 
 router.put("/activities/:id_activities", upload.single('gambar_activities'), (req, res) => {
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            if (!req.file) {
-                request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
-                    if (err) { return console.log(err) }
-                    if (body.data == undefined) {
-                        res.json({"msg": "data not found"})
-                    } else {
-                        const x = {
-                            nama_activities: req.body.nama_activities,
-                            tanggal: req.body.tanggal,
-                            deskripsi: req.body.deskripsi,
-                        }
-                        Activities.update(x, {
-                            where : {
-                                id_activities: req.params.id_activities
-                            },
-                            returning: true,
-                            plain: true
-                        }).then(affectedRow => {
-                            return Activities.findOne({where: {id_activities: req.params.id_activities}})      
-                        }).then(b => {
-                            res.json({
-                                "status": "success",
-                                "message": "data updated",
-                                "data": b, 
-                                authData
-                            })
-                        })
-                    }
-                })
+    if (!req.file) {
+        request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
+            if (err) { return console.log(err) }
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
             } else {
-                request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, async(err, res2, body) => {
-                    if (err) { return console.log(err) }
-                    let fileData = await uploadFile.single(fileDir, req.file)
-                    let fs = require('fs')
-                    let path = require('path')
-                    let appDir = path.dirname(require.main.filename)
-                    if (body.data == undefined) {
-                        res.json({"msg": "data not found"})
-                    } else {
-                        const x = {
-                            nama_activities: req.body.nama_activities,
-                            tanggal: req.body.tanggal,
-                            deskripsi: req.body.deskripsi,
-                            gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
-                        }
-                        fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
-                            Activities.update(x, {
-                                where : {
-                                    id_activities: req.params.id_activities
-                                },
-                                returning: true,
-                                plain: true
-                            }).then(affectedRow => {
-                                return Activities.findOne({where: {id_activities: req.params.id_activities}})      
-                            }).then(b => {
-                                res.json({
-                                    "status": "success",
-                                    "message": "data updated",
-                                    "data": b,
-                                    authData
-                                })
-                            })
-                        })
-                    }
+                const x = {
+                    nama_activities: req.body.nama_activities,
+                    tanggal: req.body.tanggal,
+                    deskripsi: req.body.deskripsi,
+                }
+                Activities.update(x, {
+                    where : {
+                        id_activities: req.params.id_activities
+                    },
+                    returning: true,
+                    plain: true
+                }).then(affectedRow => {
+                    return Activities.findOne({where: {id_activities: req.params.id_activities}})      
+                }).then(b => {
+                    res.json({
+                        "status": "success",
+                        "message": "data updated",
+                        "data": b
+                    })
                 })
             }
-    //     }
-    // })
+        })
+    } else {
+        request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, async(err, res2, body) => {
+            if (err) { return console.log(err) }
+            let fileData = await uploadFile.single(fileDir, req.file)
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
+            } else {
+                const x = {
+                    nama_activities: req.body.nama_activities,
+                    tanggal: req.body.tanggal,
+                    deskripsi: req.body.deskripsi,
+                    gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
+                }
+                fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
+                    Activities.update(x, {
+                        where : {
+                            id_activities: req.params.id_activities
+                        },
+                        returning: true,
+                        plain: true
+                    }).then(affectedRow => {
+                        return Activities.findOne({where: {id_activities: req.params.id_activities}})      
+                    }).then(b => {
+                        res.json({
+                            "status": "success",
+                            "message": "data updated",
+                            "data": b
+                        })
+                    })
+                })
+            }
+        })
+    }
 })
 
 router.delete("/activities/:id_activities", (req, res) => {
-    // jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-    //     if (err) {
-    //         res.sendStatus(403)
-    //     } else {
-            request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
-                if (err) { return console.log(err) }
-                if (body.data == undefined) {
-                    res.json({"msg": "data not found"})
-                } else {
-                    let fs = require('fs')
-                    let path = require('path')
-                    let appDir = path.dirname(require.main.filename)
-                    fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
-                        Activities.destroy({
-                            where: {
-                                id_activities: req.params.id_activities
-                            }
-                        }).then(menu => {
-                            res.json({
-                                "msg": "data deleted"
-                            })
-                        })
+    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
+        if (err) { return console.log(err) }
+        if (body.data == undefined) {
+            res.json({"msg": "data not found"})
+        } else {
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
+                Activities.destroy({
+                    where: {
+                        id_activities: req.params.id_activities
+                    }
+                }).then(menu => {
+                    res.json({
+                        "msg": "data deleted"
                     })
-                }
+                })
             })
-    //     }
-    // })
+        }
+    })
 })
 
 module.exports = router

@@ -24,7 +24,20 @@ const auth = (req, res, next) =>  {
         {route: '/tools', method: "GET", withId: true},
         {route: '/socials', method: "GET", withId: true},
         {route: '/auth', method: "POST"},
-        {route: '/auth/details', method: "GET"}
+        {route: '/auth/details', method: "GET"},
+        {route: '/activities', method: "GET", withId: true},
+        {route: '/detail_activities', method: "GET"},
+        {route: '/detail_products', method: "GET", withId: true},
+        {route: '/products', method: "GET", withId: true},
+        {route: '/pivot_product_tools', method: "GET", withId: true},
+        {route: '/pivot_division_tools', method: "GET", withId: true},
+        {route: '/pivot_division_activities', method: "GET", withId: true},
+        {route: '/organizations', method: "GET", withId: true},
+        {route: '/member_achievement', method: "GET", withId: true},
+        {route: '/detail_divisions', method: "GET", withId: true},
+        {route: '/divisions', method: "GET", withId: true},
+        {route: '/detail_achievement', method: "GET", withId: true},
+        {route: '/achievement', method: "GET", withId: true},
     ]
     // console.log(('/auth' === currentPath && 'POST' === currentMethod))
     if (allowRoute.some(item => {return ((item.route === currentPath && item.method === currentMethod) || (item.method === currentMethod && item.withId && !isNaN(currentPath.replace(item.route + '/', ''))))})) {

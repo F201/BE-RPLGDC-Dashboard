@@ -27,128 +27,110 @@ router.post("/organizations", upload.single('foto_org_structures'), async (req, 
     if (!req.file) {
         return res.sendStatus(403)
     }
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
-            let fileData = await uploadFile.single(fileDir, req.file)
-            Organizations.create({
-                nama_org_structures: req.body.nama_org_structures,
-                posisi_org_structures: req.body.posisi_org_structures,
-                order_org_structures: req.body.order_org_structures,
-                foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
-            }).then(organizations => {
-                res.json({
-                    "data": organizations,
-                    authData
-                })
-            })
-        }
+    let fileData = await uploadFile.single(fileDir, req.file)
+    Organizations.create({
+        nama_org_structures: req.body.nama_org_structures,
+        posisi_org_structures: req.body.posisi_org_structures,
+        order_org_structures: req.body.order_org_structures,
+        foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
+    }).then(organizations => {
+        res.json({
+            "data": organizations,
+            authData
+        })
     })
 })
 
 router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE, (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
-        } else {
-            if (!req.file) {
-                request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, async (err, res2, body) => {
-                    if (err) { return console.log(err) }
-                    if (body.data == undefined) {
-                        res.json({"msg": "data not found"})
-                    } else {
-                        const x = {
-                            nama_org_structures: req.body.nama_org_structures,
-                            posisi_org_structures: req.body.posisi_org_structures,
-                            order_org_structures: req.body.angkatan_org_structures,
-                        }
-                        Organizations.update(x, {
-                            where : {
-                                id_org_structures: req.params.org_id
-                            },
-                            returning: true,
-                            plain: true
-                        }).then(affectedRow => {
-                            return Organizations.findOne({where: {id_org_structures: req.params.org_id}})      
-                        }).then(b => {
-                            res.json({
-                                "status": "success",
-                                "message": "data updated",
-                                "data": b,
-                                authData
-                            })
-                        })
-                        
-                    }
-                })
+    if (!req.file) {
+        request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, async (err, res2, body) => {
+            if (err) { return console.log(err) }
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
             } else {
-                request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, async (err, res2, body) => {
-                    if (err) { return console.log(err) }
-                    let fileData = await uploadFile.single(fileDir, req.file)
-                    let fs = require('fs')
-                    let path = require('path')
-                    let appDir = path.dirname(require.main.filename)
-                    if (body.data == undefined) {
-                        res.json({"msg": "data not found"})
-                    } else {
-                        const x = {
-                            nama_org_structures: req.body.nama_org_structures,
-                            posisi_org_structures: req.body.posisi_org_structures,
-                            order_org_structures: req.body.angkatan_org_structures,
-                            foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
-                        }
-                        fs.unlink(appDir + "/public/images/organizations/" + body.data.foto_org_structures, function(err) {
-                            Organizations.update(x, {
-                                where : {
-                                    id_org_structures: req.params.org_id
-                                },
-                                returning: true,
-                                plain: true
-                            }).then(affectedRow => {
-                                return Organizations.findOne({where: {id_org_structures: req.params.org_id}})      
-                            }).then(b => {
-                                res.json({
-                                    "status": "success",
-                                    "message": "data updated",
-                                    "data": b,
-                                    authData
-                                })
-                            })
+                const x = {
+                    nama_org_structures: req.body.nama_org_structures,
+                    posisi_org_structures: req.body.posisi_org_structures,
+                    order_org_structures: req.body.angkatan_org_structures,
+                }
+                Organizations.update(x, {
+                    where : {
+                        id_org_structures: req.params.org_id
+                    },
+                    returning: true,
+                    plain: true
+                }).then(affectedRow => {
+                    return Organizations.findOne({where: {id_org_structures: req.params.org_id}})      
+                }).then(b => {
+                    res.json({
+                        "status": "success",
+                        "message": "data updated",
+                        "data": b,
+                        authData
+                    })
+                })
+                
+            }
+        })
+    } else {
+        request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, async (err, res2, body) => {
+            if (err) { return console.log(err) }
+            let fileData = await uploadFile.single(fileDir, req.file)
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
+            } else {
+                const x = {
+                    nama_org_structures: req.body.nama_org_structures,
+                    posisi_org_structures: req.body.posisi_org_structures,
+                    order_org_structures: req.body.angkatan_org_structures,
+                    foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
+                }
+                fs.unlink(appDir + "/public/images/organizations/" + body.data.foto_org_structures, function(err) {
+                    Organizations.update(x, {
+                        where : {
+                            id_org_structures: req.params.org_id
+                        },
+                        returning: true,
+                        plain: true
+                    }).then(affectedRow => {
+                        return Organizations.findOne({where: {id_org_structures: req.params.org_id}})      
+                    }).then(b => {
+                        res.json({
+                            "status": "success",
+                            "message": "data updated",
+                            "data": b,
+                            authData
                         })
-                    }
+                    })
                 })
             }
-        }
-    })
+        })
+    }
 })
 
 router.delete("/organizations/:org_id", (req, res) => {
-    jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-        if (err) {
-            res.sendStatus(403)
+    request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, (err, res2, body) => {
+        if (err) { return console.log(err) }
+        if (body.data == undefined) {
+            res.json({"msg": "data not found"})
         } else {
-            request(req.protocol+"://"+req.headers.host+"/organizations/"+req.params.org_id, { json: true }, (err, res2, body) => {
-                if (err) { return console.log(err) }
-                if (body.data == undefined) {
-                    res.json({"msg": "data not found"})
-                } else {
-                    let fs = require('fs')
-                    let path = require('path')
-                    let appDir = path.dirname(require.main.filename)
-                    fs.unlink(appDir + "/public/images/organizations/" + body.data.foto_org_structures, function(err) {
-                        Organizations.destroy({
-                            where: {
-                                id_org_structures: req.params.org_id
-                            }
-                        }).then(menu => {
-                            res.json({
-                                "msg": "data deleted",
-                                authData
-                            })
-                        })
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            fs.unlink(appDir + "/public/images/organizations/" + body.data.foto_org_structures, function(err) {
+                Organizations.destroy({
+                    where: {
+                        id_org_structures: req.params.org_id
+                    }
+                }).then(menu => {
+                    res.json({
+                        "msg": "data deleted",
+                        authData
                     })
-                }
+                })
             })
         }
     })
