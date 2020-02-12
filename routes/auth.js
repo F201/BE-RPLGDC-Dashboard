@@ -63,21 +63,21 @@ router.post('/auth', (req, res, next) => {
   })
 });
 
-// router.get('/auth/details', (req, res) => {
-//   jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
-//     if (err) {
-//         res.json({
-//           msg : "auth failed"
-//         })
-//     } else {
-//         res.json({
-//           data: {
-//             username: authData.username
-//           },
-//           status : "auth success"
-//         })
-//     }
-//   })
-// })
+router.get('/auth/details', (req, res) => {
+  jwt.verify(req.headers.authorization.replace('Bearer ',''), process.env.JWT_AUTH_CODE,async (err, authData) => {
+    if (err) {
+        res.json({
+          msg : "auth failed"
+        })
+    } else {
+        res.json({
+          data: {
+            username: authData.username
+          },
+          status : "auth success"
+        })
+    }
+  })
+})
 
 module.exports = router;

@@ -24,6 +24,7 @@ const auth = (req, res, next) =>  {
         {route: '/tools', method: "GET", withId: true},
         {route: '/socials', method: "GET", withId: true},
         {route: '/auth', method: "POST"},
+        {route: '/auth/details', method:"POST"},
         {route: '/activities', method: "GET", withId: true},
         {route: '/detail_activities', method: "GET"},
         {route: '/detail_products', method: "GET", withId: true},
@@ -36,7 +37,7 @@ const auth = (req, res, next) =>  {
         {route: '/detail_divisions', method: "GET", withId: true},
         {route: '/divisions', method: "GET", withId: true},
         {route: '/detail_achievement', method: "GET", withId: true},
-        {route: '/achievement', method: "GET", withId: true},
+        {route: '/achievements', method: "GET", withId: true},
     ]
     // console.log(('/auth' === currentPath && 'POST' === currentMethod))
     if (allowRoute.some(item => {return ((item.route === currentPath && item.method === currentMethod) || (item.method === currentMethod && item.withId && !isNaN(currentPath.replace(item.route + '/', ''))))})) {
