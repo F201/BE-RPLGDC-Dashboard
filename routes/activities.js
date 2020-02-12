@@ -45,6 +45,39 @@ router.get("/detail_activities", (req, res) => {
     })
 })
 
+router.get("/detail_activities/:id_activities", (req, res) => {
+    pool.getConnection(function(err, connection) {
+        if (err) res.json({status: err});
+        connection.query("SELECT * FROM activities WHERE id_activities = ?", [req.params.id_activities], (error, results) => {
+            connection.release();
+            if (error) {
+                res.json({status: error})
+            } else {
+                let data_activities = {activities : []}
+                
+                results.forEach(async (data, index) => {
+                    const divisions = await getDivisionById(data.id_activities).catch(result => {
+                        res.status(500).json(result)
+                    })
+
+                    data_activities.activities.push({
+                        id_activities: data.id_activities,
+                        nama_activities: data.nama_activities,
+                        gambar_activities: data.gambar_activities,
+                        tanggal: data.tanggal,
+                        deskripsi: data.deskripsi,
+                        divisions: divisions
+                    })
+
+                    if (results.length === index + 1) {
+                        res.status(200).json(data_activities)
+                    }
+                });
+            }
+        })
+    })
+})
+
 const getDivisionById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
