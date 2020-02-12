@@ -47,7 +47,7 @@ router.get('/detail_products', (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});
         connection.query(
-            'SELECT * FROM products', (err, product_results) => {
+            'SELECT * FROM products', (error, product_results) => {
                 connection.release();
                 if(error) {
                     res.json({status: error})
@@ -63,7 +63,7 @@ router.get('/detail_products', (req, res) => {
                             id_products: element.id_products,
                             nama_products: element.nama_products,
                             gambar_products: element.gambar_products,
-                            category_products: element.category_products,
+                            kategori_products: element.kategori_products,
                             deskripsi: element.deskripsi,
                             tools: tools
                         })
