@@ -9,6 +9,7 @@ const member_achievements = db.define('member_achievement', {
     },
     'nama_member': Sequelize.STRING,
     'jurusan': Sequelize.STRING,
+    'angkatan' : Sequelize.STRING,
     'id_achievement': Sequelize.INTEGER
 }, {
     //prevent sequelize transform table name into plural

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2020 at 03:07 PM
+-- Generation Time: Feb 12, 2020 at 05:22 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -85,6 +85,7 @@ CREATE TABLE `member_achievement` (
   `id_member` int(11) NOT NULL,
   `nama_member` varchar(20) NOT NULL,
   `jurusan` varchar(20) NOT NULL,
+  `angkatan` varchar(12) NOT NULL,
   `id_achievement` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

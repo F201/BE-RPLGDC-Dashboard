@@ -24,6 +24,7 @@ router.post("/member_achievement", (req, res) => {
     Member.create({
         nama_member : req.body.nama_member,
         jurusan : req.body.jurusan,
+        angkatan: req.body.angkatan,
         id_achievement : req.body.id_achievement
     }).then(member => {
         res.json({
@@ -40,6 +41,7 @@ router.put("/member_achievement/:id_member", (req, res) => {
             Member.update({
                 nama_member : req.body.nama_member,
                 jurusan : req.body.jurusan,
+                angkatan: req.body.angkatan,
                 id_achievement : req.body.id_achievement
             }, {
                 where : { id_member: req.params.id_member },
