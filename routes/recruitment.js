@@ -216,7 +216,7 @@ router.get('/recruitment/sumpass', (req, res) => {
     Recruitment.count({
         where: whereCon,
     }).then(recruitment => {
-        if (!recruitment) {
+        if (!recruitment && recruitment !== 0) {
             console.log(recruitment)
             return res.json({"msg": "data not found"})
         }
