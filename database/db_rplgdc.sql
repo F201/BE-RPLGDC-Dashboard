@@ -68,7 +68,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`idx`, `username`, `password`) VALUES
-(6, 'ilhamizzul', '$2b$15$M8IFRrwq.mve5mRTE9JVi.G1GgHutgjAQ4CJbwar0SvTnQIRrRPvC');
+(6, 'rplgdcadmin', '$2b$15$D8505ltRGE5mZtsaNcTFsu2.SmpcxJH0nkPHAXW4WVpaDVpoShkAy');
 
 -- --------------------------------------------------------
 
