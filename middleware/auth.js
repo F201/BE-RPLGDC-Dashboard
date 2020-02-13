@@ -19,6 +19,7 @@ const auth = (req, res, next) =>  {
     // console.log('heheheheuheuheuheuheuheu', bearerHeader)
     const allowRoute = [
         // {route: '/recruitment/', method: "GET"},
+        // {route: '/registerAdmin', method: "POST"},
         {route: '/recruitment', method: "POST"},
         {route: '/recruitment/checkstatus', method: "GET", withId: true},
         {route: '/tools', method: "GET", withId: true},
@@ -38,6 +39,7 @@ const auth = (req, res, next) =>  {
         {route: '/divisions', method: "GET", withId: true},
         {route: '/detail_achievement', method: "GET", withId: true},
         {route: '/achievements', method: "GET", withId: true},
+        {route: '/news', method: 'GET', withId: true}
     ]
     // console.log(('/auth' === currentPath && 'POST' === currentMethod))
     if (allowRoute.some(item => {return ((item.route === currentPath && item.method === currentMethod) || (item.method === currentMethod && item.withId && !isNaN(currentPath.replace(item.route + '/', ''))))})) {

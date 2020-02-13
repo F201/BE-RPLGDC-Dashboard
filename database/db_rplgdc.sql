@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 13, 2020 at 08:41 AM
+-- Generation Time: Feb 13, 2020 at 10:11 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -63,6 +63,13 @@ CREATE TABLE `admin` (
   `password` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`idx`, `username`, `password`) VALUES
+(6, 'ilhamizzul', '$2b$15$M8IFRrwq.mve5mRTE9JVi.G1GgHutgjAQ4CJbwar0SvTnQIRrRPvC');
+
 -- --------------------------------------------------------
 
 --
@@ -88,6 +95,20 @@ CREATE TABLE `member_achievement` (
   `jurusan` varchar(20) NOT NULL,
   `angkatan` varchar(12) NOT NULL,
   `id_achievement` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `news`
+--
+
+CREATE TABLE `news` (
+  `id_news` int(11) NOT NULL,
+  `judul` varchar(50) NOT NULL,
+  `gambar` varchar(60) NOT NULL,
+  `deskripsi` varchar(300) NOT NULL,
+  `link_url` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -238,6 +259,12 @@ ALTER TABLE `member_achievement`
   ADD KEY `id_achievement` (`id_achievement`);
 
 --
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id_news`);
+
+--
 -- Indexes for table `org_structures`
 --
 ALTER TABLE `org_structures`
@@ -311,7 +338,7 @@ ALTER TABLE `activities`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `divisions`
@@ -324,6 +351,12 @@ ALTER TABLE `divisions`
 --
 ALTER TABLE `member_achievement`
   MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `news`
+--
+ALTER TABLE `news`
+  MODIFY `id_news` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `org_structures`

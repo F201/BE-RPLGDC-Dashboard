@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const Admin = require('../models/auth')
 
+// const saltRounds = 15
+
 // router.post('/registerAdmin', (req, res) => {
 //   const username = req.body.username
 //   const password = req.body.password
@@ -41,7 +43,8 @@ router.post('/auth', (req, res, next) => {
       bcrypt.compare(req.body.password, auth.password, function (err, result) {
         if (err) {
           res.sendStatus(401).json({
-            message: "AUTH FAILED"
+            message: "AUTH FAILED",
+            status: "error"
           })
         }
         if(result) {
