@@ -200,6 +200,19 @@ router.get('/recruitment/sumpass1', (req, res) => {
 // });
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2
+router.get('/recruitment/sumpass', (req, res) => {
+    pool.getConnection(function(err, connection) {
+        if (err) res.json({status: err});
+        connection.query("SELECT COUNT(*) as pass_member FROM recruitment", function(error, results){
+            connection.release();
+            if(error) res.json({status: error});
+            else {
+                res.json({data: results})
+            }
+        })
+    })
+})
+
 router.get('/recruitment/sumpass2', (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});

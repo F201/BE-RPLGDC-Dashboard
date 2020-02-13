@@ -6,7 +6,11 @@ const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 
 router.get("/organizations", (req, res) => {
-    Organizations.findAll().then(organizations => {
+    Organizations.findAll({
+        order: [
+            ['order_org_structures', 'ASC']
+        ],
+    }).then(organizations => {
         res.json({data: organizations})
     })
 })
