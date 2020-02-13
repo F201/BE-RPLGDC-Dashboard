@@ -43,7 +43,7 @@ router.post("/recruitment/", cpUpload, async(req, res) => {
 // tampilin semua data orang yang daftar
 router.get("/recruitment/", (req, res) => {
     let whereCon= {};
-    if (req.query) {
+    if (req.query.status1) {
         whereCon.status1 = req.query.status1
     }
     if (req.query.status2) {
