@@ -6,7 +6,11 @@ const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 
 router.get("/news", (req, res) => {
-    News.findAll().then(news => {
+    News.findAll({
+        order: [
+            ['order_news', 'ASC']
+        ],
+    }).then(news => {
         res.json({data: news})
     })
 })

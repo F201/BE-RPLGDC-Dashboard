@@ -55,10 +55,14 @@ router.post('/auth', (req, res, next) => {
           }, process.env.JWT_AUTH_CODE);
           res.json({
             token: token,
-            msg: "LOGIN SUCCESS"
+            msg: "LOGIN SUCCESS",
+            status: "success"
           })
         } else {
-          res.json({msg: "LOGIN FAILED"})
+          res.json({
+            msg: "LOGIN FAILED",
+            status: "error"
+          })
         }
       });
       
