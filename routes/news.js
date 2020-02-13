@@ -32,6 +32,7 @@ router.post("/news", upload.single('gambar'), async (req, res) => {
         judul: req.body.judul,
         deskripsi: req.body.deskripsi,
         link_url: req.body.link_url,
+        order_news: req.body.order_news,
         gambar: fileData.gambar === undefined ? "" : fileData.gambar
     }).then(News => {
         res.json({
@@ -50,7 +51,8 @@ router.put("/news/:id_news", upload.single('gambar'), (req, res) => {
                 const x = {
                     judul: req.body.judul,
                     deskripsi: req.body.deskripsi,
-                    link_url: req.body.link_url
+                    link_url: req.body.link_url,
+                    order_news: req.body.order_news
                 }
                 News.update(x, {
                     where : {
@@ -84,6 +86,7 @@ router.put("/news/:id_news", upload.single('gambar'), (req, res) => {
                     judul: req.body.judul,
                     deskripsi: req.body.deskripsi,
                     link_url: req.body.link_url,
+                    order_news: req.body.order_news,
                     gambar: fileData.gambar === undefined ? "" : fileData.gambar
                 }
                 fs.unlink(appDir + "/public/images/news/" + body.data.gambar, function(err) {

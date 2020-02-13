@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 13, 2020 at 10:11 AM
+-- Generation Time: Feb 13, 2020 at 12:35 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -108,7 +108,8 @@ CREATE TABLE `news` (
   `judul` varchar(50) NOT NULL,
   `gambar` varchar(60) NOT NULL,
   `deskripsi` varchar(300) NOT NULL,
-  `link_url` varchar(30) NOT NULL
+  `link_url` varchar(30) NOT NULL,
+  `order_news` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
