@@ -10,7 +10,8 @@ const news = db.define('news', {
     'judul': Sequelize.STRING,
     'gambar': Sequelize.STRING,
     'deskripsi': Sequelize.STRING,
-    'link_url': Sequelize.STRING
+    'link_url': Sequelize.STRING,
+    'order_news': Sequelize.INTEGER
 }, {
     //prevent sequelize transform table name into plural
     freezeTableName: true,
