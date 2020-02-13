@@ -8,6 +8,7 @@ const divisions = db.define('divisions', {
         autoIncrement: true
     },
     'nama_divisi': Sequelize.STRING,
+    'gambar_divisi' : Sequelize.STRING,
     'deskripsi': Sequelize.STRING
 }, {
     //prevent sequelize transform table name into plural

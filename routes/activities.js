@@ -1,18 +1,102 @@
 const express = require('express')
 const Activities = require('../models/activities')
 const router  = express.Router()
-const upload  = require('../middleware/uploadOrg')
+const {fileDir, upload}  = require('../middleware/uploadActivities')
 const request = require('request')
+const uploadFile = require('../middleware/uploadFile')
+const pool = require('../conn')
 
-router.get("/api/v1/activities", (req, res) => {
+router.get("/activities", (req, res) => {
     Activities.findAll().then(activities => {
         res.json({data: activities})
     })
 })
 
-router.get("/api/v1/activities/:id_activity", (req, res) => {
+router.get("/detail_activities", (req, res) => {
+    pool.getConnection(function(err, connection) {
+        if (err) res.json({status: err});
+        connection.query('SELECT * FROM activities', (error, activity_results) => {
+            connection.release();
+            if (error) {
+                res.json({status: error})
+            } else {
+                let data_activities = {activities : []}
+                
+                activity_results.forEach(async (data, index) => {
+                    const divisions = await getDivisionById(data.id_activities).catch(result => {
+                        res.status(500).json(result)
+                    })
+
+                    data_activities.activities.push({
+                        id_activities: data.id_activities,
+                        nama_activities: data.nama_activities,
+                        gambar_activities: data.gambar_activities,
+                        tanggal: data.tanggal,
+                        deskripsi: data.deskripsi,
+                        divisions: divisions
+                    })
+
+                    if (activity_results.length === index + 1) {
+                        res.status(200).json(data_activities)
+                    }
+                });
+            }
+        })
+    })
+})
+
+router.get("/detail_activities/:id_activities", (req, res) => {
+    pool.getConnection(function(err, connection) {
+        if (err) res.json({status: err});
+        connection.query("SELECT * FROM activities WHERE id_activities = ?", [req.params.id_activities], (error, results) => {
+            connection.release();
+            if (error) {
+                res.json({status: error})
+            } else {
+                let data_activities = {activities : []}
+                
+                results.forEach(async (data, index) => {
+                    const divisions = await getDivisionById(data.id_activities).catch(result => {
+                        res.status(500).json(result)
+                    })
+
+                    data_activities.activities.push({
+                        id_activities: data.id_activities,
+                        nama_activities: data.nama_activities,
+                        gambar_activities: data.gambar_activities,
+                        tanggal: data.tanggal,
+                        deskripsi: data.deskripsi,
+                        divisions: divisions
+                    })
+
+                    if (results.length === index + 1) {
+                        res.status(200).json(data_activities)
+                    }
+                });
+            }
+        })
+    })
+})
+
+const getDivisionById = (id) => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection(function(err, connection) {
+            if (err) res.json({status: err});
+            connection.query('SELECT idx, id_divisi, nama_divisi, gambar_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (error, results) => {
+                connection.release();
+                if (error) {
+                    return reject(error)
+                } else {
+                    return resolve(results)
+                }
+            })
+        })
+    })
+}
+
+router.get("/activities/:id_activities", (req, res) => {
     Activities.findOne({
-        where: { id_activity : req.params.id_activity }
+        where: { id_activities : req.params.id_activities }
     }).then(activities => {
         if (!activities) {
             return res.json({"msg": "data not found"})
@@ -21,14 +105,16 @@ router.get("/api/v1/activities/:id_activity", (req, res) => {
     })
 })
 
-// kebawah masih error (belum jadi)
-
-router.post("/api/v1/activities", upload.single('foto_org_structures'), (req, res) => {
+router.post("/activities", upload.single('gambar_activities'), async(req, res) => {
+    if (!req.file) {
+        return res.sendStatus(403)
+    }
+    let fileData = await uploadFile.single(fileDir, req.file)
     Activities.create({
-        nama_org_structures: req.body.nama_org_structures,
-        posisi_org_structures: req.body.posisi_org_structures,
-        angkatan_org_structures: req.body.angkatan_org_structures,
-        foto_org_structures: req.file === undefined ? "" : req.file.filename
+        nama_activities: req.body.nama_activities,
+        tanggal: req.body.tanggal,
+        deskripsi: req.body.deskripsi,
+        gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
     }).then(activities => {
         res.json({
             "data": activities
@@ -36,31 +122,26 @@ router.post("/api/v1/activities", upload.single('foto_org_structures'), (req, re
     })
 })
 
-router.put("/api/v1/activities/:org_id", upload.single('foto_org_structures'), (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/api/v1/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
-        if (err) { return console.log(err) }
-        let fs = require('fs')
-        let path = require('path')
-        let appDir = path.dirname(require.main.filename)
-        if (body.data == undefined) {
-            fs.unlink(appDir + "/public/images/activities/" + req.file.filename)
-            res.json({"msg": "data not found"})
-        } else {
-            const x = {
-                nama_org_structures: req.body.nama_org_structures,
-                posisi_org_structures: req.body.posisi_org_structures,
-                angkatan_org_structures: req.body.angkatan_org_structures,
-                foto_org_structures: req.file === undefined ? "" : req.file.filename
-            }
-            fs.unlink(appDir + "/public/images/activities/" + body.data.foto_org_structures, function(err) {
+router.put("/activities/:id_activities", upload.single('gambar_activities'), (req, res) => {
+    if (!req.file) {
+        request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
+            if (err) { return console.log(err) }
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
+            } else {
+                const x = {
+                    nama_activities: req.body.nama_activities,
+                    tanggal: req.body.tanggal,
+                    deskripsi: req.body.deskripsi,
+                }
                 Activities.update(x, {
                     where : {
-                        id_org_structures: req.params.org_id
+                        id_activities: req.params.id_activities
                     },
                     returning: true,
                     plain: true
                 }).then(affectedRow => {
-                    return Activities.findOne({where: {id_org_structures: req.params.org_id}})      
+                    return Activities.findOne({where: {id_activities: req.params.id_activities}})      
                 }).then(b => {
                     res.json({
                         "status": "success",
@@ -68,13 +149,48 @@ router.put("/api/v1/activities/:org_id", upload.single('foto_org_structures'), (
                         "data": b
                     })
                 })
-            })
-        }
-    })
+            }
+        })
+    } else {
+        request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, async(err, res2, body) => {
+            if (err) { return console.log(err) }
+            let fileData = await uploadFile.single(fileDir, req.file)
+            let fs = require('fs')
+            let path = require('path')
+            let appDir = path.dirname(require.main.filename)
+            if (body.data == undefined) {
+                res.json({"msg": "data not found"})
+            } else {
+                const x = {
+                    nama_activities: req.body.nama_activities,
+                    tanggal: req.body.tanggal,
+                    deskripsi: req.body.deskripsi,
+                    gambar_activities: fileData.gambar_activities === undefined ? "" : fileData.gambar_activities
+                }
+                fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
+                    Activities.update(x, {
+                        where : {
+                            id_activities: req.params.id_activities
+                        },
+                        returning: true,
+                        plain: true
+                    }).then(affectedRow => {
+                        return Activities.findOne({where: {id_activities: req.params.id_activities}})      
+                    }).then(b => {
+                        res.json({
+                            "status": "success",
+                            "message": "data updated",
+                            "data": b
+                        })
+                    })
+                })
+            }
+        })
+    }
 })
 
-router.delete("/api/v1/activities/:org_id", (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/api/v1/activities/"+req.params.org_id, { json: true }, (err, res2, body) => {
+router.delete("/activities/:id_activities", (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/activities/"+req.params.id_activities, { json: true }, (err, res2, body) => {
         if (err) { return console.log(err) }
         if (body.data == undefined) {
             res.json({"msg": "data not found"})
@@ -82,10 +198,10 @@ router.delete("/api/v1/activities/:org_id", (req, res) => {
             let fs = require('fs')
             let path = require('path')
             let appDir = path.dirname(require.main.filename)
-            fs.unlink(appDir + "/public/images/activities/" + body.data.foto_org_structures, function(err) {
+            fs.unlink(appDir + "/public/images/activities/" + body.data.gambar_activities, function(err) {
                 Activities.destroy({
                     where: {
-                        id_org_structures: req.params.org_id
+                        id_activities: req.params.id_activities
                     }
                 }).then(menu => {
                     res.json({

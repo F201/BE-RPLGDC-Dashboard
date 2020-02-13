@@ -3,13 +3,13 @@ const Socials = require('../models/socials')
 const router = express.Router()
 const request = require('request')
 
-router.get("/api/v1/socials", (req, res) => {
+router.get("/socials", (req, res) => {
     Socials.findAll().then(socials => {
         res.json({data: socials})
     })
 })
 
-router.get("/api/v1/socials/:id_social", (req, res) => {
+router.get("/socials/:id_social", (req, res) => {
     Socials.findOne({
         where: {id_social : req.params.id_social}
     }).then(division => {
@@ -20,7 +20,7 @@ router.get("/api/v1/socials/:id_social", (req, res) => {
     })
 })
 
-router.post("/api/v1/socials", (req, res) => {
+router.post("/socials", (req, res) => {
     Socials.create({
         type : req.body.type,
         value : req.body.value
@@ -29,8 +29,8 @@ router.post("/api/v1/socials", (req, res) => {
     })
 })
 
-router.put("/api/v1/socials/:id_social", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/api/v1/socials/" + req.params.id_social, { json: true }, (err, res2, body) => {
+router.put("/socials/:id_social", (req, res) => {
+    request(req.protocol + "://" + req.headers.host + "/socials/" + req.params.id_social, { json: true }, (err, res2, body) => {
         if (body.data == undefined) {
             res.json({msg : "data not found"})
         } else {
@@ -54,8 +54,8 @@ router.put("/api/v1/socials/:id_social", (req, res) => {
     })
 })
 
-router.delete("/api/v1/socials/:id_social", (req, res) => {
-    request(req.protocol + "://" + req.headers.host + "/api/v1/socials/" + req.params.id_social, { json: true }, (err, res2, body) => {
+router.delete("/socials/:id_social", (req, res) => {
+    request(req.protocol + "://" + req.headers.host + "/socials/" + req.params.id_social, { json: true }, (err, res2, body) => {
         if (body.data == undefined) {
             res.json({msg : "data not found"})
         } else {
