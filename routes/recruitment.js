@@ -43,16 +43,18 @@ router.post("/recruitment/", cpUpload, async(req, res) => {
 // tampilin semua data orang yang daftar
 router.get("/recruitment/", (req, res) => {
     let whereCon= {};
-    if (req.query.status1) {
-        whereCon['where'].status1 = req.query.status1
+    if (req.query) {
+        whereCon.status1 = req.query.status1
     }
     if (req.query.status2) {
-        whereCon['where'].status2 = req.query.status2
+        whereCon.status2 = req.query.status2
     }
     if (req.query.div) {
-        whereCon['where'].division = req.query.div
+        whereCon.division = req.query.div
     }
-    Recruitment.findAll(whereCon).then(recruitment => {
+    Recruitment.findAll({
+        where: whereCon
+    }).then(recruitment => {
         if (!recruitment) {
             return res.json({"msg": "data not found"})
         }
@@ -207,15 +209,22 @@ router.get('/recruitment/sumpass1', (req, res) => {
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2
 router.get('/recruitment/sumpass', (req, res) => {
-    Recruitment.findAll({
-        where: {
-            division: req.query.div
-        }
+    let whereCon = {}
+    if (req.query.div) {
+        whereCon.divisi = req.query.div
+    }
+    Recruitment.count({
+        where: whereCon,
     }).then(recruitment => {
         if (!recruitment) {
+            console.log(recruitment)
             return res.json({"msg": "data not found"})
         }
-        res.json({data: recruitment})
+        res.json({data: {
+            count: recruitment
+            },
+            status: 'success'
+        })
     })
     // pool.getConnection(function(err, connection) {
     //     if (err) res.json({status: err});
