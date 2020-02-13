@@ -115,7 +115,7 @@ router.post("/achievements", upload.single('foto_achievement'), async (req, res)
     console.log('file',fileData)
     Achievements.create({
         judul: req.body.judul,
-        nama_lomba: data.nama_lomba,
+        nama_lomba: req.body.nama_lomba,
         tahun: req.body.tahun,
         peringkat: req.body.peringkat,
         foto_achievement: fileData.foto_achievement === undefined ? "" : fileData.foto_achievement
