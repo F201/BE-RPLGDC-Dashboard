@@ -43,8 +43,14 @@ router.post("/recruitment/", cpUpload, async(req, res) => {
 // tampilin semua data orang yang daftar
 router.get("/recruitment/", (req, res) => {
     let whereCon= {};
-    if (req.query) {
-        whereCon['where'] = req.query
+    if (req.query.status1) {
+        whereCon['where'].status1 = req.query.status1
+    }
+    if (req.query.status2) {
+        whereCon['where'].status2 = req.query.status2
+    }
+    if (req.query.div) {
+        whereCon['where'].division = req.query.div
     }
     Recruitment.findAll(whereCon).then(recruitment => {
         if (!recruitment) {
@@ -201,16 +207,26 @@ router.get('/recruitment/sumpass1', (req, res) => {
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2
 router.get('/recruitment/sumpass', (req, res) => {
-    pool.getConnection(function(err, connection) {
-        if (err) res.json({status: err});
-        connection.query("SELECT COUNT(*) as pass_member FROM recruitment", function(error, results){
-            connection.release();
-            if(error) res.json({status: error});
-            else {
-                res.json({data: results})
-            }
-        })
+    Recruitment.findAll({
+        where: {
+            division: req.query.div
+        }
+    }).then(recruitment => {
+        if (!recruitment) {
+            return res.json({"msg": "data not found"})
+        }
+        res.json({data: recruitment})
     })
+    // pool.getConnection(function(err, connection) {
+    //     if (err) res.json({status: err});
+    //     connection.query("SELECT COUNT(*) as pass_member FROM recruitment", function(error, results){
+    //         connection.release();
+    //         if(error) res.json({status: error});
+    //         else {
+    //             res.json({data: results})
+    //         }
+    //     })
+    // })
 })
 
 router.get('/recruitment/sumpass2', (req, res) => {
