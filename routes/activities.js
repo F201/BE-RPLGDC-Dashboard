@@ -82,7 +82,7 @@ const getDivisionById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});
-            connection.query('SELECT id_divisi, nama_divisi, gambar_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (error, results) => {
+            connection.query('SELECT idx, id_divisi, nama_divisi, gambar_divisi FROM divisions JOIN pivot_division_activities USING (id_divisi) WHERE id_activities= ?', [id], (error, results) => {
                 connection.release();
                 if (error) {
                     return reject(error)

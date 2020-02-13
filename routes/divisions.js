@@ -10,7 +10,7 @@ const getToolsById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});
-            connection.query('SELECT tools.id_tools, nama_tools, gambar_tools FROM tools JOIN pivot_division_tools USING (id_tools) WHERE id_divisi = ?', [id], (error, results) => {
+            connection.query('SELECT idx, tools.id_tools, nama_tools, gambar_tools FROM tools JOIN pivot_division_tools USING (id_tools) WHERE id_divisi = ?', [id], (error, results) => {
                 connection.release();
                 if (error) {
                     return reject(error)
@@ -26,7 +26,7 @@ const getActivitiesById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});
-            connection.query('SELECT activities.id_activities, nama_activities, gambar_activities, tanggal, deskripsi FROM activities JOIN pivot_division_activities USING (id_activities) WHERE id_divisi = ?', [id], (error, results) => {
+            connection.query('SELECT idx, activities.id_activities, nama_activities, gambar_activities, tanggal, deskripsi FROM activities JOIN pivot_division_activities USING (id_activities) WHERE id_divisi = ?', [id], (error, results) => {
                 connection.release();
                 if (error) {
                     return reject(error)
