@@ -136,7 +136,7 @@ router.put("/achievements/:id_achievement", upload.single('foto_achievement'), (
                 const x = {
                     judul: req.body.judul,
                     tahun: req.body.tahun,
-                    nama_lomba: req.nama_lomba,
+                    nama_lomba: req.body.nama_lomba,
                     peringkat: req.body.peringkat
                 }
                 Achievements.update(x, {
@@ -169,7 +169,7 @@ router.put("/achievements/:id_achievement", upload.single('foto_achievement'), (
             } else {
                 const x = {
                     judul: req.body.judul,
-                    nama_lomba: req.nama_lomba,
+                    nama_lomba: req.body.nama_lomba,
                     tahun: req.body.tahun,
                     peringkat: req.body.peringkat,
                     foto_achievement: fileData.foto_achievement === undefined ? "" : fileData.foto_achievement
