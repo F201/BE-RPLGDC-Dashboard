@@ -95,7 +95,7 @@ router.get("/detail_divisions/:id_divisi", (req, res) => {
                     })
 
                     data_divisions.division.push({
-                        id_divisi: data.id_activities,
+                        id_divisi: data.id_divisi,
                         nama_divisi: data.nama_divisi,
                         gambar_divisi: data.gambar_divisi,
                         deskripsi: data.deskripsi,

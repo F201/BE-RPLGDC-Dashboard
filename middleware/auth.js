@@ -26,7 +26,7 @@ const auth = (req, res, next) =>  {
         {route: '/auth', method: "POST"},
         {route: '/auth/details', method:"POST"},
         {route: '/activities', method: "GET", withId: true},
-        {route: '/detail_activities', method: "GET"},
+        {route: '/detail_activities', method: "GET", withId: true},
         {route: '/detail_products', method: "GET", withId: true},
         {route: '/products', method: "GET", withId: true},
         {route: '/pivot_product_tools', method: "GET", withId: true},
