@@ -136,6 +136,7 @@ router.put("/achievements/:id_achievement", upload.single('foto_achievement'), (
                 const x = {
                     judul: req.body.judul,
                     tahun: req.body.tahun,
+                    nama_lomba: req.nama_lomba,
                     peringkat: req.body.peringkat
                 }
                 Achievements.update(x, {
