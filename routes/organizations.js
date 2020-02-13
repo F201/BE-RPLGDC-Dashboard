@@ -49,7 +49,7 @@ router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req,
                 const x = {
                     nama_org_structures: req.body.nama_org_structures,
                     posisi_org_structures: req.body.posisi_org_structures,
-                    order_org_structures: req.body.angkatan_org_structures,
+                    order_org_structures: req.body.order_org_structures,
                 }
                 Organizations.update(x, {
                     where : {
@@ -82,7 +82,7 @@ router.put("/organizations/:org_id", upload.single('foto_org_structures'), (req,
                 const x = {
                     nama_org_structures: req.body.nama_org_structures,
                     posisi_org_structures: req.body.posisi_org_structures,
-                    order_org_structures: req.body.angkatan_org_structures,
+                    order_org_structures: req.body.order_org_structures,
                     foto_org_structures: fileData.foto_org_structures === undefined ? "" : fileData.foto_org_structures
                 }
                 fs.unlink(appDir + "/public/images/organizations/" + body.data.foto_org_structures, function(err) {
