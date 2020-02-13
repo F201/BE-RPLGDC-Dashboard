@@ -39,6 +39,7 @@ router.get("/detail_achievement", (req, res) => {
 
                     data_achievement.achievement.push({
                         id_achievement: data.id_achievement,
+                        nama_lomba: data.nama_lomba,
                         judul: data.judul,
                         tahun: data.tahun,
                         peringkat: data.peringkat,
@@ -72,6 +73,7 @@ router.get("/detail_achievement/:id_achievement", (req, res) => {
 
                     data_achievement.achievement.push({
                         id_achievement: data.id_achievement,
+                        nama_lomba: data.nama_lomba,
                         judul: data.judul,
                         tahun: data.tahun,
                         peringkat: data.peringkat,
@@ -113,6 +115,7 @@ router.post("/achievements", upload.single('foto_achievement'), async (req, res)
     console.log('file',fileData)
     Achievements.create({
         judul: req.body.judul,
+        nama_lomba: data.nama_lomba,
         tahun: req.body.tahun,
         peringkat: req.body.peringkat,
         foto_achievement: fileData.foto_achievement === undefined ? "" : fileData.foto_achievement
@@ -165,6 +168,7 @@ router.put("/achievements/:id_achievement", upload.single('foto_achievement'), (
             } else {
                 const x = {
                     judul: req.body.judul,
+                    nama_lomba: data.nama_lomba,
                     tahun: req.body.tahun,
                     peringkat: req.body.peringkat,
                     foto_achievement: fileData.foto_achievement === undefined ? "" : fileData.foto_achievement

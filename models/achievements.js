@@ -8,6 +8,7 @@ const achievements = db.define('achievements', {
         autoIncrement: true
     },
     'judul': Sequelize.STRING,
+    'nama_lomba': Sequelize.STRING,
     'tahun': Sequelize.INTEGER,
     'peringkat': Sequelize.STRING,
     'foto_achievement': Sequelize.STRING,
