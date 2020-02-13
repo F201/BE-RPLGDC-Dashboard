@@ -6,6 +6,11 @@ const pool = require('../conn')
 const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+}
 
 router.get('/detail_products/:id_products', (req, res) => {
     pool.getConnection(function(err, connection) {
@@ -46,18 +51,17 @@ router.get('/detail_products', (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});
         connection.query(
-            'SELECT * FROM products', (error, product_results) => {
+            'SELECT * FROM products', async (error, product_results) => {
                 connection.release();
                 if(error) {
                     res.json({status: error})
                 } else {
                     let data_product = {product : []}
 
-                    product_results.forEach(async (element, index) => {
+                    await asyncForEach(product_results, async (element) => {
                         const tools = await getToolsById(element.id_products).catch(result => {
                             res.status(500).json(result)
                         })
-
                         data_product.product.push({
                             id_products: element.id_products,
                             nama_products: element.nama_products,
@@ -66,11 +70,28 @@ router.get('/detail_products', (req, res) => {
                             deskripsi: element.deskripsi,
                             tools: tools
                         })
+                    })
 
-                        if (product_results.length === index + 1) {
-                            res.status(200).json(data_product)
-                        }
-                    });
+                    res.status(200).json(data_product)
+
+                    // product_results.forEach(async (element, index) => {
+                    //     const tools = await getToolsById(element.id_products).catch(result => {
+                    //         res.status(500).json(result)
+                    //     })
+
+                    //     data_product.product.push({
+                    //         id_products: element.id_products,
+                    //         nama_products: element.nama_products,
+                    //         gambar_products: element.gambar_products,
+                    //         kategori_products: element.kategori_products,
+                    //         deskripsi: element.deskripsi,
+                    //         tools: tools
+                    //     })
+
+                    //     if (product_results.length === index + 1) {
+                    //         res.status(200).json(data_product)
+                    //     }
+                    // });
                 }
             }
         )

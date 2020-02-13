@@ -6,6 +6,12 @@ const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 const pool = require('../conn')
 
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+}
+
 const getMembersById = (id) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
@@ -25,14 +31,14 @@ const getMembersById = (id) => {
 router.get("/detail_achievement", (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});
-        connection.query("SELECT * FROM achievements", (error, results) => {
+        connection.query("SELECT * FROM achievements", async (error, results) => {
             connection.release();
             if (error) {
                 res.json({status: error})
             } else {
                 let data_achievement = {achievement : []}
                 
-                results.forEach(async (data, index) => {
+                await asyncForEach(results, async (data) => {
                     const members = await getMembersById(data.id_achievement).catch(result => {
                         res.status(500).json(result)
                     })
@@ -46,11 +52,27 @@ router.get("/detail_achievement", (req, res) => {
                         foto_achievement: data.foto_achievement,
                         members: members
                     })
+                })
+                res.status(200).json(data_achievement)
+                // results.forEach(async (data, index) => {
+                //     const members = await getMembersById(data.id_achievement).catch(result => {
+                //         res.status(500).json(result)
+                //     })
 
-                    if (results.length === index + 1) {
-                        res.status(200).json(data_achievement)
-                    }
-                });
+                //     data_achievement.achievement.push({
+                //         id_achievement: data.id_achievement,
+                //         nama_lomba: data.nama_lomba,
+                //         judul: data.judul,
+                //         tahun: data.tahun,
+                //         peringkat: data.peringkat,
+                //         foto_achievement: data.foto_achievement,
+                //         members: members
+                //     })
+
+                //     if (results.length === index + 1) {
+                //         res.status(200).json(data_achievement)
+                //     }
+                // });
             }
         })
     })

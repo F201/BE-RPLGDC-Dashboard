@@ -108,7 +108,7 @@ CREATE TABLE `news` (
   `judul` varchar(50) NOT NULL,
   `gambar` varchar(60) NOT NULL,
   `deskripsi` varchar(300) NOT NULL,
-  `link_url` varchar(30) NOT NULL,
+  `link_url` varchar(100) NOT NULL,
   `order_news` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
