@@ -6,7 +6,7 @@ const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 const pool = require('../conn')
 
-const getToolsById = (id) => {
+const getToolsById = (id, res) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});
@@ -22,7 +22,7 @@ const getToolsById = (id) => {
     })
 }
 
-const getActivitiesById = (id) => {
+const getActivitiesById = (id, res) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});
@@ -49,16 +49,16 @@ router.get("/detail_divisions", (req, res) => {
                 let data_divisions = {division : []}
 
                 division_results.forEach(async (data, index) => {
-                    const tools = await getToolsById(data.id_divisi).catch(result => {
+                    const tools = await getToolsById(data.id_divisi, res).catch(result => {
                         res.status(500).json(result)
                     })
 
-                    const activities = await getActivitiesById(data.id_divisi).catch(result => {
+                    const activities = await getActivitiesById(data.id_divisi, res).catch(result => {
                         res.status(500).json(result)
                     })
 
                     data_divisions.division.push({
-                        id_divisi: data.id_activities,
+                        id_divisi: data.id_divisi,
                         nama_divisi: data.nama_divisi,
                         gambar_divisi: data.gambar_divisi,
                         deskripsi: data.deskripsi,
@@ -86,11 +86,11 @@ router.get("/detail_divisions/:id_divisi", (req, res) => {
                 let data_divisions = {division : []}
 
                 division_results.forEach(async (data, index) => {
-                    const tools = await getToolsById(data.id_divisi).catch(result => {
+                    const tools = await getToolsById(data.id_divisi, res).catch(result => {
                         res.status(500).json(result)
                     })
 
-                    const activities = await getActivitiesById(data.id_divisi).catch(result => {
+                    const activities = await getActivitiesById(data.id_divisi, res).catch(result => {
                         res.status(500).json(result)
                     })
 
