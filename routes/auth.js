@@ -50,7 +50,7 @@ router.post('/auth', (req, res, next) => {
         if(result) {
           const token = jwt.sign({ 
             // generate token for 1 hour
-            exp: Math.floor(Date.now() / 1000) + (60 * 60),
+            exp: Math.floor(Date.now() / 1000) + (24* 60 * 60),
             username: req.body.username
           }, process.env.JWT_AUTH_CODE);
           res.json({

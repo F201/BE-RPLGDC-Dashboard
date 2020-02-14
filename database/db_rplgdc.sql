@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 13, 2020 at 12:35 PM
+-- Generation Time: Feb 14, 2020 at 04:23 AM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.2
 
@@ -68,7 +68,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`idx`, `username`, `password`) VALUES
-(6, 'rplgdcadmin', '$2b$15$D8505ltRGE5mZtsaNcTFsu2.SmpcxJH0nkPHAXW4WVpaDVpoShkAy');
+(6, 'ilhamizzul', '$2b$15$M8IFRrwq.mve5mRTE9JVi.G1GgHutgjAQ4CJbwar0SvTnQIRrRPvC');
 
 -- --------------------------------------------------------
 
@@ -82,6 +82,30 @@ CREATE TABLE `divisions` (
   `gambar_divisi` varchar(75) NOT NULL,
   `deskripsi` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `highscore_game`
+--
+
+CREATE TABLE `highscore_game` (
+  `idx` int(11) NOT NULL,
+  `nim` int(12) NOT NULL,
+  `score` int(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `highscore_game`
+--
+
+INSERT INTO `highscore_game` (`idx`, `nim`, `score`) VALUES
+(1, 1301184065, 15302),
+(2, 130, 153231),
+(3, 1304377, 15347),
+(4, 2147483647, 10000),
+(5, 2147483647, 15000),
+(6, 2147483647, 55000);
 
 -- --------------------------------------------------------
 
@@ -108,7 +132,7 @@ CREATE TABLE `news` (
   `judul` varchar(50) NOT NULL,
   `gambar` varchar(60) NOT NULL,
   `deskripsi` varchar(300) NOT NULL,
-  `link_url` varchar(100) NOT NULL,
+  `link_url` varchar(30) NOT NULL,
   `order_news` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -253,6 +277,12 @@ ALTER TABLE `divisions`
   ADD PRIMARY KEY (`id_divisi`);
 
 --
+-- Indexes for table `highscore_game`
+--
+ALTER TABLE `highscore_game`
+  ADD PRIMARY KEY (`idx`);
+
+--
 -- Indexes for table `member_achievement`
 --
 ALTER TABLE `member_achievement`
@@ -346,6 +376,12 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `divisions`
   MODIFY `id_divisi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `highscore_game`
+--
+ALTER TABLE `highscore_game`
+  MODIFY `idx` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `member_achievement`
