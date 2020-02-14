@@ -21,7 +21,7 @@ router.get("/activities", (req, res) => {
 router.get("/detail_activities", (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});
-        connection.query('SELECT * FROM activities', (error, activity_results) => {
+        connection.query('SELECT * FROM activities',async (error, activity_results) => {
             connection.release();
             if (error) {
                 res.json({status: error})
@@ -51,7 +51,7 @@ router.get("/detail_activities", (req, res) => {
 router.get("/detail_activities/:id_activities", (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});
-        connection.query("SELECT * FROM activities WHERE id_activities = ?", [req.params.id_activities], (error, results) => {
+        connection.query("SELECT * FROM activities WHERE id_activities = ?", [req.params.id_activities], async (error, results) => {
             connection.release();
             if (error) {
                 res.json({status: error})
