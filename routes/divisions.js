@@ -6,6 +6,12 @@ const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 const pool = require('../conn')
 
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+}
+
 const getToolsById = (id, res) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
@@ -41,14 +47,14 @@ const getActivitiesById = (id, res) => {
 router.get("/detail_divisions", (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});
-        connection.query('SELECT * FROM divisions', (error, division_results) => {
+        connection.query('SELECT * FROM divisions',async (error, division_results) => {
             connection.release();
             if (error) {
                 res.json({status: error})
             } else {
                 let data_divisions = {division : []}
 
-                division_results.forEach(async (data, index) => {
+                await asyncForEach(division_results, async (data) => {
                     const tools = await getToolsById(data.id_divisi, res).catch(result => {
                         res.status(500).json(result)
                     })
@@ -66,10 +72,8 @@ router.get("/detail_divisions", (req, res) => {
                         activities: activities
                     })
 
-                    if(division_results.length === index + 1) {
-                        res.status(200).json(data_divisions)
-                    }
                 });
+                res.status(200).json(data_divisions)
             }
         })
     })
@@ -78,14 +82,15 @@ router.get("/detail_divisions", (req, res) => {
 router.get("/detail_divisions/:id_divisi", (req, res) => {
     pool.getConnection(function(err, connection) {
         if (err) res.json({status: err});
-        connection.query('SELECT * FROM divisions WHERE id_divisi = ?', [req.params.id_divisi], (error, division_results) => {
+        connection.query('SELECT * FROM divisions WHERE id_divisi = ?', [req.params.id_divisi], async (error, division_results) => {
             connection.release();
             if (error) {
                 res.json({status: error})
             } else {
                 let data_divisions = {division : []}
 
-                division_results.forEach(async (data, index) => {
+
+                await asyncForEach(division_results, async (data) => {
                     const tools = await getToolsById(data.id_divisi, res).catch(result => {
                         res.status(500).json(result)
                     })
@@ -103,10 +108,8 @@ router.get("/detail_divisions/:id_divisi", (req, res) => {
                         activities: activities
                     })
 
-                    if(division_results.length === index + 1) {
-                        res.status(200).json(data_divisions)
-                    }
                 });
+                res.status(200).json(data_divisions)
             }
         })
     })
