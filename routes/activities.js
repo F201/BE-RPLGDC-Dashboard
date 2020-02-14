@@ -6,6 +6,12 @@ const request = require('request')
 const uploadFile = require('../middleware/uploadFile')
 const pool = require('../conn')
 
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+}
+
 router.get("/activities", (req, res) => {
     Activities.findAll().then(activities => {
         res.json({data: activities})
@@ -22,11 +28,11 @@ router.get("/detail_activities", (req, res) => {
             } else {
                 let data_activities = {activities : []}
                 
-                activity_results.forEach(async (data, index) => {
+                await asyncForEach(activity_results, async (data) => {
                     const divisions = await getDivisionById(data.id_activities, res).catch(result => {
                         res.status(500).json(result)
                     })
-
+                    
                     data_activities.activities.push({
                         id_activities: data.id_activities,
                         nama_activities: data.nama_activities,
@@ -35,11 +41,8 @@ router.get("/detail_activities", (req, res) => {
                         deskripsi: data.deskripsi,
                         divisions: divisions
                     })
-
-                    if (activity_results.length === index + 1) {
-                        res.status(200).json(data_activities)
-                    }
                 });
+                res.status(200).json(data_activities)
             }
         })
     })
@@ -55,7 +58,7 @@ router.get("/detail_activities/:id_activities", (req, res) => {
             } else {
                 let data_activities = {activities : []}
                 
-                results.forEach(async (data, index) => {
+                await asyncForEach(results, async (data) => {
                     const divisions = await getDivisionById(data.id_activities, res).catch(result => {
                         res.status(500).json(result)
                     })
@@ -68,11 +71,8 @@ router.get("/detail_activities/:id_activities", (req, res) => {
                         deskripsi: data.deskripsi,
                         divisions: divisions
                     })
-
-                    if (results.length === index + 1) {
-                        res.status(200).json(data_activities)
-                    }
                 });
+                res.status(200).json(data_activities)
             }
         })
     })
