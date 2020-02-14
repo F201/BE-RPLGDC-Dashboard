@@ -12,7 +12,7 @@ async function asyncForEach(array, callback) {
     }
 }
 
-const getMembersById = (id) => {
+const getMembersById = (id, res) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});
@@ -39,7 +39,7 @@ router.get("/detail_achievement", (req, res) => {
                 let data_achievement = {achievement : []}
                 
                 await asyncForEach(results, async (data) => {
-                    const members = await getMembersById(data.id_achievement).catch(result => {
+                    const members = await getMembersById(data.id_achievement, res).catch(result => {
                         res.status(500).json(result)
                     })
 
@@ -89,7 +89,7 @@ router.get("/detail_achievement/:id_achievement", (req, res) => {
                 let data_achievement = {achievement : []}
                 
                 results.forEach(async (data, index) => {
-                    const members = await getMembersById(data.id_achievement).catch(result => {
+                    const members = await getMembersById(data.id_achievement, res).catch(result => {
                         res.status(500).json(result)
                     })
 

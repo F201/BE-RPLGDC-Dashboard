@@ -24,7 +24,7 @@ router.get('/detail_products/:id_products', (req, res) => {
                     let data_product = {product : []}
                     let tools;
                     product_results.forEach(async (element, index) => {
-                        tools = await getToolsById(element.id_products).catch(result => {
+                        tools = await getToolsById(element.id_products, res).catch(result => {
                             res.status(500).json(result)
                         })
 
@@ -59,7 +59,7 @@ router.get('/detail_products', (req, res) => {
                     let data_product = {product : []}
 
                     await asyncForEach(product_results, async (element) => {
-                        const tools = await getToolsById(element.id_products).catch(result => {
+                        const tools = await getToolsById(element.id_products, res).catch(result => {
                             res.status(500).json(result)
                         })
                         data_product.product.push({
@@ -97,7 +97,7 @@ router.get('/detail_products', (req, res) => {
         )
     })
 })
-const getToolsById = (id) => {
+const getToolsById = (id, res) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});

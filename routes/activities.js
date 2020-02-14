@@ -23,7 +23,7 @@ router.get("/detail_activities", (req, res) => {
                 let data_activities = {activities : []}
                 
                 activity_results.forEach(async (data, index) => {
-                    const divisions = await getDivisionById(data.id_activities).catch(result => {
+                    const divisions = await getDivisionById(data.id_activities, res).catch(result => {
                         res.status(500).json(result)
                     })
 
@@ -56,7 +56,7 @@ router.get("/detail_activities/:id_activities", (req, res) => {
                 let data_activities = {activities : []}
                 
                 results.forEach(async (data, index) => {
-                    const divisions = await getDivisionById(data.id_activities).catch(result => {
+                    const divisions = await getDivisionById(data.id_activities, res).catch(result => {
                         res.status(500).json(result)
                     })
 
@@ -78,7 +78,7 @@ router.get("/detail_activities/:id_activities", (req, res) => {
     })
 })
 
-const getDivisionById = (id) => {
+const getDivisionById = (id, res) => {
     return new Promise((resolve, reject) => {
         pool.getConnection(function(err, connection) {
             if (err) res.json({status: err});
