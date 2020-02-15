@@ -14,6 +14,12 @@ router.get("/score", (req, res) => {
     })
 })
 
+router.get("/allscore", (req, res) => {
+    Highscore.findAll().then(highscore => {
+        res.json({data: highscore})
+    })
+})
+
 router.get("/score/:nim", (req, res) => {
     Highscore.findOne({
         where: {
