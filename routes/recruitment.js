@@ -183,7 +183,7 @@ router.get('/recruitment/sumpass1', (req, res) => {
             else {
                 res.json({data: results})
             }
-            console.log('hehe')
+            // console.log('hehe')
         })
     })
 })
@@ -212,6 +212,9 @@ router.get('/recruitment/sumpass', (req, res) => {
     let whereCon = {}
     if (req.query.div) {
         whereCon.divisi = req.query.div
+    }
+    if (req.query.angkatan) {
+        whereCon.angkatan = req.query.angkatan
     }
     Recruitment.count({
         where: whereCon,
@@ -243,7 +246,7 @@ router.get('/recruitment/sumpass2', (req, res) => {
         if (err) res.json({status: err});
         connection.query("SELECT COUNT(*) as pass_member FROM recruitment WHERE status1='1' AND status2='1'", function(error, results){
             connection.release();
-            if(error) res.json({status: error});
+            if(error) res.json({status: error, msg : 'error'});
             else {
                 res.json({data: results})
             }
@@ -251,18 +254,18 @@ router.get('/recruitment/sumpass2', (req, res) => {
     })
 })
 // mendapatkan semua data yang lulus seleksi 1 dan seleksi 2
-// router.get('/recruitment/datapass2', (req, res) => {
-//     pool.getConnection(function(err, connection) {
-//         if (err) throw err;
-//         connection.query("SELECT * FROM recruitment WHERE status1=1 AND status2=1", function(error, results, fields){
-//             connection.release();
-//             if(error) throw error;
-//             else {
-//                 res.json({data: results})
-//             }
-//         });
-//     })
-// });
+router.get('/recruitment/datapass2', (req, res) => {
+    pool.getConnection(function(err, connection) {
+        if (err) res.json({"msg" : err});
+        connection.query("SELECT * FROM recruitment WHERE status1=1 AND status2=1", function(error, results, fields){
+            connection.release();
+            if(error) res.json({status : error, msg : 'error'});
+            else {
+                res.json({data: results})
+            }
+        });
+    })
+});
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2 berdasarkan divisi
 // router.get('/recruitment/sumpass2/:divisi', (req, res) => {
