@@ -41,7 +41,10 @@ const auth = (req, res, next) =>  {
         {route: '/achievements', method: "GET", withId: true},
         {route: '/news', method: 'GET', withId: true},
         {route: '/score', method: 'GET', withId: true},
-        {route: '/score', method: 'POST'}
+        {route: '/score', method: 'POST'},
+        {route: '/allScore', method: 'GET'},
+        {route: '/recruitment/exportpass1', method: 'GET'},
+        {route: '/recruitment/datapass1', method: 'GET', withId: true}
     ]
     // console.log(('/auth' === currentPath && 'POST' === currentMethod))
     if (allowRoute.some(item => {return ((item.route === currentPath && item.method === currentMethod) || (item.method === currentMethod && item.withId && !isNaN(currentPath.replace(item.route + '/', ''))))})) {

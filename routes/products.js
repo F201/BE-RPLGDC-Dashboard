@@ -219,7 +219,7 @@ router.put("/products/:id_products", upload.single('gambar_products'), (req, res
 
 router.delete("/products/:id_products", (req, res) => {
     request(req.protocol+"://"+req.headers.host+"/products/"+req.params.id_products, { json: true }, (err, res2, body) => {
-        if (err) { return console.log(err) }
+        if (err) { return res.json(err) }
         if (body.data == undefined) {
             res.json({"msg": "data not found"})
         } else {
