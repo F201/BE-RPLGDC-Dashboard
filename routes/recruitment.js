@@ -213,6 +213,9 @@ router.get('/recruitment/sumpass', (req, res) => {
     if (req.query.div) {
         whereCon.divisi = req.query.div
     }
+    if (req.query.angkatan) {
+        whereCon.angkatan = req.query.angkatan
+    }
     Recruitment.count({
         where: whereCon,
     }).then(recruitment => {
