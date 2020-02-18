@@ -1,12 +1,88 @@
 const express = require('express')
 const Recruitment = require('../models/recruitment')
 const router  = express.Router()
-const excelConfig = require('../middleware/excel')
+// const excelConfig = require('../middleware/excel')
 const {fileDir, upload}  = require('../middleware/uploadRecruitment')
 const uploadFile = require('../middleware/uploadFile')
 const request = require('request')
-const excel = require('export-from-json')
 const pool = require('../conn')
+
+const excel = require('excel4node')
+const workbook = new excel.Workbook()
+const worksheet = workbook.addWorksheet('Sheet 1')
+const header = workbook.createStyle({
+    font: {
+      color: 'white',
+      size: 14,
+      align: 'center',
+      bold: true
+    },
+    fill: {
+        type: 'pattern',
+        patternType: 'solid',
+        bgColor: 'black',
+        fgColor: 'black'
+    },
+    alignment: {
+        horizontal: 'center'
+    }
+    // numberFormat: '$#,##0.00; ($#,##0.00); -',
+  });
+const column = workbook.createStyle({
+    font: {
+      color: 'black',
+      size: 12,
+    }
+    // numberFormat: '$#,##0.00; ($#,##0.00); -',
+  });
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+}
+
+router.get('/recruitment/exportpass1', (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/recruitment/datapass1", { json: true }, async (err, res2, body) => {
+        if (err) { return res.json({"msg" : err}) }
+        worksheet.cell(1,1).string('Nama').style(header)
+        worksheet.cell(1,2).string('NIM').style(header)
+        worksheet.cell(1,3).string('Divisi').style(header)
+        worksheet.cell(1,4).string('Jurusan').style(header)
+        worksheet.cell(1,5).string('Angkatan').style(header)
+        await asyncForEach(body.data, async (element, index) => {
+            worksheet.cell(index+2,1).string(element.nama_lengkap).style(column)
+            worksheet.cell(index+2,2).string(element.nim).style(column)
+            worksheet.cell(index+2,3).string(element.divisi).style(column)
+            worksheet.cell(index+2,4).string(element.jurusan).style(column)
+            worksheet.cell(index+2,5).string(element.angkatan).style(column)
+        })
+        worksheet.row(1).freeze()
+        worksheet.row(1).setHeight(30)
+        workbook.write('data_recruitment_pass1.xlsx', res)
+    })
+})
+
+router.get('/recruitment/exportpass2', (req, res) => {
+    request(req.protocol+"://"+req.headers.host+"/recruitment/datapass2", { json: true }, async (err, res2, body) => {
+        if (err) { return res.json({"msg" : err}) }
+        worksheet.cell(1,1).string('Nama').style(header)
+        worksheet.cell(1,2).string('NIM').style(header)
+        worksheet.cell(1,3).string('Divisi').style(header)
+        worksheet.cell(1,4).string('Jurusan').style(header)
+        worksheet.cell(1,5).string('Angkatan').style(header)
+        await asyncForEach(body.data, async (element, index) => {
+            worksheet.cell(index+2,1).string(element.nama_lengkap).style(column)
+            worksheet.cell(index+2,2).string(element.nim).style(column)
+            worksheet.cell(index+2,3).string(element.divisi).style(column)
+            worksheet.cell(index+2,4).string(element.jurusan).style(column)
+            worksheet.cell(index+2,5).string(element.angkatan).style(column)
+        })
+        worksheet.row(1).freeze()
+        worksheet.row(1).setHeight(30)
+        workbook.write('data_recruitment_pass1.xlsx', res)
+    })
+})
 
 var cpUpload = upload.fields([{ name: 'foto_profile', maxCount: 1 }, { name: 'cv', maxCount: 1 }, { name: 'motivation_letter', maxCount: 1 }])
 
@@ -198,17 +274,6 @@ router.get('/recruitment/datapass1', (req, res) => {
         });
     })
 });
-
-router.get('/recruitment/exportpass1', (req, res) => {
-    request(req.protocol+"://"+req.headers.host+"/recruitment/datapass1", { json: true }, (err, res2, body) => {
-        if (err) { return res.json({"msg" : err}) }
-        const dataset = res2.body.data
-        const fileName = 'data-recruitment-pass1'
-        const exportType = 'xls'
-        const result = excel({dataset, fileName, exportType})
-        res.write(result)
-    })
-})
 
 // mendapatkan total yang lulus seleksi 1 dan seleksi 2
 router.get('/recruitment/sumpass', (req, res) => {
