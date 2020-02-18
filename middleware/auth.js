@@ -22,6 +22,7 @@ const auth = (req, res, next) =>  {
         // {route: '/registerAdmin', method: "POST"},
         {route: '/recruitment', method: "POST"},
         {route: '/recruitment/checkstatus', method: "GET", withId: true},
+        {route: '/recruitment/lulus2', method: "GET"},
         {route: '/tools', method: "GET", withId: true},
         {route: '/socials', method: "GET", withId: true},
         {route: '/auth', method: "POST"},

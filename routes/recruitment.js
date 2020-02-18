@@ -135,6 +135,22 @@ router.get("/recruitment/", (req, res) => {
         res.json({data: recruitment})
     })
 })
+
+router.get("/recruitment/lulus2", (req, res) => {
+    Recruitment.findAll({
+        where: {
+            status1: 1,
+            status2: 1
+        }
+    }).then(recruitment => {
+        if (!recruitment) {
+            return res.json({"msg": "data not found"})
+        }
+        res.json({data: recruitment})
+    })
+})
+
+
 // coba select all dengan connection.query
 // router.get('/cobapanggil', (req, res) => {
 //     connection.query('SELECT * FROM recruitment', function(error, results, fields){
