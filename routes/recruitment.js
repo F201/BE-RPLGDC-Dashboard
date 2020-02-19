@@ -114,6 +114,34 @@ router.post("/recruitment/", cpUpload, async(req, res) => {
     })
 })
 
+router.get("/recruitment/status1/:nim", (req, res) => {
+    Recruitment.findOne({
+        where: {
+            nim : req.params.nim,
+            status1 : 1 
+        }
+    }).then(recruitment => {
+        if(!recruitment) {
+            return res.json({data: 'not pass', msg: 'success'})
+        }
+        res.json({data: 'pass', msg: 'success'})
+    })
+})
+
+router.get("/recruitment/status2/:nim", (req, res) => {
+    Recruitment.findOne({
+        where: {
+            nim : req.params.nim,
+            status2 : 1 
+        }
+    }).then(recruitment => {
+        if(!recruitment) {
+            return res.json({data: 'not pass', msg: 'success'})
+        }
+        res.json({data: 'pass', msg: 'success'})
+    })
+})
+
 // tampilin semua data orang yang daftar
 router.get("/recruitment/", (req, res) => {
     let whereCon= {};
