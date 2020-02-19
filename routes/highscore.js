@@ -14,7 +14,7 @@ router.get("/score", (req, res) => {
     })
 })
 
-router.get("/allscore", (req, res) => {
+router.get("/allScore", (req, res) => {
     Highscore.findAll().then(highscore => {
         res.json({data: highscore})
     })

@@ -18,10 +18,13 @@ const auth = (req, res, next) =>  {
     const bearToken = req.headers['authorization']
     // console.log('heheheheuheuheuheuheuheu', bearerHeader)
     const allowRoute = [
-        // {route: '/recruitment/', method: "GET"},
+        // {route: '/recruitment', method: "GET"},
         // {route: '/registerAdmin', method: "POST"},
         {route: '/recruitment', method: "POST"},
         {route: '/recruitment/checkstatus', method: "GET", withId: true},
+        {route: '/recruitment/lulus2', method: "GET"},
+        {route: '/recruitment/status1', method: "GET", withId: true},
+        // {route: '/recruitment/status2', method: "GET", withId: true}, ACTIVATE WHEN ITS TIME
         {route: '/tools', method: "GET", withId: true},
         {route: '/socials', method: "GET", withId: true},
         {route: '/auth', method: "POST"},
@@ -41,7 +44,12 @@ const auth = (req, res, next) =>  {
         {route: '/achievements', method: "GET", withId: true},
         {route: '/news', method: 'GET', withId: true},
         {route: '/score', method: 'GET', withId: true},
-        {route: '/score', method: 'POST'}
+        {route: '/score', method: 'POST'},
+        {route: '/allScore', method: 'GET'},
+        // {route: '/recruitment/exportpass1', method: 'GET'},
+        // {route: '/recruitment/exportpass2', method: 'GET'},
+        // {route: '/recruitment/datapass1', method: 'GET', withId: true},
+        // {route: '/recruitment/datapass2', method: 'GET', withId: true}
     ]
     // console.log(('/auth' === currentPath && 'POST' === currentMethod))
     if (allowRoute.some(item => {return ((item.route === currentPath && item.method === currentMethod) || (item.method === currentMethod && item.withId && !isNaN(currentPath.replace(item.route + '/', ''))))})) {
