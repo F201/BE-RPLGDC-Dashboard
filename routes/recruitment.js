@@ -9,7 +9,7 @@ const pool = require('../conn')
 
 const excel = require('excel4node')
 const workbook = new excel.Workbook()
-const worksheet = workbook.addWorksheet('Sheet 1')
+
 const header = workbook.createStyle({
     font: {
       color: 'white',
@@ -45,6 +45,7 @@ async function asyncForEach(array, callback) {
 router.get('/recruitment/exportpass1', (req, res) => {
     request(req.protocol+"://"+req.headers.host+"/recruitment/datapass1", { json: true }, async (err, res2, body) => {
         if (err) { return res.json({"msg" : err}) }
+        const worksheet = workbook.addWorksheet('Sheet 1')
         worksheet.cell(1,1).string('Nama').style(header)
         worksheet.cell(1,2).string('NIM').style(header)
         worksheet.cell(1,3).string('Divisi').style(header)
@@ -66,6 +67,7 @@ router.get('/recruitment/exportpass1', (req, res) => {
 router.get('/recruitment/exportpass2', (req, res) => {
     request(req.protocol+"://"+req.headers.host+"/recruitment/datapass2", { json: true }, async (err, res2, body) => {
         if (err) { return res.json({"msg" : err}) }
+        const worksheet = workbook.addWorksheet('Sheet 1')
         worksheet.cell(1,1).string('Nama').style(header)
         worksheet.cell(1,2).string('NIM').style(header)
         worksheet.cell(1,3).string('Divisi').style(header)
@@ -82,6 +84,46 @@ router.get('/recruitment/exportpass2', (req, res) => {
         worksheet.row(1).setHeight(30)
         workbook.write('data_recruitment_pass1.xlsx', res)
     })
+})
+router.get('/recruitment/statistic', async (req, res) => {
+    const worksheet = workbook.addWorksheet('data jurusan')
+    const worksheet2 = workbook.addWorksheet('data angkatan')
+    pool.getConnection(function(err, connection) {
+        connection.query("SELECT angkatan, COUNT(id_recruitment) AS total FROM recruitment GROUP BY angkatan ", async(error, results) => {
+            // connection.release();
+            if(error) res.json({status: error});
+            else {
+               const angkatan = results
+               connection.query("SELECT jurusan, COUNT(id_recruitment) AS total FROM recruitment GROUP BY jurusan ",async(error, results) => {
+                   // connection.release();
+                   if(error) res.json({status: error});
+                   else {
+                       const jurusan = results
+                       // JURUSAN
+                        worksheet.cell(1,1).string('Jurusan').style(header)
+                        worksheet.cell(1,2).string('Total').style(header)
+                        await asyncForEach(jurusan, async (element, index) => {
+                            worksheet.cell(index+2,1).string(element.jurusan).style(column)
+                            worksheet.cell(index+2,2).number(element.total).style(column)
+                        })
+                        worksheet.row(1).freeze()
+                        worksheet.row(1).setHeight(30)
+                        // ANGKATAN
+                        worksheet2.cell(1,1).string('Angkatan').style(header)
+                        worksheet2.cell(1,2).string('Total').style(header)
+                        await asyncForEach(angkatan, async (element, index) => {
+                            worksheet2.cell(index+2,1).string(element.angkatan).style(column)
+                            worksheet2.cell(index+2,2).number(element.total).style(column)
+                        })
+                        worksheet2.row(1).freeze()
+                        worksheet2.row(1).setHeight(30)
+                        workbook.write('data_stat_recruitment.xlsx', res)
+                   }
+               })
+            }
+        })
+    })
+    
 })
 
 var cpUpload = upload.fields([{ name: 'foto_profile', maxCount: 1 }, { name: 'cv', maxCount: 1 }, { name: 'motivation_letter', maxCount: 1 }])
@@ -178,17 +220,6 @@ router.get("/recruitment/lulus2", (req, res) => {
     })
 })
 
-
-// coba select all dengan connection.query
-// router.get('/cobapanggil', (req, res) => {
-//     connection.query('SELECT * FROM recruitment', function(error, results, fields){
-//         if (error) throw error
-//         else {
-//             res.json({data: results})
-//         // console.log(JSON.stringify(results))
-//         }
-//     })
-// })
 
 // tampilin semua data orang yang daftar berdasarkan divisi
 // router.get("/recruitment/findallbydivision/:divisi", (req, res) => {
