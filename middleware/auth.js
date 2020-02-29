@@ -24,7 +24,7 @@ const auth = (req, res, next) =>  {
         {route: '/recruitment/checkstatus', method: "GET", withId: true},
         {route: '/recruitment/lulus2', method: "GET"},
         {route: '/recruitment/status1', method: "GET", withId: true},
-        // {route: '/recruitment/status2', method: "GET", withId: true}, ACTIVATE WHEN ITS TIME
+        {route: '/recruitment/status2', method: "GET", withId: true}, //ACTIVATE WHEN ITS TIME
         {route: '/recruitment/statistic', method: "GET"},
         {route: '/tools', method: "GET", withId: true},
         {route: '/socials', method: "GET", withId: true},
