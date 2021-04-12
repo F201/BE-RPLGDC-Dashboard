@@ -215,7 +215,7 @@ CREATE TABLE `recruitment` (
   `jenis_kelamin` varchar(10) NOT NULL,
   `jurusan` varchar(50) NOT NULL,
   `angkatan` varchar(4) NOT NULL,
-  `divisi` enum('frontend','backend','uiux','mobile','ga', 'gp', 'gd', 'ac') NOT NULL,
+  `divisi` enum('frontend','backend','uiux','mobile','gdc') NOT NULL,
   `cv` varchar(100) NOT NULL,
   `motivation_letter` varchar(100) NOT NULL,
   `portofolio` varchar(500) NOT NULL,
