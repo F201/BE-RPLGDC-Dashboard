@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2020 at 09:32 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.2
+-- Generation Time: Apr 12, 2021 at 04:28 PM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.4.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `db_rplgdc`
+-- Database: `rplgdc`
 --
 
 -- --------------------------------------------------------
@@ -167,7 +166,7 @@ CREATE TABLE `recruitment` (
   `jenis_kelamin` varchar(10) NOT NULL,
   `jurusan` varchar(50) NOT NULL,
   `angkatan` varchar(4) NOT NULL,
-  `divisi` enum('frontend','backend','uiux','mobile','gdc') NOT NULL,
+  `divisi` enum('frontend','backend','uiux','mobile','ga','gp','ac','gd') NOT NULL,
   `cv` varchar(100) NOT NULL,
   `motivation_letter` varchar(100) NOT NULL,
   `portofolio` varchar(500) NOT NULL,
